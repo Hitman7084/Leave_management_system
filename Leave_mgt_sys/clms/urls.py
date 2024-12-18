@@ -22,12 +22,4 @@ from .import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('base/', views.BASE, name='base'),
-    #login Path
-    path('', views.FIRSTPAGE, name='firstpage'),
-    path('Login', views.LOGIN, name='login'),
-    path('doLogin', views.doLogin, name='doLogin'),
-    path('doLogout', views.doLogout, name='logout'),
-
-    path('Index', views.INDEX, name='index'),
 ]
