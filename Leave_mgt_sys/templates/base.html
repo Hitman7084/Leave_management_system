@@ -51,33 +51,7 @@
         {% include 'includes/sidebar.html' %}
             
        
-   <main class="mn-inner">
-                <div class="row">
-                    
-                    <div class="col s12 m12 l12">
-                        <div class="card">
-                            {% block content %}
-                            {% endblock %}
-                        </div>
-                    </div>
-                </div>
-            </main>
-        
-        <div class="right-sidebar-hover"></div>
-        
-        <!-- Javascripts -->
-        <script src="{% static 'assets/plugins/jquery/jquery-2.2.0.min.js' %}"></script>
-        <script src="{% static 'assets/plugins/materialize/js/materialize.min.js' %}"></script>
-        <script src="{% static 'assets/plugins/material-preloader/js/materialPreloader.min.js' %}"></script>
-        <script src="{% static 'assets/plugins/jquery-blockui/jquery.blockui.js' %}"></script>
-        <script src="{% static 'assets/js/alpha.min.js' %}"></script>
-        <script src="{% static 'assets/js/pages/form_elements.js' %}"></script>
-        <script src="{% static 'assets/plugins/datatables/datatables.min.js'%}"></script>
-      <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#table_id').dataTable();
-    });
+   
 </script>
         
     </body>
