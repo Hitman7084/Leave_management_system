@@ -16,7 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from .import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('base/', views.BASE, name='base'),
+    #login Path
+    path('', views.FIRSTPAGE, name='firstpage'),
+    path('Login', views.LOGIN, name='login'),
+    path('doLogin', views.doLogin, name='doLogin'),
+    path('doLogout', views.doLogout, name='logout'),
+
+    path('Index', views.INDEX, name='index'),
 ]
