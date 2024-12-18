@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+
+            <main class="mn-inner">
+                <div class="middle-content">
+                    <div class="row no-m-t no-m-b">
+                    <div class="col s12 m12 l4">
+                        <div class="card stats-card">
+                            <div class="card-content">
+                            
+                                <span class="card-title">Totle Regd Employee</span>
+                                <span class="stats-counter">
+
+
+                                    <span class="counter"><?php echo htmlentities($empcount);?></span></span>
+                            </div>
+                            <div id="sparkline-bar"></div>
+                        </div>
+                    </div>
+                        <div class="col s12 m12 l4">
+                        <div class="card stats-card">
+                            <div class="card-content">
+                            
+                                <span class="card-title">Listed Departments </span>
+                         
+                                <span class="stats-counter"><span class="counter"><?php echo htmlentities($dptcount);?></span></span>
+                            </div>
+                            <div id="sparkline-line"></div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l4">
+                        <div class="card stats-card">
+                            <div class="card-content">
+                                <span class="card-title">Listed leave Type</span>
+                                 
+                                <span class="stats-counter"><span class="counter"><?php echo htmlentities($leavtypcount);?></span></span>
+                      
+                            </div>
+                            <div class="progress stats-card-progress">
+                                <div class="determinate" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 
+                    <div class="row no-m-t no-m-b">
+                        <div class="col s12 m12 l12">
+                            <div class="card invoices-card">
+                                <div class="card-content">
+                                 
+                                    <span class="card-title">Latest Leave Applications</span>
+                             <table id="example" class="display responsive-table ">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th width="200">Employe Name</th>
+                                            <th width="120">Leave Type</th>
+
+                                             <th width="180">Posting Date</th>                 
+                                            <th>Status</th>
+                                            <th align="center">Action</th>
+                                        </tr>
+                                    </thead>
+                                 
+                                    <tbody>
+  
+
+                                        <tr>
+                                            <td> <b><?php echo htmlentities($cnt);?></b></td>
+                                              <td><a href="" target="_blank"><?php echo htmlentities($result->FirstName." ".$result->LastName);?>(<?php echo htmlentities($result->EmpId);?>)</a></td>
+                                            <td><?php echo htmlentities($result->LeaveType);?></td>
+                                            <td><?php echo htmlentities($result->PostingDate);?></td>
+                                                                       <td>
+                                             ?>
+                                                 <span style="color: green">Approved</span>
+                                                 
+                                                <span style="color: red">Not Approved</span>
+                                                 
+ <span style="color: blue">waiting for approval</span>
+
+
+
+                                             </td>
+
+          <td>
+           <td><a href="leave-details.php?leaveid=<?php echo htmlentities($result->lid);?>" class="waves-effect waves-light btn blue m-b-xs"  > View Details</a></td>
+                                    </tr>
+                                      
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </main>
+          
+        </div>
+
+        
+        {% endblock %}

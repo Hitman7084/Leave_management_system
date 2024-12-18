@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+
+            <main class="mn-inner">
+                <h5 style="color: blue;padding-top: 10px;padding-left: 10px;">Add Staff Details</h5>
+                <div class="row">
+                <div class="middle-content">
+                    
+                    <div class="row no-m-t no-m-b">
+                        
+                        
+                       <form method="POST" action="{% url 'add_staff' %}" enctype="multipart/form-data">
+                        {% if messages %}
+                        {% for message in messages %}
+                         {% if message.tags == 'error' %}
+                       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      {{message}}
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                         </button>
+                          </div>
+                       {% endif %}
+                        {% endfor %}
+                       {% endif %}
+                           {% if messages %}
+                        {% for message in messages %}
+                         {% if message.tags == 'success' %}
+                       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      {{message}}
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                         </button>
+                          </div>
+                       {% endif %}
+                        {% endfor %}
+                       {% endif %}
+                           {% csrf_token %}
+                           <div class="form-group row">
+                               <label class="col-sm-2 col-form-label">Profile Pic</label>
+                               <div class="col-sm-10">
+                                   <input type="file" class="form-control" name="profile_pic" required="True">
+                               </div>
+                           </div>
+                            <div class="form-group row">
+                               <label class="col-sm-2 col-form-label">First Name</label>
+                               <div class="col-sm-10">
+                                   <input type="text" class="form-control" name="first_name" required="True">
+                               </div>
+                           </div>
+                           <div class="form-group row">
+                               <label class="col-sm-2 col-form-label">Last Name</label>
+                               <div class="col-sm-10">
+                                   <input type="text" class="form-control" name="last_name" required="True">
+                               </div>
+                           </div>
+
+                           <div class="form-group row">
+                               <label class="col-sm-2 col-form-label">Email</label>
+                               <div class="col-sm-10">
+                                   <input type="email" class="form-control" name="email" required="True">
+                               </div>
+                           </div>
+                           <div class="form-group row">
+                               <label class="col-sm-2 col-form-label">Username</label>
+                               <div class="col-sm-10">
+                                   <input type="text" class="form-control"  name="username" required="True">
+                               </div>
+                           </div>
+
+                           <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control"  name="password" required="True">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Gender</label>
+                            <div class="col-sm-10">
+                                
+                                <select class="form-control" name="gender" required="True">
+                                    <option value="">Choose Gender</option>
+                                    <option value="Male">Male </option>
+                                    <option value="Female">Female </option>
+                                    <option value="Other">Other </option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Address</label>
+                            <div class="col-sm-10">
+                                <textarea rows="4" cols="5" class="form-control" name="address" required="True"></textarea>
+                                
+                            </div>
+                        </div>
+
+
+                           <div class="form-group row">
+                               <div class="col-sm-10">
+                                   <button type="submit" class="btn btn-dark">Add Staff</button>
+                               </div>
+                           </div>
+                       </form>
+                       
+                  
+                </div>
+                 
+                </div>
+              </div>
+            </main>
+          
+        </div>
+
+        
+        {% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="middle-content">
+    <div class="row no-m-t no-m-b">
+        <h5 style="color: blue;">Welcome {{ user.first_name }} {{ user.last_name }}!!!</h5>
+   
+        
+ 
+</div>
+ 
+    <div class="row no-m-t no-m-b">
+        <div class="col s12 m12 l12">
+            <div class="card invoices-card">
+                <div class="card-content">
+                 
+                    <span class="card-title">Your Leave Applications Details</span>
+                    {% if messages %}
+                    {% for message in messages %}
+                     {% if message.tags == 'error' %}
+                   <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {{message}}
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+                     </button>
+                      </div>
+                   {% endif %}
+                    {% endfor %}
+                   {% endif %}
+                       {% if messages %}
+                    {% for message in messages %}
+                     {% if message.tags == 'success' %}
+                   <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {{message}}
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+                     </button>
+                      </div>
+                   {% endif %}
+                    {% endfor %}
+                   {% endif %}
+                   <table  class="display responsive-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            
+                            <th>Leave Type</th>
+                            <th>Leave Start Date</th>
+                            <th>Leave End Date</th>
+                            <th>Message</th>
+                            <th>Apply Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                 
+                    <tbody>
+                        {% for i in staff_leave_history %}
+
+                        <tr>
+                            <td>{{i.id}}</td>
+                            
+                            <td>{{i.leave_type}}</td>
+                            <td>{{i.from_date}}</td>
+                            <td>{{i.to_date}}</td>
+                            <td>{{i.message}}</td>
+                            <td>{{i.created_at}}</td>
+                            <td>
+                                {% if i.status == 0 %}
+                                <button class="btn btn-success" disabled="disabled">Pending</button>
+                                
+                                {% elif i.status == 1 %}
+                                <button class="btn btn-success" disabled="disabled">Approve</button>
+                                {% else %}
+                                <button class="btn btn-danger" disabled="disabled">Disapprove</button>
+                                {% endif %}
+
+
+
+                            </td>
+                        </tr>
+                         {% endfor %}  
+                    </tbody>
+                </table>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

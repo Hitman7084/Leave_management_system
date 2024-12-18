@@ -1,0 +1,91 @@
+{% load static %}
+<aside id="slide-out" class="side-nav white fixed">
+    {% if user.user_type == '1' %}
+    <div class="side-nav-wrapper">
+        <div class="sidebar-profile">
+            
+            <div class="sidebar-profile-image">
+                <img src="/{{user.profile_pic}}" class="circle" alt="">
+            </div>
+            <div class="sidebar-profile-info">
+          
+                    <p>{{ user.first_name }} {{ user.last_name }}</p>
+                    <span>({{ user.email }})</span>
+             
+            </div>
+        </div>
+   
+    <ul class="sidebar-menu collapsible collapsible-accordion" data-collapsible="accordion">
+        <li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'admin_home' %}"><i class="material-icons">account_box</i>Dashboard</a></li>
+      
+<li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'profile' %}"><i class="material-icons">account_box</i>My Profiles</a></li>
+<li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'change_password' %}"><i class="material-icons">settings_input_svideo</i>Change Password</a></li>
+        <li class="no-padding">
+            <a class="collapsible-header waves-effect waves-grey"><i class="material-icons">apps</i>Staff<i class="nav-drop-icon material-icons">keyboard_arrow_right</i></a>
+            <div class="collapsible-body">
+                <ul>
+                    <li><a href="{% url 'add_staff' %}">Add Staff</a></li>
+                    <li><a href="{% url 'view_staff' %}">Manange Staff</a></li>
+                </ul>
+            </div>
+        </li>
+        
+        <li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'staff_leave_view_admin' %}"><i class="material-icons">account_box</i>Staff Leave</a></li>
+   
+      <li class="no-padding">
+                    <a class="waves-effect waves-grey" href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Sign Out</a>
+                </li>  
+                 
+     
+       
+    </ul>
+
+    {% else  %}
+
+
+    <div class="side-nav-wrapper">
+        <div class="sidebar-profile">
+            
+            <div class="sidebar-profile-image">
+                <img src="/{{user.profile_pic}}" class="circle" alt="">
+            </div>
+            <div class="sidebar-profile-info">
+          
+                    <p>{{ user.first_name }} {{ user.last_name }}</p>
+                    <span>({{ user.email }})</span>
+             
+            </div>
+        </div>
+   
+    <ul class="sidebar-menu collapsible collapsible-accordion" data-collapsible="accordion">
+        <li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'staff_home' %}"><i class="material-icons">account_box</i>Dashboard</a></li>
+      
+<li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'staff_apply_leave' %}"><i class="material-icons">account_box</i>Apply For Leave</a></li>
+<li class="no-padding"><a class="waves-effect waves-grey" href="{% url 'staff_leave_view' %}"><i class="material-icons">account_box</i>Apply Leave History</a></li>
+
+       
+    
+
+   
+      <li class="no-padding">
+                    <a class="waves-effect waves-grey" href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Sign Out</a>
+                </li>  
+                
+     
+       
+    </ul>
+
+
+
+    
+   
+
+
+
+    {% endif %}
+    <div class="footer">
+        <p class="copyright"> SLMS©</p>
+    
+    </div>
+    </div>
+</aside>
