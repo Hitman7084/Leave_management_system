@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Leave Management System {% endblock %}</title>
+    
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <!-- Link to JavaScript -->
+    <script src="{% static 'assets/js/script.js' %}" defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>College Leave Management System</h1>
+    </header>
+
+    <!-- Nav Bar -->
+    <nav>
+        <a href="/">Home</a>
+        <a href="{% url 'professor_dashboard' %}">Professor</a>
+        <a href="{% url 'incharge_dashboard' %}">Incharge</a>
+        <a href="{% url 'dean_dashboard' %}">Dean</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        {% block content %}
+        <!-- Page-specific content idhar daalna -->
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 College Leave Management System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
