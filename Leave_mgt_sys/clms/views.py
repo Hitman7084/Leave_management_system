@@ -14,3 +14,6 @@ def incharge_dashboard(request):
 def dean_dashboard(request):
     return render(request, 'dean_dashboard.html')
 
+def student_dashboard(request):
+    return render(request, 'student_dashboard.html')
+
