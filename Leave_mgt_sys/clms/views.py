@@ -5,7 +5,10 @@ from django.shortcuts import render
 def homepage(request):
     return render(request, 'index.html')
 
-def professor_dashboard(request):
+def login(request):
+    return render(request, 'login.html')
+
+'''def professor_dashboard(request):
     return render(request, 'professor_dashboard.html')
 
 def incharge_dashboard(request):
@@ -15,5 +18,5 @@ def dean_dashboard(request):
     return render(request, 'dean_dashboard.html')
 
 def student_dashboard(request):
-    return render(request, 'student_dashboard.html')
+    return render(request, 'student_dashboard.html')'''
 

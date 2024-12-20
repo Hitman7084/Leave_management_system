@@ -19,8 +19,5 @@ from . import views
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
-    path('professor/', views.professor_dashboard, name='professor_dashboard'),
-    path('incharge/', views.incharge_dashboard, name='incharge_dashboard'),
-    path('dean/', views.dean_dashboard, name='dean_dashboard'),
-    path('student/', views.student_dashboard, name='student_dashboard'),
+    path('login/', views.login, name='login'),
 ]
