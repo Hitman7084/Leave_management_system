@@ -48,11 +48,16 @@ h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* footer css */
+
+footer {
+    color: #BAC9F6;
+}
 
 /* Login page css from here */
 
 .login-container {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #0F0F1B;
     padding: 20px;
     border-radius: 8px;
     width: 300px;
@@ -63,10 +68,12 @@ h1 {
 
 .login-container h2 {
     margin-bottom: 20px;
+    color: #BAC9F6;
 }
 
 .login-container label {
     display: block;
+    color: #BAC9F6;
     margin-bottom: 5px;
     font-weight: bold;
 }
@@ -75,13 +82,15 @@ h1 {
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
+    color: #BAC9F6;
+    background-color: rgba(95, 82, 116, 0.2);
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 .login-container button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #cab287;
+    color: black;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
@@ -89,5 +98,5 @@ h1 {
 }
 
 .login-container button:hover {
-    background-color: #45a049;
+    background-color: #9d8854;
 }
