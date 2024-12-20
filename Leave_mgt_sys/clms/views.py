@@ -8,6 +8,18 @@ def homepage(request):
 def login(request):
     return render(request, 'login.html')
 
+def authenticate_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # authentication logic lagana hai yha
+        if username == 'admin' and password == 'aspirin':  # Example 
+            return render(request, 'authenticate_user.html', {
+                'authenticated': True,
+                'username': username,
+            })
+    return render(request, 'authenticate_user.html', {'authenticated': False})
+
 '''def professor_dashboard(request):
     return render(request, 'professor_dashboard.html')
 

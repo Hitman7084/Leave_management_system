@@ -1,3 +1,4 @@
+{% load static %}
 {% extends 'base.html' %}
 
 {% block title %}Authentication{% endblock %}
@@ -7,7 +8,7 @@
     <h2>Authentication Status</h2>
     {% if authenticated %}
         <p>Welcome, {{ username }}! You have successfully logged in.</p>
-        <a href="{% url 'dashboard' %}" class="button">Go to Dashboard</a>
+        
     {% else %}
         <p>Authentication failed. Please try again.</p>
         <a href="{% url 'login' %}" class="button">Back to Login</a>
