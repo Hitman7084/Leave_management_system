@@ -22,5 +22,5 @@ urlpatterns = [
 
     # login page
     path('login/', views.login, name='login'),
-    path('authenticate/', views.authenticate_user, name='authenticate_user'),
+    
 ]

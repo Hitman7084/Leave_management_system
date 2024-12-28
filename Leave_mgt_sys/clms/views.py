@@ -8,7 +8,7 @@ def homepage(request):
 def login(request):
     return render(request, 'login.html')
 
-def authenticate_user(request):
+'''def authenticate_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -20,7 +20,7 @@ def authenticate_user(request):
             })
     return render(request, 'authenticate_user.html', {'authenticated': False})
 
-'''def professor_dashboard(request):
+def professor_dashboard(request):
     return render(request, 'professor_dashboard.html')
 
 def incharge_dashboard(request):
