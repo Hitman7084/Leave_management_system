@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> College Leave Management System </title>
+    <!-- Link to CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <!-- Link to JavaScript -->
+    <script src="{% static 'assets/js/script.js' %}" defer></script>
 </head>
 <body class = "martial">
     <h1>Leave Management System</h1>
@@ -17,5 +21,9 @@
             <a href="{% url 'register' %}" class="btn">Student</a>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2024 Leave Management System. All rights reserved.</p>
+    </footer>
 </body>
 </html>
