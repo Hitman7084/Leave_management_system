@@ -1,0 +1,5 @@
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="otp" placeholder="Enter OTP" required>
+    <button type="submit">Verify</button>
+</form>
