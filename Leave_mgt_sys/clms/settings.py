@@ -131,3 +131,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authorization
 
 AUTH_USER_MODEL = 'clmsapp.User'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Default backend for SMTP
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
+EMAIL_PORT = 587  # Port for secure connections
+EMAIL_USE_TLS = True  # Enable TLS (Transport Layer Security)
+EMAIL_HOST_USER = 'cliad525@gmail.com'  # Your email address
+EMAIL_HOST_PASSWORD = 'Hitman7084@'  # Your email's password or app-specific password

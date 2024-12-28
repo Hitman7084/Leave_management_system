@@ -21,7 +21,7 @@ def register(request):
             send_mail(
                 'Account Verification',
                 f'Your OTP is {otp}. It is valid for 5 minutes.',
-                'cliad350@gmail.com',
+                'cliad525@gmail.com',
                 [user.email],
                 fail_silently=False,
             )

@@ -9,7 +9,7 @@ class User(AbstractUser):
         ('Student', 'Student'),
     ]
     full_name = models.CharField(max_length=100)
-    photo = models.ImahgeField(upload_to='photos/', null=True, blank=True)
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLES, default='Student')
 
     def __str__(self):
