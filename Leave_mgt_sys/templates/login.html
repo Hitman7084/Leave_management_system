@@ -5,7 +5,7 @@
 {% block content %}
 <div class="login-container">
     <h2>Login</h2>
-    <form method="post" action="{% url 'authenticate_user' %}">
+    <form method="post">
         {% csrf_token %}
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
