@@ -27,8 +27,8 @@ def register(request):
             )
             messages.success(request, 'Account created successfully. Please verify your email.')
             return redirect('verify_email')
-        else:
-            form = RegistrationForm()
+    else:
+        form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
     
 def verify_email(request):
