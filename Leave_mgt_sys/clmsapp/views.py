@@ -29,7 +29,7 @@ def register(request):
             return redirect('verify_email')
         else:
             form = RegistrationForm()
-        return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html', {'form': form})
     
 def verify_email(request):
     if request.method == 'POST':
