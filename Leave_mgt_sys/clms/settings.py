@@ -138,4 +138,4 @@ EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
 EMAIL_PORT = 587  # Port for secure connections
 EMAIL_USE_TLS = True  # Enable TLS (Transp Layer Sec)
 EMAIL_HOST_USER = 'cliad525@gmail.com'  # email
-EMAIL_HOST_PASSWORD = 'fake'  # Your email's password or app-specific password
+EMAIL_HOST_PASSWORD = 'fake'  # email's password or app-specific password
