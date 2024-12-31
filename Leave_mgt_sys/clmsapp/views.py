@@ -89,3 +89,5 @@ def reset_password(request):
         messages.error(request, 'Invalid OTP.')
     return render(request, 'reset_password.html')
 
+def login(request):
+    return render(request, 'login.html')
