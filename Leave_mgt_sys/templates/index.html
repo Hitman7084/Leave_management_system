@@ -16,11 +16,14 @@
     {% block content %}
     
     <div class="box">
+        <div class="reg">
+            <a href ="{% url register.html %}" class="btn">Register</a>
+        </div>
         <div class="button-container">
-            <a href="{% url 'register' %}" class="btn">Professor</a>
-            <a href="{% url 'register' %}" class="btn">Incharge</a>
-            <a href="{% url 'register' %}" class="btn">Dean</a>
-            <a href="{% url 'register' %}" class="btn">Student</a>
+            <a href="{% url 'login' %}" class="btn">Professor</a>
+            <a href="{% url 'login' %}" class="btn">Incharge</a>
+            <a href="{% url 'login' %}" class="btn">Dean</a>
+            <a href="{% url 'login' %}" class="btn">Student</a>
         </div>
     </div>
     {% endblock %}
