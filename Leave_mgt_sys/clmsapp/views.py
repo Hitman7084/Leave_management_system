@@ -81,11 +81,5 @@ def reset_password(request):
             user = User.objects.get(email=email)
             user.set_password(new_password)
             user.save()
-            messages.success(request, 'Password reset successfull.')
-            return redirect('login')
-        else:
-            messages.error(request, 'Password do not match.')
-    else:
-        messages.error(request, 'Invalid OTP.')
-    return render(request, 'reset_password.html')
+            
 
