@@ -10,7 +10,7 @@ def register(request):
         form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False                # verification is done
+            user.is_active = False                # verification idhar
             user.save()
 
             # Otp generation
