@@ -61,7 +61,7 @@ def forgot_password(request):
                     f'Your OTP is {reset_token}. It is valid for 5 minutes.',
                     'cliad350@gmail.com',
                     [email],
-                    fail_silently=False,
+                    fail_silently = False,
                 )
                 messages.success(request, 'OTP sent to your email.')
                 return redirect('reset_password')
