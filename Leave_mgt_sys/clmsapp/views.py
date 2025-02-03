@@ -1,50 +1,55 @@
-from django.shortcuts import render, redirect
+import random
 from django.core.mail import send_mail
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import RegistrationForm, ForgotPasswordForm
 from .models import User
-import random
+from django.conf import settings
 
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False                # verification idhar
+            user.is_active = False  # User is inactive until email verification
             user.save()
 
-            # Otp generation
+            # OTP generation
             otp = random.randint(10000, 99999)
             request.session['otp'] = otp
             request.session['email'] = user.email
 
+            # Send OTP email
             send_mail(
                 'Account Verification',
                 f'Your OTP is {otp}. It is valid for 5 minutes.',
-                'cliad525@gmail.com',
+                settings.EMAIL_HOST_USER,
                 [user.email],
                 fail_silently=False,
             )
-            messages.success(request, 'Account created successfully. Please verify your email.')
-            return redirect('verify_email')
+
+            messages.success(request, 'An OTP has been sent to your email for verification.')
+            return redirect('verify_otp')  # Redirect to OTP verification page
     else:
         form = RegistrationForm()
+
     return render(request, 'register.html', {'form': form})
-    
-def verify_email(request):
+
+def verify_otp(request):
     if request.method == 'POST':
-        otp = request.POST.get['otp']
-        if str(otp) == str(request.session.get('otp')):
+        otp = request.POST.get('otp')
+        if otp == str(request.session.get('otp')):
             email = request.session.get('email')
             user = User.objects.get(email=email)
             user.is_active = True
             user.save()
-            messages.success(request, 'Account verified successfully.')
+            messages.success(request, 'Your account has been verified.')
             return redirect('login')
         else:
-            messages.error(request, 'Invalid OTP.')
-    return render(request, 'verify_email.html')
-    
+            messages.error(request, 'Invalid OTP. Please try again.')
+
+    return render(request, 'verify_otp.html')
+
 def forgot_password(request):
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
@@ -88,4 +93,3 @@ def reset_password(request):
     else:
         messages.error(request, 'Invalid OTP.')
     return render(request, 'reset_password.html')
-

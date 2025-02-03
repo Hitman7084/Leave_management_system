@@ -28,6 +28,6 @@ class OTPVerification(models.Model):
 
     def generate_otp(self):
         self.otp = str(random.randint(100000, 999999))
-        self.expires_at = timezone.now() + timezone.timedelta(minutes=10)  # Set OTP expiry
+        self.expires_at = timezone.now() + timezone.timedelta(minutes=10)  # otp expiry
         self.verified = False
         self.save()
