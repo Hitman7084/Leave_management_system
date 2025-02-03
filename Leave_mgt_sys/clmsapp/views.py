@@ -6,7 +6,7 @@ from .forms import RegistrationForm, ForgotPasswordForm
 from .models import User, OTPVerification
 import random
 
-# ✅ Secure OTP generation function
+# OTP
 def generate_otp(user):
     otp, created = OTPVerification.objects.get_or_create(user=user)
     otp.otp = str(random.randint(10000, 99999))  # Generate 5-digit OTP
@@ -15,7 +15,7 @@ def generate_otp(user):
     otp.save()
     return otp.otp
 
-# ✅ Register New User (Sends OTP for Email Verification)
+# Register New User (Sends OTP for Email Verification)
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST, request.FILES)
@@ -24,12 +24,12 @@ def register(request):
             user.is_active = False  # Deactivate until email is verified
             user.save()
 
-            otp = generate_otp(user)  # Secure OTP storage
+            otp = generate_otp(user)  
 
             send_mail(
                 'Account Verification',
                 f'Your OTP is {otp}. It is valid for 5 minutes.',
-                'your-email@gmail.com',  # Use environment variables in production
+                'your-email@gmail.com',  # env variables usage here
                 [user.email],
                 fail_silently=False,
             )
@@ -40,7 +40,7 @@ def register(request):
         form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
 
-# ✅ Verify Email OTP
+# Verify Email OTP
 def verify_email(request):
     if request.method == 'POST':
         otp = request.POST.get('otp')
@@ -64,7 +64,7 @@ def verify_email(request):
 
     return render(request, 'verify_email.html')
 
-# ✅ Forgot Password (Sends OTP)
+# Forgot Password (Sends OTP)
 def forgot_password(request):
     if request.method == 'POST':
         form = ForgotPasswordForm(request.POST)
@@ -73,7 +73,7 @@ def forgot_password(request):
 
             try:
                 user = User.objects.get(email=email)
-                otp = generate_otp(user)  # Generate OTP securely
+                otp = generate_otp(user)  # Generate OTP 
 
                 send_mail(
                     'Password Reset Request',
@@ -92,7 +92,7 @@ def forgot_password(request):
         form = ForgotPasswordForm()
     return render(request, 'forgot_password.html', {'form': form})
 
-# ✅ Reset Password (Verifies OTP)
+# Reset Password (Verifies OTP)
 def reset_password(request):
     if request.method == 'POST':
         otp = request.POST.get('reset_token')
