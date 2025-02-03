@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
-from .forms import RegistrationForm, ForgotPasswordForm
 from .models import User, OTPVerification
 import random
 
@@ -78,30 +77,26 @@ def verify_email(request):
 # Forgot Password (Sends OTP)
 def forgot_password(request):
     if request.method == 'POST':
-        form = ForgotPasswordForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
+        email = request.POST['email']
 
-            try:
-                user = User.objects.get(email=email)
-                otp = generate_otp(user)  # Generate OTP 
+        try:
+            user = User.objects.get(email=email)
+            otp = generate_otp(user)  # Generate OTP 
 
-                send_mail(
-                    'Password Reset Request',
-                    f'Your OTP is {otp}. It is valid for 5 minutes.',
-                    os.getenv('EMAIL_HOST_USER'),
-                    [email],
-                    fail_silently=False,
-                )
+            send_mail(
+                'Password Reset Request',
+                f'Your OTP is {otp}. It is valid for 5 minutes.',
+                os.getenv('EMAIL_HOST_USER'),
+                [email],
+                fail_silently=False,
+            )
 
-                messages.success(request, 'OTP sent to your email.')
-                return redirect('reset_password')
-            except User.DoesNotExist:
-                messages.error(request, 'Account not found with this email.')
+            messages.success(request, 'OTP sent to your email.')
+            return redirect('reset_password')
+        except User.DoesNotExist:
+            messages.error(request, 'Account not found with this email.')
 
-    else:
-        form = ForgotPasswordForm()
-    return render(request, 'forgot_password.html', {'form': form})
+    return render(request, 'forgot_password.html')
 
 # Reset Password (Verifies OTP)
 def reset_password(request):
