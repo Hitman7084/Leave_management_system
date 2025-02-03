@@ -19,10 +19,19 @@ def generate_otp(user):
 # Register New User (Sends OTP for Email Verification)
 def register(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False  # Deactivate until email is verified
+        username = request.POST['username']
+        full_name = request.POST['full_name']
+        email = request.POST['email']
+        photo = request.FILES['photo']
+        role = request.POST['role']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if password1 == password2:
+            user = User.objects.create_user(username=username, email=email, password=password1)
+            user.full_name = full_name
+            user.photo = photo
+            user.role = role
             user.save()
 
             otp = generate_otp(user)  
@@ -37,9 +46,10 @@ def register(request):
 
             messages.success(request, 'Account created successfully. Please verify your email.')
             return redirect('verify_email')
-    else:
-        form = RegistrationForm()
-    return render(request, 'register.html', {'form': form})
+        else:
+            messages.error(request, 'Passwords do not match.')
+
+    return render(request, 'register.html')
 
 # Verify Email OTP
 def verify_email(request):
