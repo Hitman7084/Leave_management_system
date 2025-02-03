@@ -102,3 +102,13 @@ footer {
 }
 
 /* CSS for register.html */
+
+.register-content {
+    background-color: #0F0F1B;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    margin: 50px auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
