@@ -40,18 +40,12 @@ h1 {
     transform: translateY(-3px);
 }
 
-.box {
+.box .button-container {
     background-color: #0F0F1B;
     padding: 30px;
     display: inline-block;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* footer css */
-
-footer {
-    color: #BAC9F6;
 }
 
 /* Login page css from here */
@@ -103,7 +97,7 @@ footer {
 
 /* CSS for register.html */
 .register-container {
-    max-width: 600px;
+    width: 50%;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -116,31 +110,46 @@ footer {
     margin-bottom: 20px;
 }
 
-.register-container form {
-    display: flex;
-    flex-direction: column;
+.form-group {
+    margin-bottom: 15px;
 }
 
-.register-container .form-register {
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-register {
     width: 100%;
     padding: 10px;
-    margin: 5px 0 10px 0;
-    display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     box-sizing: border-box;
 }
 
-.register-container button {
-    background-color: #cab287;
-    color: black;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    align-self: center;
+.form-register:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
-.register-container button:hover {
-    background-color: #9d8854;
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* footer css */
+
+footer {
+    color: #BAC9F6;
 }
