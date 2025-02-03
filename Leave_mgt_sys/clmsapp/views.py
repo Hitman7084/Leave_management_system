@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -29,7 +30,7 @@ def register(request):
             send_mail(
                 'Account Verification',
                 f'Your OTP is {otp}. It is valid for 5 minutes.',
-                'your-email@gmail.com',  # env variables usage here
+                os.getenv('EMAIL_HOST_USER'),  # env variables usage here
                 [user.email],
                 fail_silently=False,
             )
@@ -55,7 +56,7 @@ def verify_email(request):
                 otp_instance.save()
                 user.is_active = True
                 user.save()
-                messages.success(request, 'Account verified successfully.')
+                messages.success(request, 'Account verificattion successfull.')
                 return redirect('login')
             else:
                 messages.error(request, 'Invalid or Expired OTP.')
@@ -78,7 +79,7 @@ def forgot_password(request):
                 send_mail(
                     'Password Reset Request',
                     f'Your OTP is {otp}. It is valid for 5 minutes.',
-                    'your-email@gmail.com',
+                    os.getenv('EMAIL_HOST_USER'),
                     [email],
                     fail_silently=False,
                 )
