@@ -7,5 +7,6 @@ urlpatterns = [
     path('send_otp/', views.send_otp, name='send_otp'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('reset_password/', views.reset_password, name='reset_password'),
+    path('login/', views.login, name='login'),
     # more paths.....
 ]

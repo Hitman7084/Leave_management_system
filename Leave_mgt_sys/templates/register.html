@@ -6,7 +6,7 @@
 
 <div class="register-container">
     <h2> Register </h2>
-    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data" id="register-form">
         {% csrf_token %}
         <div class="form-group">
             <label for="id_username">Username:</label>
@@ -19,12 +19,6 @@
         <div class="form-group">
             <label for="id_email">Email:</label>
             <input type="email" name="email" class="form-register" required id="id_email">
-            <button type="button" id="verify-email-btn" class="btn-verify">Verify Email</button>
-            <span id="email-verified" style="display:none; color: green;">✔</span>
-        </div>
-        <div class="form-group" id="otp-section" style="display:none;">
-            <label for="id_otp">Enter OTP:</label>
-            <input type="text" name="otp" class="form-register" id="id_otp">
         </div>
         <div class="form-group">
             <label for="id_photo">Photo:</label>
@@ -39,42 +33,30 @@
                 <option value="Student">Student</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="id_password1">Password:</label>
-            <input type="password" name="password1" class="form-register" required id="id_password1">
-        </div>
-        <div class="form-group">
-            <label for="id_password2">Confirm Password:</label>
-            <input type="password" name="password2" class="form-register" required id="id_password2">
-        </div>
         <button type="submit"> Register </button>
     </form>
 </div>
 
 <script>
-document.getElementById('verify-email-btn').addEventListener('click', function() {
-    var email = document.getElementById('id_email').value;
-    if (email) {
-        fetch("{% url 'send_otp' %}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({ email: email })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('email-verified').style.display = 'inline';
-                document.getElementById('otp-section').style.display = 'block';
-            } else {
-                alert('Failed to send OTP. Please try again.');
-            }
-        });
-    } else {
-        alert('Please enter an email address.');
-    }
+document.getElementById('register-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var form = this;
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('A code (OTP) has been sent to your email. Please use it to log in.');
+            window.location.href = "{% url 'login' %}";
+        } else {
+            alert('Registration failed. Please try again.');
+        }
+    });
 });
 </script>
 

@@ -34,6 +34,30 @@ def send_otp(request):
             return JsonResponse({'success': False, 'error': 'User not found.'})
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
 
+# Login View (Handles OTP Login)
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        otp = request.POST['otp']
+
+        try:
+            user = User.objects.get(username=username)
+            otp_instance = OTPVerification.objects.filter(user=user, verified=False).first()
+
+            if otp_instance and str(otp_instance.otp) == str(otp) and otp_instance.expires_at > timezone.now():
+                otp_instance.verified = True
+                otp_instance.save()
+                user.is_active = True
+                user.save()
+                messages.success(request, 'Login successful.')
+                return redirect('home')  # Redirect to the home page or dashboard
+            else:
+                messages.error(request, 'Invalid or Expired OTP.')
+        except User.DoesNotExist:
+            messages.error(request, 'User not found.')
+
+    return render(request, 'login.html')
+
 # Register New User (Sends OTP for Email Verification)
 def register(request):
     if request.method == 'POST':
@@ -42,37 +66,30 @@ def register(request):
         email = request.POST['email']
         photo = request.FILES.get('photo')
         role = request.POST['role']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        otp = request.POST.get('otp')
-
-        if password1 != password2:
-            messages.error(request, 'Passwords do not match.')
-            return render(request, 'register.html')
 
         try:
-            user = User.objects.create_user(username=username, email=email, password=password1)
+            user = User.objects.create_user(username=username, email=email)
             user.full_name = full_name
             user.photo = photo
             user.role = role
             user.is_active = False  # User is inactive until email verification
             user.save()
 
-            otp_instance = OTPVerification.objects.filter(user=user, otp=otp, verified=False).first()
-            if otp_instance and otp_instance.expires_at > timezone.now():
-                otp_instance.verified = True
-                otp_instance.save()
-                user.is_active = True
-                user.save()
-                messages.success(request, 'Account created and verified successfully.')
-                return redirect('login')
-            else:
-                messages.error(request, 'Invalid or expired OTP.')
-                return render(request, 'register.html')
+            otp = generate_otp(user)  
+
+            send_mail(
+                'Account Verification',
+                f'Your OTP is {otp}. It is valid for 10 minutes.',
+                os.getenv('EMAIL_HOST_USER'),
+                [user.email],
+                fail_silently=False,
+            )
+
+            return JsonResponse({'success': True})
         except IntegrityError:
-            messages.error(request, 'Username already exists.')
+            return JsonResponse({'success': False, 'error': 'Username already exists.'})
         except Exception as e:
-            messages.error(request, f'An error occurred: {e}')
+            return JsonResponse({'success': False, 'error': str(e)})
 
     return render(request, 'register.html')
 
