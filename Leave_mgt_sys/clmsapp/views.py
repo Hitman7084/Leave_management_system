@@ -7,14 +7,11 @@ from django.db import IntegrityError
 from .models import User, OTPVerification
 import random
 
-# OTP
+# Generate OTP
 def generate_otp(user):
-    otp, created = OTPVerification.objects.get_or_create(user=user)
-    otp.otp = str(random.randint(10000, 99999))  # Generate 5-digit OTP
-    otp.expires_at = timezone.now() + timezone.timedelta(minutes=5)  # Set expiry time
-    otp.verified = False
-    otp.save()
-    return otp.otp
+    otp_instance, created = OTPVerification.objects.get_or_create(user=user)
+    otp_instance.generate_otp()
+    return otp_instance.otp
 
 # Register New User (Sends OTP for Email Verification)
 def register(request):
@@ -43,7 +40,7 @@ def register(request):
 
             send_mail(
                 'Account Verification',
-                f'Your OTP is {otp}. It is valid for 5 minutes.',
+                f'Your OTP is {otp}. It is valid for 10 minutes.',
                 os.getenv('EMAIL_HOST_USER'),  # env variables usage here
                 [user.email],
                 fail_silently=False,
@@ -93,7 +90,7 @@ def forgot_password(request):
 
             send_mail(
                 'Password Reset Request',
-                f'Your OTP is {otp}. It is valid for 5 minutes.',
+                f'Your OTP is {otp}. It is valid for 10 minutes.',
                 os.getenv('EMAIL_HOST_USER'),
                 [email],
                 fail_silently=False,

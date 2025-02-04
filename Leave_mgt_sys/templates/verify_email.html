@@ -1,12 +1,22 @@
+<!-- filepath: /d:/Coding/Leave_management_system/Leave_mgt_sys/templates/verify_email.html -->
 {% extends "index.html" %}
+{% load static %}
 {% block title %}Verify Email{% endblock %}
 
 {% block content %}
-
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="otp" placeholder="Enter OTP" required>
-    <button type="submit">Verify</button>
-</form>
-
+<div class="verify-container">
+    <h2> Verify Your Email </h2>
+    <form method="POST" action="{% url 'verify_email' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" class="form-verify" required id="id_email">
+        </div>
+        <div class="form-group">
+            <label for="id_otp">OTP:</label>
+            <input type="text" name="otp" class="form-verify" required id="id_otp">
+        </div>
+        <button type="submit"> Verify </button>
+    </form>
+</div>
 {% endblock %}
