@@ -4,14 +4,35 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
 from django.db import IntegrityError
+from django.http import JsonResponse
 from .models import User, OTPVerification
-import random
+from django.http import HttpResponse
+
 
 # Generate OTP
 def generate_otp(user):
     otp_instance, created = OTPVerification.objects.get_or_create(user=user)
     otp_instance.generate_otp()
     return otp_instance.otp
+
+# Send OTP to Email
+def send_otp(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            otp = generate_otp(user)
+            send_mail(
+                'Account Verification',
+                f'Your OTP is {otp}. It is valid for 10 minutes.',
+                os.getenv('EMAIL_HOST_USER'),
+                [user.email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True})
+        except User.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User not found.'})
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})
 
 # Register New User (Sends OTP for Email Verification)
 def register(request):
@@ -23,6 +44,7 @@ def register(request):
         role = request.POST['role']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+        otp = request.POST.get('otp')
 
         if password1 != password2:
             messages.error(request, 'Passwords do not match.')
@@ -36,18 +58,17 @@ def register(request):
             user.is_active = False  # User is inactive until email verification
             user.save()
 
-            otp = generate_otp(user)  
-
-            send_mail(
-                'Account Verification',
-                f'Your OTP is {otp}. It is valid for 10 minutes.',
-                os.getenv('EMAIL_HOST_USER'),  # env variables usage here
-                [user.email],
-                fail_silently=False,
-            )
-
-            messages.success(request, 'Account created successfully. Please verify your email.')
-            return redirect('verify_email')
+            otp_instance = OTPVerification.objects.filter(user=user, otp=otp, verified=False).first()
+            if otp_instance and otp_instance.expires_at > timezone.now():
+                otp_instance.verified = True
+                otp_instance.save()
+                user.is_active = True
+                user.save()
+                messages.success(request, 'Account created and verified successfully.')
+                return redirect('login')
+            else:
+                messages.error(request, 'Invalid or expired OTP.')
+                return render(request, 'register.html')
         except IntegrityError:
             messages.error(request, 'Username already exists.')
         except Exception as e:
@@ -132,3 +153,19 @@ def reset_password(request):
             messages.error(request, 'User not found.')
 
     return render(request, 'reset_password.html')
+
+''' test_email
+def test_email(request):
+    email_host_user = os.getenv('EMAIL_HOST_USER')
+    email_host_password = os.getenv('EMAIL_HOST_PASSWORD')
+    print(f"EMAIL_HOST_USER: {email_host_user}")
+    print(f"EMAIL_HOST_PASSWORD: {email_host_password}")
+
+    send_mail(
+        'Test Email',
+        'This is a test email.',
+        email_host_user,
+        ['cliad350@gmail.com'],
+        fail_silently=False,
+    )
+    return HttpResponse('Email sent successfully.') '''
