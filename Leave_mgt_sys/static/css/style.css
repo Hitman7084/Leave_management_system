@@ -29,14 +29,14 @@ h1 {
     font-size: 1rem;
     text-decoration: none;
     color: black;
-    background-color: #cab287	;
+    background-color: #cab287;
     border-radius: 5px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #9d8854	;
+    background-color: #9d8854;
     transform: translateY(-3px);
 }
 
@@ -96,7 +96,51 @@ h1 {
 }
 
 /* CSS for register.html */
+.register-container {
+    background-color: #0F0F1B;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    margin: 50px auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
+.register-container h2 {
+    margin-bottom: 20px;
+    color: #BAC9F6;
+}
+
+.register-container label {
+    display: block;
+    color: #BAC9F6;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.register-container input,
+.register-container select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    color: #BAC9F6;
+    background-color: rgba(95, 82, 116, 0.2);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.register-container button {
+    background-color: #cab287;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.register-container button:hover {
+    background-color: #9d8854;
+}
 
 /* footer css */
 
