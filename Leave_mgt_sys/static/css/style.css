@@ -73,7 +73,7 @@ h1 {
 }
 
 .login-container input {
-    width: 100%;
+    width: 90%;
     padding: 8px;
     margin-bottom: 15px;
     color: #BAC9F6;
@@ -118,9 +118,8 @@ h1 {
     font-weight: bold;
 }
 
-.register-container input,
-.register-container select {
-    width: 100%;
+.register-container input, .register-container select {
+    width: 90%;
     padding: 8px;
     margin-bottom: 15px;
     color: #BAC9F6;
