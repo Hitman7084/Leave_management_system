@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
+from django.db import IntegrityError
 from .models import User, OTPVerification
 import random
 
@@ -21,16 +22,21 @@ def register(request):
         username = request.POST['username']
         full_name = request.POST['full_name']
         email = request.POST['email']
-        photo = request.FILES['photo']
+        photo = request.FILES.get('photo')
         role = request.POST['role']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
-        if password1 == password2:
+        if password1 != password2:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'register.html')
+
+        try:
             user = User.objects.create_user(username=username, email=email, password=password1)
             user.full_name = full_name
             user.photo = photo
             user.role = role
+            user.is_active = False  # User is inactive until email verification
             user.save()
 
             otp = generate_otp(user)  
@@ -45,8 +51,10 @@ def register(request):
 
             messages.success(request, 'Account created successfully. Please verify your email.')
             return redirect('verify_email')
-        else:
-            messages.error(request, 'Passwords do not match.')
+        except IntegrityError:
+            messages.error(request, 'Username already exists.')
+        except Exception as e:
+            messages.error(request, f'An error occurred: {e}')
 
     return render(request, 'register.html')
 
@@ -65,7 +73,7 @@ def verify_email(request):
                 otp_instance.save()
                 user.is_active = True
                 user.save()
-                messages.success(request, 'Account verificattion successfull.')
+                messages.success(request, 'Account verification successful.')
                 return redirect('login')
             else:
                 messages.error(request, 'Invalid or Expired OTP.')
