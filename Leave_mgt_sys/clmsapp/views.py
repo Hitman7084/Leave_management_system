@@ -1,6 +1,7 @@
 import os
 import re
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
