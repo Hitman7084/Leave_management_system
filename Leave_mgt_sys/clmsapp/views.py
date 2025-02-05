@@ -64,13 +64,11 @@ def register(request):
         username = request.POST['username']
         full_name = request.POST['full_name']
         email = request.POST['email']
-        photo = request.FILES.get('photo')
         role = request.POST['role']
 
         try:
             user = User.objects.create_user(username=username, email=email)
             user.full_name = full_name
-            user.photo = photo
             user.role = role
             user.is_active = False  # User is inactive until email verification
             user.save()
