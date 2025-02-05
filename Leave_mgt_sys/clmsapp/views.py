@@ -1,5 +1,4 @@
 import os
-import re
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
@@ -10,8 +9,8 @@ from django.http import JsonResponse
 from .models import User, OTPVerification
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from django.contrib.auth import authenticate
+from django.utils.crypto import get_random_string
 
 
 
@@ -21,16 +20,18 @@ def generate_otp(user):
     otp_instance.generate_otp()
     return otp_instance.otp
 
-# Send OTP to mail
+# Send OTP to mail (now generates a new pass)
 def send_otp(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         try:
             user = User.objects.get(email=email)
-            otp = generate_otp(user)
+            new_password = get_random_string(length=8)
+            user.set_password(new_password)
+            user.save()
             send_mail(
                 'Account Verification',
-                f'Your OTP is {otp}. It is valid for 10 minutes.',
+                f'Your new password is {new_password}. Please use this to log in.',
                 os.getenv('EMAIL_HOST_USER'),
                 [user.email],
                 fail_silently=False,
@@ -40,7 +41,7 @@ def send_otp(request):
             return JsonResponse({'success': False, 'error': 'User not found.'})
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
 
-# Login View (Handles OTP Login)
+# Login View (Handles Password Login)
 def login(request):
     role = request.GET.get('role', 'default')
     if request.method == 'POST':
@@ -48,21 +49,17 @@ def login(request):
         password = request.POST['password']
         role = request.POST.get('role')
 
-        print(f"Attempting login with username: {username} and password: {password}")
-
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print(f"User authenticated: {user}")
             auth_login(request, user)
             messages.success(request, 'Login successful.')
             return JsonResponse({'success': True, 'role': user.role})
         else:
-            print("Authentication failed")
             return JsonResponse({'success': False, 'error': 'Incorrect username or password.'})
 
     return render(request, 'login.html', {'role': role})
 
-# Register New User (Sends OTP for mail Verifs)
+# Register New User (Sends password to email)
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -78,50 +75,28 @@ def register(request):
             user = User.objects.create_user(username=username, email=email)
             user.full_name = full_name
             user.role = role
-            user.is_active = False  # User is inactive until email verification
+            user.is_active = True  # User is active since email verification is not required
             user.save()
 
-            otp = generate_otp(user)  
+            new_password = get_random_string(length=8)
+            user.set_password(new_password)
+            user.save()
 
             send_mail(
                 'Account Verification',
-                f'Your OTP is {otp}. It is valid for 10 minutes.',
+                f'Your new password is {new_password}. Please use this to log in.',
                 os.getenv('EMAIL_HOST_USER'),
                 [user.email],
                 fail_silently=False,
             )
 
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True, 'role': role})
         except IntegrityError:
             return JsonResponse({'success': False, 'error': 'Username already exists.'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
 
     return render(request, 'register.html')
-
-# Verify Email OTP
-def verify_email(request):
-    if request.method == 'POST':
-        otp = request.POST.get('otp')
-        email = request.POST.get('email')
-
-        try:
-            user = User.objects.get(email=email)
-            otp_instance = OTPVerification.objects.filter(user=user, verified=False).first()
-
-            if otp_instance and str(otp_instance.otp) == str(otp) and otp_instance.expires_at > timezone.now():
-                otp_instance.verified = True
-                otp_instance.save()
-                user.is_active = True
-                user.save()
-                messages.success(request, 'Account verification successful.')
-                return redirect('login')
-            else:
-                messages.error(request, 'Invalid or Expired OTP.')
-        except User.DoesNotExist:
-            messages.error(request, 'User not found.')
-
-    return render(request, 'verify_email.html')
 
 # Forgot Password (Sends OTP) not applicable yet 
 def forgot_password(request):
@@ -146,37 +121,6 @@ def forgot_password(request):
             messages.error(request, 'Account not found with this email.')
 
     return render(request, 'forgot_password.html')
-
-# Reset Password (Verifies OTP) not applicable yet as well
-def reset_password(request):
-    if request.method == 'POST':
-        otp = request.POST.get('reset_token')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
-        email = request.POST.get('email')
-
-        if new_password != confirm_password:
-            return JsonResponse({'success': False, 'error': 'Passwords do not match.'})
-
-        if not re.match(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$', new_password):
-            return JsonResponse({'success': False, 'error': 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long.'})
-
-        try:
-            user = User.objects.get(email=email)
-            otp_instance = OTPVerification.objects.filter(user=user, verified=False).first()
-
-            if otp_instance and str(otp_instance.otp) == str(otp) and otp_instance.expires_at > timezone.now():
-                user.set_password(new_password)
-                user.save()
-                otp_instance.verified = True  # Mark OTP as used
-                otp_instance.save()
-                return JsonResponse({'success': True, 'role': user.role})
-            else:
-                return JsonResponse({'success': False, 'error': 'Invalid or Expired OTP.'})
-        except User.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'User not found.'})
-
-    return render(request, 'reset_password.html')
 
 @login_required
 def dashboard(request):

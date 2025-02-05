@@ -46,8 +46,8 @@ document.getElementById('register-form').addEventListener('submit', function(eve
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('OTP has been sent to your email.');
-            window.location.href = "{% url 'reset_password' %}?message=Use the OTP sent to your email to reset your password.";
+            alert('A new password has been sent to your email.');
+            window.location.href = "{% url 'login' %}?role=" + data.role;
         } else {
             alert(data.error);
         }
