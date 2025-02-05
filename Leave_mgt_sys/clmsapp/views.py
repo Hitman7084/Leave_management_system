@@ -41,6 +41,7 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         otp = request.POST['otp']
+        role = request.POST.get('role')
 
         try:
             user = User.objects.get(username=username)
@@ -52,7 +53,17 @@ def login(request):
                 user.is_active = True
                 user.save()
                 messages.success(request, 'Login successful.')
-                return redirect('home')  # Redirect to the home page or dashboard
+
+                if role == 'Professor':
+                    return redirect('dashboard_prof')
+                elif role == 'Dean':
+                    return redirect('dashboard_dean')
+                elif role == 'Incharge':
+                    return redirect('dashboard_incharge')
+                elif role == 'Student':
+                    return redirect('dashboard_student')
+                else:
+                    return redirect('dashboard_default')
             else:
                 messages.error(request, 'Invalid or Expired OTP.')
         except User.DoesNotExist:
