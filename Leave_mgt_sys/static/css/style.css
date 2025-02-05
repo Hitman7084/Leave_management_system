@@ -1,3 +1,5 @@
+/* index.html css or main css */
+
 body {
     margin: 0;
     padding: 0;
@@ -148,6 +150,9 @@ h1 {
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Testing css for dashboards rn */
+
+/* Student Dashboard */
+
 .student {
     display: flex; 
     justify-content: center; 

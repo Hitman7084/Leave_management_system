@@ -41,7 +41,7 @@ def send_otp(request):
             return JsonResponse({'success': False, 'error': 'User not found.'})
     return JsonResponse({'success': False, 'error': 'Invalid request method.'})
 
-# Login View (Handles Password Login)
+# Login View (Handles Pass Login)
 def login(request):
     role = request.GET.get('role', 'default')
     if request.method == 'POST':
@@ -60,7 +60,7 @@ def login(request):
 
     return render(request, 'login.html', {'role': role})
 
-# Register New User (Sends password to email)
+# Register New User (Sends pass to email)
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -69,14 +69,14 @@ def register(request):
         role = request.POST['role']
 
         try:
-            # Check if a user with the provided email already exists
+            # Check if user with the mail already exists in db
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'success': False, 'error': 'Email already exists.'})
 
             user = User.objects.create_user(username=username, email=email)
             user.full_name = full_name
             user.role = role
-            user.is_active = True  # User is active since email verification is not required
+            user.is_active = True  # User is active as email verification is not required
             user.save()
 
             new_password = get_random_string(length=8)
