@@ -73,7 +73,7 @@ def register(request):
         role = request.POST['role']
 
         try:
-            # Check if a user email alreayd in db
+            # Check if a user with the provided email already exists
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'success': False, 'error': 'Email already exists.'})
 
@@ -93,7 +93,7 @@ def register(request):
                 fail_silently=False,
             )
 
-            return redirect(f"{reverse('login')}?role={role}")
+            return JsonResponse({'success': True})
         except IntegrityError:
             return JsonResponse({'success': False, 'error': 'Username already exists.'})
         except Exception as e:
@@ -158,12 +158,10 @@ def reset_password(request):
         email = request.POST.get('email')
 
         if new_password != confirm_password:
-            messages.error(request, 'Passwords do not match.')
-            return redirect('reset_password')
+            return JsonResponse({'success': False, 'error': 'Passwords do not match.'})
 
         if not re.match(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$', new_password):
-            messages.error(request, 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long.')
-            return redirect('reset_password')
+            return JsonResponse({'success': False, 'error': 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long.'})
 
         try:
             user = User.objects.get(email=email)
@@ -174,12 +172,11 @@ def reset_password(request):
                 user.save()
                 otp_instance.verified = True  # Mark OTP as used
                 otp_instance.save()
-                messages.success(request, 'Password reset successfully.')
-                return redirect('login')
+                return JsonResponse({'success': True})
             else:
-                messages.error(request, 'Invalid or Expired OTP.')
+                return JsonResponse({'success': False, 'error': 'Invalid or Expired OTP.'})
         except User.DoesNotExist:
-            messages.error(request, 'User not found.')
+            return JsonResponse({'success': False, 'error': 'User not found.'})
 
     return render(request, 'reset_password.html')
 
