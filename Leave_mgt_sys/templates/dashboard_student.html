@@ -3,7 +3,30 @@
 {% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
-<div class="student">
-    <h2>Hello Student</h2>
+<div class="student-dashboard">
+    <header class="dashboard-header">
+        <h1>Welcome to Your Dashboard</h1>
+    </header>
+    <section class="dashboard-content">
+        <div class="card">
+            <h2>Profile</h2>
+            <p>View and edit your profile information.</p>
+            <button>Go to Profile</button>
+        </div>
+        <div class="card">
+            <h2>Leave Requests</h2>
+            <p>Submit and track your leave requests.</p>
+            <button>View Leave Requests</button>
+        </div>
+        <div class="card">
+            <h2>Notifications</h2>
+            <p>Check your latest notifications.</p>
+            <button>View Notifications</button>
+        </div>
+    </section>
 </div>
+
+<style>
+    
+</style>
 {% endblock %}
