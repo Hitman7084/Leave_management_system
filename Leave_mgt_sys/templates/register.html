@@ -1,29 +1,61 @@
-def reset_password(request):
-    if request.method == 'POST':
-        otp = request.POST.get('reset_token')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
-        email = request.POST.get('email')
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Register{% endblock %}
 
-        if new_password != confirm_password:
-            return JsonResponse({'success': False, 'error': 'Passwords do not match.'})
+{% block content %}
+<div class="register-container">
+    <h2>Register</h2>
+    <form id="register-form" method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" class="form-register" required id="id_username">
+        </div>
+        <div class="form-group">
+            <label for="id_full_name">Full Name:</label>
+            <input type="text" name="full_name" class="form-register" required id="id_full_name">
+        </div>
+        <div class="form-group">
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" class="form-register" required id="id_email">
+        </div>
+        <div class="form-group">
+            <label for="id_role">Role:</label>
+            <select name="role" class="form-register" required id="id_role">
+                <option value="Professor">Professor</option>
+                <option value="Incharge">Incharge</option>
+                <option value="Dean">Dean</option>
+                <option value="Student">Student</option>
+            </select>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div>
 
-        if not re.match(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$', new_password):
-            return JsonResponse({'success': False, 'error': 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long.'})
-
-        try:
-            user = User.objects.get(email=email)
-            otp_instance = OTPVerification.objects.filter(user=user, verified=False).first()
-
-            if otp_instance and str(otp_instance.otp) == str(otp) and otp_instance.expires_at > timezone.now():
-                user.set_password(new_password)
-                user.save()
-                otp_instance.verified = True  # Mark OTP as used
-                otp_instance.save()
-                return JsonResponse({'success': True})
-            else:
-                return JsonResponse({'success': False, 'error': 'Invalid or Expired OTP.'})
-        except User.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'User not found.'})
-
-    return render(request, 'reset_password.html')
+<script>
+document.getElementById('register-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var form = this;
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('OTP has been sent to your email.');
+            window.location.href = "{% url 'reset_password' %}?message=Use the OTP sent to your email to reset your password.";
+        } else {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+</script>
+{% endblock %}
