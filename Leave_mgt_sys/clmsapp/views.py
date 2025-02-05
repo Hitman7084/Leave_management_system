@@ -1,4 +1,5 @@
 import os
+import re
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -164,6 +165,10 @@ def reset_password(request):
 
         if new_password != confirm_password:
             messages.error(request, 'Passwords do not match.')
+            return redirect('reset_password')
+
+        if not re.match(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}$', new_password):
+            messages.error(request, 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long.')
             return redirect('reset_password')
 
         try:

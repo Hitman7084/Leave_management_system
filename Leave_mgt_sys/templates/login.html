@@ -4,6 +4,9 @@
 
 {% block content %}
 <div class="login-container">
+    <div class="reset-password-link">
+        <a href="{% url 'reset_password' %}">Reset Password</a>
+    </div>
     <h2>Login for {{ role }}</h2>
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
