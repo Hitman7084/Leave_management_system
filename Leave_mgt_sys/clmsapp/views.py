@@ -11,6 +11,7 @@ from .models import User, OTPVerification
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib.auth import authenticate
 
 
 
@@ -44,25 +45,20 @@ def login(request):
     role = request.GET.get('role', 'default')
     if request.method == 'POST':
         username = request.POST['username']
-        otp = request.POST['otp']
+        password = request.POST['password']
         role = request.POST.get('role')
 
-        try:
-            user = User.objects.get(username=username)
-            otp_instance = OTPVerification.objects.filter(user=user, verified=False).first()
+        print(f"Attempting login with username: {username} and password: {password}")
 
-            if otp_instance and str(otp_instance.otp) == str(otp) and otp_instance.expires_at > timezone.now():
-                otp_instance.verified = True
-                otp_instance.save()
-                user.is_active = True
-                user.save()
-                auth_login(request, user)
-                messages.success(request, 'Login successful.')
-                return JsonResponse({'success': True, 'role': user.role})
-            else:
-                return JsonResponse({'success': False, 'error': 'Incorrect password.'})
-        except User.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Username does not exist.'})
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            print(f"User authenticated: {user}")
+            auth_login(request, user)
+            messages.success(request, 'Login successful.')
+            return JsonResponse({'success': True, 'role': user.role})
+        else:
+            print("Authentication failed")
+            return JsonResponse({'success': False, 'error': 'Incorrect username or password.'})
 
     return render(request, 'login.html', {'role': role})
 
