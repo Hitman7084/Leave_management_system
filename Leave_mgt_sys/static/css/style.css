@@ -152,12 +152,40 @@ h1 {
 /* Testing css for dashboards rn */
 
 /* Student Dashboard */
-
-.student {
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh;
+.student-dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.dashboard-content {
+    display: flex;
+    justify-content: space-around;
+}
+.card {
+    background-color: rgba(95, 82, 116, 0.2);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    color: #BAC9F6;
+}
+.card h2 {
+    margin-top: 0;
+}
+.card button {
+    background-color: #cab287;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.card button:hover {
+    background-color: #9d8854;
 }
 
 /* footer css */
