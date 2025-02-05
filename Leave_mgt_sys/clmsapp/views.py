@@ -172,7 +172,7 @@ def reset_password(request):
                 user.save()
                 otp_instance.verified = True  # Mark OTP as used
                 otp_instance.save()
-                return JsonResponse({'success': True})
+                return JsonResponse({'success': True, 'role': user.role})
             else:
                 return JsonResponse({'success': False, 'error': 'Invalid or Expired OTP.'})
         except User.DoesNotExist:
