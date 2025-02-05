@@ -55,6 +55,7 @@ def login(request):
             messages.success(request, 'Login successful.')
             return JsonResponse({'success': True, 'role': user.role})
         else:
+            messages.error(request, 'Incorrect username or password.')
             return JsonResponse({'success': False, 'error': 'Incorrect username or password.'})
 
     return render(request, 'login.html', {'role': role})

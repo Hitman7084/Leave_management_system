@@ -22,11 +22,11 @@ class OTPVerification(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     otp = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField(null=True, blank=True)
+    # removed expires_at field
     verified = models.BooleanField(default=False)
 
     def generate_otp(self):
         self.otp = str(random.randint(100000, 999999))
-        self.expires_at = timezone.now() + timezone.timedelta(minutes=10)  # otp expiry
+        # removed expiry logic
         self.verified = False
         self.save()
