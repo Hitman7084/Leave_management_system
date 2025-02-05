@@ -56,17 +56,7 @@ def login(request):
                 user.is_active = True
                 user.save()
                 messages.success(request, 'Login successful.')
-
-                if role == 'Professor':
-                    return redirect('dashboard_prof')
-                elif role == 'Dean':
-                    return redirect('dashboard_dean')
-                elif role == 'Incharge':
-                    return redirect('dashboard_incharge')
-                elif role == 'Student':
-                    return redirect('dashboard_student')
-                else:
-                    return redirect('dashboard_default')
+                return redirect('dashboard')
             else:
                 messages.error(request, 'Invalid or Expired OTP.')
         except User.DoesNotExist:
@@ -83,6 +73,10 @@ def register(request):
         role = request.POST['role']
 
         try:
+            # Check if a user email alreayd in db
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({'success': False, 'error': 'Email already exists.'})
+
             user = User.objects.create_user(username=username, email=email)
             user.full_name = full_name
             user.role = role
