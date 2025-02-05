@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from .models import User, OTPVerification
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 
 
@@ -38,6 +39,7 @@ def send_otp(request):
 
 # Login View (Handles OTP Login)
 def login(request):
+    role = request.GET.get('role', 'default')
     if request.method == 'POST':
         username = request.POST['username']
         otp = request.POST['otp']
@@ -69,7 +71,7 @@ def login(request):
         except User.DoesNotExist:
             messages.error(request, 'User not found.')
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'role': role})
 
 # Register New User (Sends OTP for mail Verifs)
 def register(request):
@@ -96,7 +98,7 @@ def register(request):
                 fail_silently=False,
             )
 
-            return JsonResponse({'success': True})
+            return redirect(f"{reverse('login')}?role={role}")
         except IntegrityError:
             return JsonResponse({'success': False, 'error': 'Username already exists.'})
         except Exception as e:

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="login-container">
-    <h2> Login </h2>
+    <h2>Login for {{ role }}</h2>
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="form-group">
@@ -15,8 +15,8 @@
             <label for="id_otp">Password:</label>
             <input type="text" name="otp" class="form-login" required id="id_otp">
         </div>
-        <input type="hidden" name="role" id="id_role">
-        <button type="submit"> Login </button>
+        <input type="hidden" name="role" value="{{ role }}">
+        <button type="submit">Login</button>
     </form>
 </div>
 {% endblock %}
