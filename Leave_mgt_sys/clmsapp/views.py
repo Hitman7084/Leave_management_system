@@ -1,7 +1,7 @@
 import os
 import re
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
@@ -56,12 +56,13 @@ def login(request):
                 otp_instance.save()
                 user.is_active = True
                 user.save()
+                auth_login(request, user)
                 messages.success(request, 'Login successful.')
-                return redirect('dashboard')
+                return JsonResponse({'success': True, 'role': user.role})
             else:
-                messages.error(request, 'Invalid or Expired OTP.')
+                return JsonResponse({'success': False, 'error': 'Incorrect password.'})
         except User.DoesNotExist:
-            messages.error(request, 'User not found.')
+            return JsonResponse({'success': False, 'error': 'Username does not exist.'})
 
     return render(request, 'login.html', {'role': role})
 

@@ -8,7 +8,7 @@
         <a href="{% url 'reset_password' %}">Reset Password</a>
     </div>
     <h2>Login for {{ role }}</h2>
-    <form method="POST" action="{% url 'login' %}">
+    <form id="login-form" method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="id_username">Username:</label>
@@ -22,4 +22,31 @@
         <button type="submit">Login</button>
     </form>
 </div>
+
+<script>
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var form = this;
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            var role = data.role;
+            window.location.href = "{% url 'dashboard' %}?role=" + role;
+        } else {
+            alert(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+});
+</script>
 {% endblock %}
