@@ -7,15 +7,17 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from .models import User, OTPVerification
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 
-# Generate OTP
+
+# Gen OTP
 def generate_otp(user):
     otp_instance, created = OTPVerification.objects.get_or_create(user=user)
     otp_instance.generate_otp()
     return otp_instance.otp
 
-# Send OTP to Email
+# Send OTP to mail
 def send_otp(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -58,7 +60,7 @@ def login(request):
 
     return render(request, 'login.html')
 
-# Register New User (Sends OTP for Email Verification)
+# Register New User (Sends OTP for mail Verifs)
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -115,7 +117,7 @@ def verify_email(request):
 
     return render(request, 'verify_email.html')
 
-# Forgot Password (Sends OTP)
+# Forgot Password (Sends OTP) not applicable yet 
 def forgot_password(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -139,7 +141,7 @@ def forgot_password(request):
 
     return render(request, 'forgot_password.html')
 
-# Reset Password (Verifies OTP)
+# Reset Password (Verifies OTP) not applicable yet as well
 def reset_password(request):
     if request.method == 'POST':
         otp = request.POST.get('reset_token')
@@ -168,6 +170,20 @@ def reset_password(request):
             messages.error(request, 'User not found.')
 
     return render(request, 'reset_password.html')
+
+@login_required
+def dashboard(request):
+    user = request.user
+    if user.role == 'Professor':
+        return render(request, 'dashboard_prof.html')
+    elif user.role == 'Dean':
+        return render(request, 'dashboard_dean.html')
+    elif user.role == 'Incharge':
+        return render(request, 'dashboard_incharge.html')
+    elif user.role == 'Student':
+        return render(request, 'dashboard_student.html')
+    else:
+        return render(request, 'dashboard_default.html') # add home maybe idk
 
 ''' test_email
 def test_email(request):
