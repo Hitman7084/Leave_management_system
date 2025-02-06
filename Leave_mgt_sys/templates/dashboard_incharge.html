@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Incharge Dashboard{% endblock %}
+
+{% block content %}
+<div class="navbar">
+    <nav>Leave Management</nav>
+
+</div>
+<div class="sidebar">
+    <ul>
+        <li>Dashboard</li>
+        <li>Employee Section</li>
+        <li>Leave Section</li>
+        <li>Leave History</li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="dashboard-cards">
+        <div class="card">Registered Students</div>
+        <div class="card">Leaves Requested:</div>
+    </div>
+
+    <div class="table-container">
+        <h2>Approved Leaves</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Student's Name</th>
+                    <th>Roll No. </th>
+                    <th>Type</th>
+                    <th>Applications</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="status-approved">View</span></td>
+                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="status-approved">View</span></td>
+                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="status-approved">View</span></td>
+                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="status-approved">View</span></td>
+                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}
