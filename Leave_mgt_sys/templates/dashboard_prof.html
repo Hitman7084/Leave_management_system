@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Professor Dashboard{% endblock %}
+
+{% block content %}
+<div class="prof-sidebar">
+    <h2>LEAVE MANAGEMENT</h2>
+    <ul>
+        <li class="prof-active">Dashboard</li>
+        <li>Employee Section</li>
+        <li>Leave Section</li>
+    </ul>
+</div>
+<div class="prof-main-content">
+    <div class="prof-top-nav">
+        <span>Leave ▾</span>
+        <span>Users ▾</span>
+        <span>Employee ▾</span>
+        <span class="prof-profile">dell ▾</span>
+    </div>
+    <div class="prof-dashboard-cards">
+        <div class="prof-card">Registered Employees: <strong>5</strong></div>
+        <div class="prof-card">Leaves Requested: <strong>2</strong></div>
+    </div>
+    <div class="prof-approved-leaves">
+        <h3>Approved Leaves</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CHARLES</td>
+                    <td>QUARANTINE</td>
+                    <td>24</td>
+                    <td><span class="prof-approved">APPROVED</span></td>
+                    <td><a href="#">View</a> <a href="#" class="prof-unapprove">Unapprove</a></td>
+                </tr>
+                <tr>
+                    <td>CHRIS</td>
+                    <td>SABBATICAL</td>
+                    <td>4</td>
+                    <td><span class="prof-approved">APPROVED</span></td>
+                    <td><a href="#">View</a> <a href="#" class="prof-unapprove">Unapprove</a></td>
+                </tr>
+                <tr>
+                    <td>LIAMOORE</td>
+                    <td>SICK</td>
+                    <td>3</td>
+                    <td><span class="prof-approved">APPROVED</span></td>
+                    <td><a href="#">View</a> <a href="#" class="prof-unapprove">Unapprove</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
