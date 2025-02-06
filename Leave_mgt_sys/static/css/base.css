@@ -147,7 +147,71 @@
 .prof-unapprove {
     color: #FF5722;
 }
-
+/* incharge css*/
+.sidebar{
+    color: aliceblue;
+    width: 250px;
+    height: 100vh;
+    background: #816d6b35;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    color: white; 
+ }
+ .sidebar ul {
+     list-style: none;
+     padding: 10px;
+ }
+ 
+ .sidebar ul li {
+     padding: 15px;
+     cursor: pointer;
+     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+ }
+ 
+ .sidebar ul li:hover {
+     background: rgba(255, 255, 255, 0.2);
+ }
+ .navbar{
+     background-color: aqua;
+     
+ }
+ .main-content {
+     margin-left: 250px;
+     padding: 20px;
+     background: #f4f4f4;
+     min-height: 100vh;
+ }
+ .dashboard-cards {
+     display: flex;
+     gap: 20px;
+ }
+ .card {
+     background: linear-gradient(to right, #a94442, #c0392b);
+     color: white;
+     padding: 20px;
+     flex: 1;
+     border-radius: 5px;
+     text-align: center;
+ }
+ .table-container {
+     background: white;
+     padding: 20px;
+     margin-top: 20px;
+     border-radius: 5px;
+ }
+ 
+ .table {
+     width: 100%;
+     border-collapse: collapse;
+ }
+ 
+ .table th, .table td {
+     padding: 10px;
+     border-bottom: 1px solid #ddd;
+     text-align: left;
+ }
 /* footer css */
 
 footer {

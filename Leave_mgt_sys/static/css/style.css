@@ -148,3 +148,118 @@ h1 {
     background-color: #9d8854;
 }
 
+<<<<<<< Updated upstream
+=======
+/* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
+/* Testing css for dashboards rn */
+
+/* Student Dashboard */
+.student {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.student-head {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.student-content {
+    display: flex;
+    justify-content: space-around;
+}
+.card {
+    background-color: rgba(95, 82, 116, 0.2);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    color: #BAC9F6;
+}
+.card h2 {
+    margin-top: 0;
+}
+.card button {
+    background-color: #cab287;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.card button:hover {
+    background-color: #9d8854;
+}
+
+/* incharge css*/
+.sidebar{
+   color: aliceblue;
+   width: 250px;
+   height: 100vh;
+   background: #816d6b35;
+   position: fixed;
+   top: 0;
+   left: 0;
+   padding-top: 20px;
+   color: white; 
+}
+.sidebar ul {
+    list-style: none;
+    padding: 10px;
+}
+
+.sidebar ul li {
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar ul li:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+.navbar{
+    background-color: aqua;
+    
+}
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background: #f4f4f4;
+    min-height: 100vh;
+}
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+}
+.card {
+    background: linear-gradient(to right, #a94442, #c0392b);
+    color: white;
+    padding: 20px;
+    flex: 1;
+    border-radius: 5px;
+    text-align: center;
+}
+.table-container {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+/* footer css */
+
+footer {
+    color: #BAC9F6;
+}
+>>>>>>> Stashed changes
