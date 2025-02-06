@@ -149,20 +149,21 @@
 }
 /* incharge css*/
 .sidebar{
-    color: aliceblue;
+    color: rgb(13, 56, 94);
     width: 250px;
     height: 100vh;
-    background: #816d6b35;
+    background: #1b237435;
     position: fixed;
     top: 0;
     left: 0;
     padding-top: 20px;
-    color: white; 
+    color: rgb(86, 31, 31); 
  }
  .sidebar ul {
      list-style: none;
      padding: 10px;
- }
+     margin-top: 30px;
+ }   
  
  .sidebar ul li {
      padding: 15px;
@@ -174,7 +175,13 @@
      background: rgba(255, 255, 255, 0.2);
  }
  .navbar{
-     background-color: aqua;
+     background-color: white;
+     display: flex;
+     align-items: center;
+     height: 50px;
+    font-family: sans-serif;
+    font-size: 40px;
+    margin-left: 245px;
      
  }
  .main-content {
@@ -212,6 +219,24 @@
      border-bottom: 1px solid #ddd;
      text-align: left;
  }
+ .table th {
+    background: #f4f4f4;
+}
+
+.status-approved {
+    background: green;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.action-links a {
+    text-decoration: none;
+    margin-right: 10px;
+    color: red;
+}
+
 /* footer css */
 
 footer {
