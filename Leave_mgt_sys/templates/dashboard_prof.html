@@ -4,26 +4,26 @@
 
 {% block content %}
 <div class="prof-sidebar">
-    <h2>LEAVE MANAGEMENT</h2>
-    <ul>
-        <li class="prof-active">Dashboard</li>
-        <li>Employee Section</li>
-        <li>Leave Section</li>
-    </ul>
+    <h2>Welcome Professor</h2>
 </div>
 <div class="prof-main-content">
     <div class="prof-top-nav">
-        <span>Leave ▾</span>
-        <span>Users ▾</span>
-        <span>Employee ▾</span>
-        <span class="prof-profile">dell ▾</span>
+        <span>Leave</span>
+        <span>Users</span>
+        <span class="prof-profile">dell</span>
     </div>
     <div class="prof-dashboard-cards">
         <div class="prof-card">Registered Employees: <strong>5</strong></div>
         <div class="prof-card">Leaves Requested: <strong>2</strong></div>
     </div>
+    <div class="prof-leave-status">
+        <div class="prof-card">Approved Leaves: <strong>10</strong></div>
+        <div class="prof-card">Leaves Available: <strong>5</strong></div>
+        <div class="prof-card">Pending Leaves: <strong>2</strong></div>
+        <div class="prof-card">Rejected Leaves: <strong>1</strong></div>
+    </div>
     <div class="prof-approved-leaves">
-        <h3>Approved Leaves</h3>
+        <h3>Approved Leaves History</h3>
         <table>
             <thead>
                 <tr>
@@ -58,6 +58,44 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="prof-leave-application">
+        <h3>Submit Leave Application</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="attachment">Attachment:</label>
+                <input type="file" id="attachment" name="attachment" accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+            <div class="form-group">
+                <label>Leave Type:</label>
+                <div>
+                    <input type="checkbox" id="paternity" name="leave_type" value="Paternity">
+                    <label for="paternity">Paternity Leave</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="emergency" name="leave_type" value="Emergency">
+                    <label for="emergency">Emergency</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="time_off" name="leave_type" value="Time Off">
+                    <label for="time_off">Time Off</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="medical" name="leave_type" value="Medical">
+                    <label for="medical">Medical Leave</label>
+                </div>
+            </div>
+            <button type="button">Submit Application</button>
+        </form>
     </div>
 </div>
 {% endblock %}
