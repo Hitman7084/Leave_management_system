@@ -5,7 +5,6 @@
 {% block content %}
 <div class="navbar">
     <nav>Leave Management</nav>
-
 </div>
 <div class="sidebar">
     <ul>
@@ -23,50 +22,27 @@
     </div>
 
     <div class="table-container">
-        <h2>Approved Leaves</h2>
+        <h2>Registered Users</h2>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Student's Name</th>
-                    <th>Roll No. </th>
-                    <th>Type</th>
-                    <th>Applications</th>
-                    <th>Actions</th>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
                 </tr>
             </thead>
             <tbody>
+                {% for user in users %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="status-approved">View</span></td>
-                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="status-approved">View</span></td>
-                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="status-approved">View</span></td>
-                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="status-approved">View</span></td>
-                    <td class="action-links"><a href="#">Approve</a><a href="#">Unapprove</a></td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
-
-
 {% endblock %}

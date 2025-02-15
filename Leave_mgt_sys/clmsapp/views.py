@@ -137,6 +137,11 @@ def dashboard(request):
     else:
         return render(request, 'dashboard_default.html') # add home maybe idk
 
+@login_required
+def dashboard_incharge(request):
+    users = User.objects.all()
+    return render(request, 'dashboard_incharge.html', {'users': users})
+
 ''' test_email
 def test_email(request):
     email_host_user = os.getenv('EMAIL_HOST_USER')
