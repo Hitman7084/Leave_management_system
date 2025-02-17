@@ -24,6 +24,7 @@ class OTPVerification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     verified = models.BooleanField(default=False)
 
+    # Ignored Now onwards 
     def generate_otp(self):
         self.otp = str(random.randint(100000, 999999))
         self.verified = False
