@@ -91,7 +91,7 @@ def register(request):
                 fail_silently=False,
             )
 
-            return redirect('login')
+            return JsonResponse({'success': True, 'role': role})
         except IntegrityError:
             return JsonResponse({'success': False, 'error': 'Username already exists.'})
         except Exception as e:
