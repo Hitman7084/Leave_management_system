@@ -1,45 +1,83 @@
 import os
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
-from django.core.mail import send_mail
 from django.contrib import messages
-from django.utils import timezone
 from django.db import IntegrityError
 from django.http import JsonResponse
-from .models import User, OTPVerification
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.utils.crypto import get_random_string
+from .models import User, OTPVerification
+from .gmail_oauth import send_email_oauth  
 
 
-
-# Gen OTP
+# Generate OTP
 def generate_otp(user):
     otp_instance, created = OTPVerification.objects.get_or_create(user=user)
     otp_instance.generate_otp()
     return otp_instance.otp
 
-# Send OTP to mail (now generates a new pass)
-def send_otp(request):
+
+# new user registering (Now using OAuth) smtp disable ho gaya :(
+def register(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        username = request.POST['username']
+        full_name = request.POST['full_name']
+        email = request.POST['email']
+        role = request.POST['role']
+
         try:
-            user = User.objects.get(email=email)
+            # Check if the email already exists
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({'success': False, 'error': 'Email already exists.'})
+
+            # Create new user
+            user = User.objects.create_user(username=username, email=email)
+            user.full_name = full_name
+            user.role = role
+            user.is_active = True  # No email verification required
+            user.save()
+
+            # Generate and set a random password
             new_password = get_random_string(length=8)
             user.set_password(new_password)
             user.save()
-            send_mail(
-                'Account Verification',
-                f'Your new password is {new_password}. Please use this to log in.',
-                os.getenv('EMAIL_HOST_USER'),
-                [user.email],
-                fail_silently=False,
-            )
-            return JsonResponse({'success': True})
+
+            # Send email using Gmail OAuth
+            subject = "Welcome to Leave Management System!"
+            message = f"Hello {full_name},\n\nYour account has been created successfully!\n\nYour login credentials:\nUsername: {username}\nPassword: {new_password}\n\nPlease log in and change your password after first login.\n\nBest regards,\nfrom Himanshu"
+            send_email_oauth(email, subject, message)
+
+            return JsonResponse({'success': True, 'role': role})
+        except IntegrityError:
+            return JsonResponse({'success': False, 'error': 'Username already exists.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return render(request, 'register.html')
+
+
+# Send OTP for pass reset (Now using OAuth) again smtp disabled by google gg
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+
+        try:
+            user = User.objects.get(email=email)
+            otp = get_random_string(length=6)  # Generate a random OTP
+
+            # Send OTP email using OAuth
+            subject = "Password Reset Request"
+            message = f"Your OTP is {otp}. It is valid for 10 minutes."
+            send_email_oauth(email, subject, message)
+
+            messages.success(request, 'OTP sent to your email.')
+            return redirect('reset_password')
         except User.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'User not found.'})
-    return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+            messages.error(request, 'No account found with this email.')
+
+    return render(request, 'forgot_password.html')
+
 
 # Login View (Handles Pass Login)
 def login(request):
@@ -60,69 +98,8 @@ def login(request):
 
     return render(request, 'login.html', {'role': role})
 
-# Register New User (Sends pass to email)
-def register(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        full_name = request.POST['full_name']
-        email = request.POST['email']
-        role = request.POST['role']
 
-        try:
-            # Check if user with the mail already exists in db
-            if User.objects.filter(email=email).exists():
-                return JsonResponse({'success': False, 'error': 'Email already exists.'})
-
-            user = User.objects.create_user(username=username, email=email)
-            user.full_name = full_name
-            user.role = role
-            user.is_active = True  # User is active as email verification is not required
-            user.save()
-
-            new_password = get_random_string(length=8)
-            user.set_password(new_password)
-            user.save()
-
-            send_mail(
-                'Account Verification',
-                f'Your new password is {new_password}. Please use this to log in.',
-                os.getenv('EMAIL_HOST_USER'),
-                [user.email],
-                fail_silently=False,
-            )
-
-            return JsonResponse({'success': True, 'role': role})
-        except IntegrityError:
-            return JsonResponse({'success': False, 'error': 'Username already exists.'})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-
-    return render(request, 'register.html')
-
-# Forgot Password (Sends OTP) not applicable yet 
-def forgot_password(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-
-        try:
-            user = User.objects.get(email=email)
-            otp = generate_otp(user)  # Generate OTP 
-
-            send_mail(
-                'Password Reset Request',
-                f'Your OTP is {otp}. It is valid for 10 minutes.',
-                os.getenv('EMAIL_HOST_USER'),
-                [email],
-                fail_silently=False,
-            )
-
-            messages.success(request, 'OTP sent to your email.')
-            return redirect('reset_password')
-        except User.DoesNotExist:
-            messages.error(request, 'Account not found with this email.')
-
-    return render(request, 'forgot_password.html')
-
+# Dashboard Views for Different Roles
 @login_required
 def dashboard(request):
     user = request.user
@@ -135,25 +112,19 @@ def dashboard(request):
     elif user.role == 'Student':
         return render(request, 'dashboard_student.html')
     else:
-        return render(request, 'dashboard_default.html') # add home maybe idk
+        return render(request, 'dashboard_default.html')  # Add a default dashboard
+
 
 @login_required
 def dashboard_incharge(request):
     users = User.objects.all()
     return render(request, 'dashboard_incharge.html', {'users': users})
 
-''' test_email
-def test_email(request):
-    email_host_user = os.getenv('EMAIL_HOST_USER')
-    email_host_password = os.getenv('EMAIL_HOST_PASSWORD')
-    print(f"EMAIL_HOST_USER: {email_host_user}")
-    print(f"EMAIL_HOST_PASSWORD: {email_host_password}")
 
-    send_mail(
-        'Test Email',
-        'This is a test email.',
-        email_host_user,
-        ['cliad350@gmail.com'],
-        fail_silently=False,
-    )
-    return HttpResponse('Email sent successfully.') '''
+'''# Test Email Sending (For Debugging OAuth)
+def test_email(request):
+    try:
+        send_email_oauth("testmail@gmail", "Test Email", "This is a test email sent using OAuth!")
+        return JsonResponse({'success': True, 'message': 'Test email sent successfully.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})'''

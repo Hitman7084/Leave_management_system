@@ -36,6 +36,7 @@
     document.getElementById('register-form').addEventListener('submit', function(event) {
         event.preventDefault();
         var form = this;
+        
         fetch(form.action, {
             method: 'POST',
             body: new FormData(form),
@@ -46,7 +47,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('A new password has been sent to your email.');
+                alert('Your account has been created! A password has been sent to your email.');
                 window.location.href = "{% url 'login' %}?role=" + data.role;
             } else {
                 alert(data.error);
