@@ -11,7 +11,7 @@ SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 # paths for token storage and OAuth credentials
 BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-CREDENTIALS_FILE = os.path.join(BASE_DIR, ".my_oauth.json")  # OAuth credentials JSON file
+CREDENTIALS_FILE = os.path.join(BASE_DIR, "my_oauth.json")  # OAuth credentials JSON file
 TOKEN_FILE = os.path.join(BASE_DIR, "token.pickle")  # Token storage file
 
 
