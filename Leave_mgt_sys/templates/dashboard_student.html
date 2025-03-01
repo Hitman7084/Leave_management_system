@@ -3,185 +3,90 @@
 {% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
-<div class="student">
-    <!-- Header Section -->
-    <header class="student-head">
-        <h1 id="dashboard-title" class="dashboard-title">Welcome, Student</h1>
-    </header>
-
-    <section class="student-content">
-        <div class="grid">
-            <div class="card leave" style="margin-right: 10px;">
-                <h2 class="card-title">Available Leave</h2>
-                <p>25</p>
-            </div>
-            <div class="card approved" style="margin-right: 10px;">
-                <h2 class="card-title">Approved</h2>
-                <p>34</p>
-            </div>
-            <div class="card pending" style="margin-right: 10px;">
-                <h2 class="card-title">Pending</h2>
-                <p>12</p>
-            </div>
-            <div class="card rejected" style="margin-right: 10px;">
-                <h2 class="card-title">Rejected</h2>
-                <p>15</p>
-            </div>
+<div class="student-dashboard">
+    <div class="calendar-container">
+        <h2>Calendar Overview</h2>
+        <div class="calendar">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="sunday">1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td class="sunday">8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td>13</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td class="sunday">15</td>
+                        <td>16</td>
+                        <td>17</td>
+                        <td>18</td>
+                        <td>19</td>
+                        <td>20</td>
+                        <td>21</td>
+                    </tr>
+                    <tr>
+                        <td class="sunday">22</td>
+                        <td>23</td>
+                        <td>24</td>
+                        <td>25</td>
+                        <td>26</td>
+                        <td>27</td>
+                        <td>28</td>
+                    </tr>
+                    <tr>
+                        <td class="sunday">29</td>
+                        <td>30</td>
+                        <td>31</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-        <!-- Apply Leave Box moved to bottom -->
-        <div class="card apply-box" style="background-color: #f3f3f3; width: 120px; height: 80px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
-            <h2 class="card-title" style="color: #007bff; font-size: 12px;">Apply for Leave</h2>
-            <button id="applyButton" class="apply-btn" style="font-size: 10px; padding: 5px 8px;">Apply</button>
-        </div>
-
-        <!-- Leave Application Modal -->
-        <div id="leaveModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2 class="modal-title">Leave Application</h2>
-                <textarea placeholder="Write your application here..." rows="15" class="leave-textarea" style="width: 100%; height: 300px; resize: none;"></textarea>
-                <input type="file" id="fileUpload" class="file-input" />
-                <button class="send-btn">Send</button>
+    </div>
+    <div class="leave-application-container">
+        <h2>Leave Application</h2>
+        <form id="leave-application-form">
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
             </div>
-        </div>
-    </section>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="attachment">Attachment:</label>
+                <input type="file" id="attachment" name="attachment">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </div>
 
-<script>
-    // Modal Logic
-    const applyButton = document.getElementById('applyButton');
-    const leaveModal = document.getElementById('leaveModal');
-    const closeButton = document.querySelector('.close');
-
-    applyButton.onclick = () => {
-        leaveModal.style.display = 'block';
-    };
-
-    closeButton.onclick = () => {
-        leaveModal.style.display = 'none';
-    };
-
-    window.onclick = (event) => {
-        if (event.target === leaveModal) {
-            leaveModal.style.display = 'none';
-        }
-    };
-
-    // Update Dashboard Title with Student Name
-    const studentName = "Atul"; // This can be dynamically fetched from the backend
-    document.getElementById("dashboard-title").textContent = `Welcome, ${studentName}`;
-</script>
-
-<style>
-    /* Global Styles */
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f3f4f6;
-        color: #333;
-    }
-
-    .dashboard-title {
-        text-align: center;
-        margin: 1rem 0;
-        color: #007bff;
-    }
-
-    /* Card Grid Styles */
-    .grid {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 2rem;
-        padding: 2rem;
-    }
-
-    .card {
-        padding: 1.5rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 180px;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .card.leave {
-        background-color: #e6f7ff;
-        border-left: 5px solid #007bff;
-    }
-
-    .card.approved {
-        background-color: #d4edda;
-        border-left: 5px solid #28a745;
-    }
-
-    .card.pending {
-        background-color: #fff3cd;
-        border-left: 5px solid #ffc107;
-    }
-
-    .card.rejected {
-        background-color: #f8d7da;
-        border-left: 5px solid #dc3545;
-    }
-
-    .card-title {
-        font-size: 1.25rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .card:hover {
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Button Styles */
-    .apply-btn {
-        background-color: #333;
-        color: white;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        display: block;
-        margin: 1.5rem auto;
-        font-size: 0.9rem;
-        transition: background-color 0.3s;
-    }
-
-    .apply-btn:hover {
-        background-color: #007bff;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 3rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-        border-radius: 8px;
-        width: 500px;
-    }
-
-    .modal-content {
-        text-align: center;
-    }
-
-    /* Apply Leave Box (Reduced Further) */
-    .apply-box {
-        width: 120px;   /* Further reduced width */
-        height: 80px;   /* Further reduced height */
-    }
-
-    /* Textarea (Fixed Size) */
-    .leave-textarea {
-        resize: none;   /* Prevent resizing */
-        width: 100%;    /* Full width of the modal */
-        height: 300px;  /* Fixed height */
-    }
-</style>
 {% endblock %}
