@@ -5,42 +5,84 @@
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
-.student {
-    font-family: Arial, sans-serif;
+
+.student-dashboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 20px;
 }
 
-.student-head {
+.student-container {
+    width: 30%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.student-calendar {
+    padding: 20px;
+}
+
+.student-calendar table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.student-calendar th, .student-calendar td {
+    border: 1px solid #ddd;
+    padding: 10px;
     text-align: center;
+}
+
+.student-calendar th {
+    background-color: #f0f0f0;
+}
+
+.sunday {
+    background-color: #ccc;
+}
+
+.student-leave {
+    width: 60%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+#student-form {
+    padding: 20px;
+}
+
+.form-student {
     margin-bottom: 20px;
 }
 
-.student-content {
-    display: flex;
-    justify-content: space-around;
+.form-student label {
+    display: block;
+    margin-bottom: 10px;
 }
-.card {
-    background-color: rgba(95, 82, 116, 0.2);
+
+.form-student input, .form-student textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    width: 30%;
-    text-align: center;
-    color: #BAC9F6;
 }
-.card h2 {
-    margin-top: 0;
-}
-.card button {
-    background-color: #cab287;
-    color: black;
-    border: none;
+
+.form-student button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
     padding: 10px 20px;
-    cursor: pointer;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
-.card button:hover {
-    background-color: #9d8854;
+
+.form-student button[type="submit"]:hover {
+    background-color: #3e8e41;
 }
 
 /* Professor Dashboard */

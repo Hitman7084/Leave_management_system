@@ -4,9 +4,9 @@
 
 {% block content %}
 <div class="student-dashboard">
-    <div class="calendar-container">
+    <div class="student-container">
         <h2>Calendar Overview</h2>
-        <div class="calendar">
+        <div class="student-calendar">
             <table>
                 <thead>
                     <tr>
@@ -69,18 +69,18 @@
             </table>
         </div>
     </div>
-    <div class="leave-application-container">
+    <div class="student-leave">
         <h2>Leave Application</h2>
-        <form id="leave-application-form">
-            <div class="form-group">
+        <form id="student-form">
+            <div class="form-student">
                 <label for="subject">Subject:</label>
                 <input type="text" id="subject" name="subject" required>
             </div>
-            <div class="form-group">
+            <div class="form-student">
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" required></textarea>
             </div>
-            <div class="form-group">
+            <div class="form-student">
                 <label for="attachment">Attachment:</label>
                 <input type="file" id="attachment" name="attachment">
             </div>
