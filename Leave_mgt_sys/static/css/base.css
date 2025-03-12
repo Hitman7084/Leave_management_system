@@ -6,84 +6,93 @@
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
 
-.student-dashboard {
+.student-dashboard-container {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    min-height: 100vh;
+    background-color: #1e1e2f;
+    color: #ffffff;
+}
+
+.student-sidebar {
+    width: 250px;
+    background-color: #111;
     padding: 20px;
 }
 
-.student-container {
-    width: 30%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+.student-logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.student-calendar {
+.student-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.student-menu ul li {
+    padding: 10px;
+}
+
+.student-menu ul li.active a {
+    color: #ff4757;
+}
+
+.student-dashboard-content {
+    flex-grow: 1;
     padding: 20px;
+}
+
+.student-leave-summary {
+    display: flex;
+    gap: 20px;
+}
+
+.student-leave-card {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    flex: 1;
 }
 
 .student-calendar table {
-    border-collapse: collapse;
     width: 100%;
+    border-collapse: collapse;
 }
 
 .student-calendar th, .student-calendar td {
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     padding: 10px;
     text-align: center;
 }
 
-.student-calendar th {
-    background-color: #f0f0f0;
-}
-
-.sunday {
-    background-color: #ccc;
-}
-
-.student-leave {
-    width: 60%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-#student-form {
-    padding: 20px;
-}
-
-.form-student {
-    margin-bottom: 20px;
-}
-
-.form-student label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.form-student input, .form-student textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-}
-
-.form-student button[type="submit"] {
-    background-color: #4CAF50;
-    color: #fff;
-    padding: 10px 20px;
+.student-btn-request {
+    background: #ff4757;
     border: none;
-    border-radius: 5px;
+    padding: 10px 15px;
+    color: #fff;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-.form-student button[type="submit"]:hover {
-    background-color: #3e8e41;
+.student-leave-application input,
+.student-leave-application textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
 }
+
+.student-leave-application button {
+    background: #4caf50;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
 
 /* Professor Dashboard */
 .prof-sidebar {
