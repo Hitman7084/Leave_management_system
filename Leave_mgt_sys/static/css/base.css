@@ -1,98 +1,71 @@
 /* base css needs to be added */
-
-
+body {
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
 
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
 
-.student-dashboard-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #1e1e2f;
-    color: #ffffff;
+
+/* Sidebar */
+
+
+.stu-navbar {
+    border-bottom: 1px solid #ddd;
 }
 
-.student-sidebar {
-    width: 250px;
-    background-color: #111;
-    padding: 20px;
+.stu-brand {
+    font-size: 22px;
+    color: #333;
 }
 
-.student-logo {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
+.stu-user-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
 }
 
-.student-menu ul {
-    list-style: none;
-    padding: 0;
-}
-
-.student-menu ul li {
-    padding: 10px;
-}
-
-.student-menu ul li.active a {
-    color: #ff4757;
-}
-
-.student-dashboard-content {
-    flex-grow: 1;
-    padding: 20px;
-}
-
-.student-leave-summary {
-    display: flex;
-    gap: 20px;
-}
-
-.student-leave-card {
-    background: #222;
-    padding: 15px;
+.stu-card {
+    background: white;
     border-radius: 8px;
     text-align: center;
-    flex: 1;
 }
 
-.student-calendar table {
+.stu-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.stu-graph {
+    border-radius: 8px;
+    padding: 20px;
     width: 100%;
-    border-collapse: collapse;
+    max-width: 600px;  /* Adjust graph width */
+    margin: auto;
 }
 
-.student-calendar th, .student-calendar td {
-    border: 1px solid #444;
-    padding: 10px;
-    text-align: center;
+.stu-graph canvas {
+    max-height: 300px;  /* Limit graph height */
 }
 
-.student-btn-request {
-    background: #ff4757;
-    border: none;
-    padding: 10px 15px;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 5px;
-}
 
-.student-leave-application input,
-.student-leave-application textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-}
-
-.student-leave-application button {
-    background: #4caf50;
-    border: none;
-    padding: 10px;
+.stu-table thead {
+    background: #007bff;
     color: white;
-    cursor: pointer;
-    border-radius: 5px;
 }
 
+/* Dark Mode */
+.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.dark-mode .stu-card {
+    background-color: #333;
+}
 
 /* Professor Dashboard */
 .prof-sidebar {
@@ -250,7 +223,7 @@
     background-color: #9d8854;
 }
 
-/* incharge css*/
+/* incharge css
 .sidebar{
     color: rgb(13, 56, 94);
     width: 250px;
@@ -339,6 +312,7 @@
     margin-right: 10px;
     color: red;
 }
+    */
 
 /* footer css */
 
