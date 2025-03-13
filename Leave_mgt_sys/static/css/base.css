@@ -6,8 +6,57 @@ body {
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
+.student-navbar {
+    border-bottom: 1px solid #ddd;
+    margin-left: 250px; /* Adj for sidebar */
+    transition: margin-left 0.3s;
+}
 
-/* Sidebar */
+.student-navbar.collapsed {
+    margin-left: 80px;
+}
+
+.student-brand {
+    font-size: 22px;
+    color: #333;
+}
+
+.student-user-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.student-card {
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.student-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.student-graph {
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;  /* Adjust graph width */
+    margin: auto;
+}
+
+.student-graph canvas {
+    max-height: 300px;  /* Limit graph height */
+}
+
+.student-table thead {
+    background: #007bff;
+    color: white;
+}
+
+/* sidebar (most likely will use for all dashboards all n all)*/
 .sidebar {
     width: 250px;
     background-color: #f8f9fa;
@@ -28,9 +77,18 @@ body {
     color: #333;
     font-weight: bold;
     margin-bottom: 10px;
+    transition: opacity 0.3s, background-color 0.3s;
 }
 
 .sidebar .nav-link.active {
+    color: #333; 
+}
+
+.sidebar .nav-link.hidden {
+    opacity: 0;
+}
+
+.sidebar .nav-link:hover {
     background-color: #007bff;
     color: white;
     border-radius: 5px;
@@ -41,57 +99,27 @@ body {
     font-size: 24px;
 }
 
-.stu-navbar {
-    border-bottom: 1px solid #ddd;
-    margin-left: 250px; /* Adjust for sidebar */
+.main-content {
+    margin-left: 250px; /* Adj for sidebar */
     transition: margin-left 0.3s;
 }
 
-.stu-navbar.collapsed {
+.main-content.collapsed {
     margin-left: 80px;
 }
 
-.stu-brand {
-    font-size: 22px;
-    color: #333;
+.leave-history-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-.stu-user-img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-}
-
-.stu-card {
-    background: white;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.stu-number {
-    font-size: 28px;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.stu-graph {
-    border-radius: 8px;
-    padding: 20px;
+.leave-history-container .card {
     width: 100%;
-    max-width: 600px;  /* Adjust graph width */
     margin: auto;
 }
 
-.stu-graph canvas {
-    max-height: 300px;  /* Limit graph height */
-}
-
-.stu-table thead {
-    background: #007bff;
-    color: white;
-}
-
-/* Removed dark mode styles */
 
 /* Professor Dashboard */
 .prof-sidebar {
@@ -291,6 +319,11 @@ body {
     padding: 20px;
     background: #f4f4f4;
     min-height: 100vh;
+    transition: margin-left 0.3s;
+}
+
+.main-content.collapsed {
+    margin-left: 80px;
 }
 
 .dashboard-cards {

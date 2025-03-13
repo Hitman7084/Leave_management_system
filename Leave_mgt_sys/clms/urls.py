@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
@@ -23,5 +24,5 @@ urlpatterns = [
     path('', include('clmsapp.urls')),
     # login page
     path('login/', views.login, name='login'),
-     
+    path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout'),
 ]
