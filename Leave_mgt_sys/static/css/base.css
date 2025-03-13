@@ -4,16 +4,51 @@ body {
     font-family: Arial, sans-serif;
 }
 
-
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
 
-
 /* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-right: 1px solid #ddd;
+    transition: width 0.3s;
+}
 
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar .nav-link {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+#sidebar-toggle {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
 
 .stu-navbar {
     border-bottom: 1px solid #ddd;
+    margin-left: 250px; /* Adjust for sidebar */
+    transition: margin-left 0.3s;
+}
+
+.stu-navbar.collapsed {
+    margin-left: 80px;
 }
 
 .stu-brand {
@@ -51,21 +86,12 @@ body {
     max-height: 300px;  /* Limit graph height */
 }
 
-
 .stu-table thead {
     background: #007bff;
     color: white;
 }
 
-/* Dark Mode */
-.dark-mode {
-    background-color: #121212;
-    color: white;
-}
-
-.dark-mode .stu-card {
-    background-color: #333;
-}
+/* Removed dark mode styles */
 
 /* Professor Dashboard */
 .prof-sidebar {
@@ -223,8 +249,8 @@ body {
     background-color: #9d8854;
 }
 
-/* incharge css
-.sidebar{
+/* incharge css */
+.sidebar {
     color: rgb(13, 56, 94);
     width: 250px;
     height: 100vh;
@@ -234,68 +260,72 @@ body {
     left: 0;
     padding-top: 20px;
     color: rgb(86, 31, 31); 
- }
- .sidebar ul {
-     list-style: none;
-     padding: 10px;
-     margin-top: 30px;
- }   
- 
- .sidebar ul li {
-     padding: 15px;
-     cursor: pointer;
-     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
- }
- 
- .sidebar ul li:hover {
-     background: rgba(255, 255, 255, 0.2);
- }
- .navbar{
-     background-color: white;
-     display: flex;
-     align-items: center;
-     height: 50px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 10px;
+    margin-top: 30px;
+}   
+
+.sidebar ul li {
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar ul li:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+.navbar {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    height: 50px;
     font-family: sans-serif;
     font-size: 40px;
     margin-left: 245px;
-     
- }
- .main-content {
-     margin-left: 250px;
-     padding: 20px;
-     background: #f4f4f4;
-     min-height: 100vh;
- }
- .dashboard-cards {
-     display: flex;
-     gap: 20px;
- }
- .card {
-     background: linear-gradient(to right, #a94442, #c0392b);
-     color: white;
-     padding: 20px;
-     flex: 1;
-     border-radius: 5px;
-     text-align: center;
- }
- .table-container {
-     background: white;
-     padding: 20px;
-     margin-top: 20px;
-     border-radius: 5px;
- }
- 
- .table {
-     width: 100%;
-     border-collapse: collapse;
- }
- 
- .table th, .table td {
-     padding: 10px;
-     border-bottom: 1px solid #ddd;
-     text-align: left;
- }
- .table th {
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    background: #f4f4f4;
+    min-height: 100vh;
+}
+
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: linear-gradient(to right, #a94442, #c0392b);
+    color: white;
+    padding: 20px;
+    flex: 1;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.table-container {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.table th {
     background: #f4f4f4;
 }
 
@@ -312,7 +342,6 @@ body {
     margin-right: 10px;
     color: red;
 }
-    */
 
 /* footer css */
 

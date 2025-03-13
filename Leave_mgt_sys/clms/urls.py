@@ -22,5 +22,6 @@ urlpatterns = [
     # include clmsapp urls
     path('', include('clmsapp.urls')),
     # login page
-    path('login/', views.login, name='login'), 
+    path('login/', views.login, name='login'),
+     
 ]

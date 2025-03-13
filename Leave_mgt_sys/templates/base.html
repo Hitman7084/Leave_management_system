@@ -13,8 +13,20 @@
     <script src="{% static 'js/script.js' %}" defer></script>
 </head>
 <body class="admiral">
-    {% block content %}
-    {% endblock %}
+    <div class="d-flex">
+        <div class="sidebar" id="sidebar">
+            <button class="btn btn-link" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Sidebar content will be added here -->
+            {% block sidebar %}
+            {% endblock %}
+        </div>
+        <div class="main-content flex-grow-1">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
 
     {% block footer %}
     <footer>

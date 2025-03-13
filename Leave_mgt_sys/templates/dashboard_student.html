@@ -2,16 +2,32 @@
 {% load static %}
 {% block title %}Student Dashboard{% endblock %}
 
+{% block sidebar %}
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Leave History</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Settings</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'homepage' %}">Logout</a> <!-- Redirect to index page -->
+    </li>
+</ul>
+{% endblock %}
+
 {% block content %}
 <nav class="stu-navbar navbar navbar-light bg-white px-4 shadow-sm">
     <div class="container-fluid">
         <span class="stu-brand fw-bold">vinsight</span>
         <div class="stu-nav-items d-flex align-items-center">
-            <button class="btn btn-dark" id="stu-toggle-dark-mode"><i class="fas fa-moon"></i></button>
+            <!-- Removed search icon -->
             <i class="fas fa-bell mx-3"></i>
-            <i class="fas fa-search mx-3"></i>
             <div class="stu-user-info d-flex align-items-center">
-                <span class="fw-bold me-2">Warren William</span>
+                <span class="fw-bold me-2">{{ user.full_name }}</span> <!-- Updated to display registered user's name -->
                 <img src="https://via.placeholder.com/40" class="stu-user-img rounded-circle" alt="User">
             </div>
         </div>
@@ -127,11 +143,6 @@
         leaveRequests.forEach(leave => {
             const row = `<tr><td>${leave.type}</td><td>${leave.from}</td><td>${leave.to}</td><td>${leave.duration}</td><td>${leave.action}</td></tr>`;
             leaveTable.innerHTML += row;
-        });
-    
-        // Dark Mode Toggle
-        document.getElementById("stu-toggle-dark-mode").addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
         });
     });
 </script>
