@@ -11,7 +11,7 @@
         <a class="nav-link" href="#">Profile</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" id="leave-history-link">Leave History</a> <!-- Updated to show Leave History section -->
+        <a class="nav-link" href="#" id="leave-history-link">Leave History</a>
     </li>
     <li class="nav-item">
         <form method="post" action="{% url 'logout' %}">
@@ -23,76 +23,52 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="container mt-4" id="main-content">
     <div id="dashboard-content">
         <h4 class="student-dashboard-title">Summary of leave for <span id="student-user-name">{{ role }}</span></h4>
-        <!-- Temporary datasets -->
-        <div class="row mt-3">
-            <div class="col-md-3">
-                <div class="student-card p-3 shadow-sm">
-                    <h2 class="student-number" id="student-days-available">7</h2>
-                    <p class="text-muted">Days available</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="student-card p-3 shadow-sm">
-                    <h2 class="student-number" id="student-pending-requests">4</h2>
-                    <p class="text-muted">Pending requests</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="student-card p-3 shadow-sm">
-                    <h2 class="student-number" id="student-days-upcoming">0</h2>
-                    <p class="text-muted">Days upcoming</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="student-card p-3 shadow-sm">
-                    <h2 class="student-number" id="student-days-per-year">25</h2>
-                    <p class="text-muted">Days per year</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Temporary graph need to make it dynamic  -->
-        <div class="student-graph bg-white p-4 mt-4 shadow-sm">
-            <div class="d-flex justify-content-between">
-                <h5>Time off history</h5>
-                <select id="student-month-selector" class="form-select w-auto">
-                    <option value="0">January</option>
-                    <option value="1">February</option>
-                    <option value="2">March</option>
-                    <option value="3">April</option>
-                    <option value="4">May</option>
-                    <option value="5">June</option>
-                </select>
-            </div>
-            <canvas id="student-timeoff-chart"></canvas>
-        </div>
-    </div>
+        <!-- Apply for Leave Button -->
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#leaveRequestModal">
+            Apply for Leave
+        </button>
 
-    <!-- Temporary leave history content another shit to change -->
-    <div id="leave-history-content" class="leave-history-container" style="display: none;">
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-12">
-                <div class="card shadow-sm">
-                    <div class="card-header">
-                        <h5 class="mb-0">Requested Time Off</h5>
+        <!-- Leave Request Modal -->
+        <div class="modal fade" id="leaveRequestModal" tabindex="-1" aria-labelledby="leaveRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="leaveRequestModalLabel">New Leave Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-striped student-table">
-                            <thead>
-                                <tr>
-                                    <th>Leave Type</th>
-                                    <th>Date From</th>
-                                    <th>Date To</th>
-                                    <th>Duration</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="student-requested-leaves"></tbody>
-                        </table>
+                    <div class="modal-body">
+                        <form id="leaveRequestForm" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">To</label>
+                                <input type="text" class="form-control" value="{% if role == 'Student' %}Incharge{% else %}Dean{% endif %}" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Leave Type</label>
+                                {{ form.leave_type }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Start Date</label>
+                                {{ form.start_date }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">End Date</label>
+                                {{ form.end_date }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Reason</label>
+                                {{ form.reason }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Attach File</label>
+                                {{ form.file_attachment }}
+                            </div>
+                            <button type="submit" class="btn btn-success">Send Request</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -100,61 +76,33 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- AJAX Script for Form Submission -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const ctx = document.getElementById("student-timeoff-chart").getContext("2d");
-        const chart = new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                datasets: [{
-                    label: "Days Taken",
-                    data: [2, 3, 7, 2, 1, 3],
-                    backgroundColor: "rgba(0, 123, 255, 0.6)",
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,  // Allows better height control (idk how)
-                scales: {
-                    y: { beginAtZero: true }
-                }
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("leaveRequestForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+
+        fetch("{% url 'submit_leave_ajax' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
             }
-        });
-
-        // Month change event
-        document.getElementById("student-month-selector").addEventListener("change", function () {
-            const monthIndex = this.value;
-            leaveData = leaveData.map(() => Math.floor(Math.random() * 10)); // Simulate API data
-            chart.data.datasets[0].data = leaveData;
-            chart.update();
-        });
-
-        // Sample leave requests data
-        const leaveRequests = [
-            { type: "Sick", from: "18-01-2020", to: "18-01-2020", duration: "11 hours", action: "Declined" },
-            { type: "Time off", from: "15-03-2020", to: "15-03-2020", duration: "48 hours", action: "Accepted" }
-        ];
-
-        const leaveTable = document.getElementById("student-requested-leaves");
-        leaveRequests.forEach(leave => {
-            const row = `<tr><td>${leave.type}</td><td>${leave.from}</td><td>${leave.to}</td><td>${leave.duration}</td><td>${leave.action}</td></tr>`;
-            leaveTable.innerHTML += row;
-        });
-
-        // To open history
-        document.getElementById("leave-history-link").addEventListener("click", function () {
-            document.getElementById("dashboard-content").style.display = "none";
-            document.getElementById("leave-history-content").style.display = "block";
-        });
-
-        // To open home
-        document.getElementById("home-link").addEventListener("click", function () {
-            document.getElementById("leave-history-content").style.display = "none";
-            document.getElementById("dashboard-content").style.display = "block";
-        });
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("✅ " + data.message);
+                document.getElementById("leaveRequestForm").reset();
+                var modal = new bootstrap.Modal(document.getElementById('leaveRequestModal'));
+                modal.hide();
+            } else {
+                alert("❌ " + data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
     });
+});
 </script>
-
 {% endblock %}

@@ -1,48 +1,39 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}Incharge Dashboard{% endblock %}
-
 {% block content %}
-<div class="navbar">
-    <nav>Leave Management</nav>
-</div>
-<div class="sidebar">
-    <ul>
-        <li>Dashboard</li>
-        <li>Employee Section</li>
-        <li>Leave Section</li>
-        <li>Leave History</li>
-    </ul>
-</div>
-
-<div class="main-content">
-    <div class="dashboard-cards">
-        <div class="card">Registered Students</div>
-        <div class="card">Leaves Requested:</div>
-    </div>
-
-    <div class="table-container">
-        <h2>Registered Users</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.full_name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+<h2>Pending Leave Requests</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Leave Type</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Reason</th>
+            <th>Attachment</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave in pending_requests %}
+        <tr>
+            <td>{{ leave.user.username }}</td>
+            <td>{{ leave.leave_type }}</td>
+            <td>{{ leave.start_date }}</td>
+            <td>{{ leave.end_date }}</td>
+            <td>{{ leave.reason }}</td>
+            <td>
+                {% if leave.file_attachment %}
+                <a href="{{ leave.file_attachment.url }}" target="_blank">View Attachment</a>
+                {% else %}
+                No Attachment
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'process_leave_incharge' leave.id 'approve' %}" class="btn btn-success">Approve</a>
+                <a href="{% url 'process_leave_incharge' leave.id 'forward' %}" class="btn btn-warning">Forward to Dean</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

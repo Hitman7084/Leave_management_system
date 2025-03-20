@@ -125,19 +125,18 @@ def dashboard_incharge(request):
 
 
 @login_required
-def submit_leave_request(request):
+def submit_leave_request_ajax(request):
     if request.method == 'POST':
         form = LeaveRequestForm(request.POST, request.FILES)
         if form.is_valid():
             leave_request = form.save(commit=False)
             leave_request.user = request.user
             if leave_request.leave_type == "Emergency":
-                leave_request.status = "Forwarded"  # Auto-forward emergency requests to Dean
+                leave_request.status = "Forwarded"
             leave_request.save()
-            return redirect('dashboard_student')  # Redirect after submission
-    else:
-        form = LeaveRequestForm()
-    return render(request, 'submit_leave.html', {'form': form})
+            return JsonResponse({'message': 'Leave request submitted successfully!', 'status': 'success'})
+        else:
+            return JsonResponse({'message': 'Error in form submission', 'status': 'error'}, status=400)
 
 
 @login_required
@@ -148,6 +147,36 @@ def incharge_dashboard(request):
     return redirect('home')  # Redirect non regstrd users
 
 
+@login_required
+def dean_dashboard(request):
+    if request.user.groups.filter(name="Dean").exists():
+        forwarded_requests = LeaveRequest.objects.filter(status="Forwarded")
+        return render(request, 'dashboard_dean.html', {'forwarded_requests': forwarded_requests})
+    return redirect('home')
+
+
+@login_required
+def process_leave_incharge(request, leave_id, action):
+    leave_request = LeaveRequest.objects.get(id=leave_id)
+    if request.user.groups.filter(name="Incharge").exists():
+        if action == "approve":
+            leave_request.status = "Approved"
+        elif action == "forward":
+            leave_request.status = "Forwarded"
+        leave_request.save()
+    return redirect('dashboard_incharge')
+
+@login_required
+def process_leave_dean(request, leave_id, action):
+    leave_request = LeaveRequest.objects.get(id=leave_id)
+    if request.user.groups.filter(name="Dean").exists():
+        if action == "approve":
+            leave_request.status = "Approved"
+        elif action == "reject":
+            leave_request.status = "Rejected"
+            leave_request.rejection_reason = request.POST.get('rejection_reason', '')
+        leave_request.save()
+    return redirect('dashboard_dean')
 
 '''# Test Email Sending (For Debugging OAuth)
 def test_email(request):

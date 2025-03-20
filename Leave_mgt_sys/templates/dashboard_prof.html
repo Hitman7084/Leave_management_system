@@ -61,41 +61,81 @@
     </div>
     <div class="prof-leave-application">
         <h3>Submit Leave Application</h3>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div class="form-group">
-                <label for="subject">Subject:</label>
-                <input type="text" id="subject" name="subject" required>
-            </div>
-            <div class="form-group">
-                <label for="attachment">Attachment:</label>
-                <input type="file" id="attachment" name="attachment" accept=".pdf,.jpg,.jpeg,.png">
-            </div>
-            <div class="form-group">
-                <label>Leave Type:</label>
-                <div>
-                    <input type="checkbox" id="paternity" name="leave_type" value="Paternity">
-                    <label for="paternity">Paternity Leave</label>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#leaveRequestModal">
+            Apply for Leave
+        </button>
+
+        <!-- Leave Request Modal -->
+        <div class="modal fade" id="leaveRequestModal" tabindex="-1" aria-labelledby="leaveRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="leaveRequestModalLabel">New Leave Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="leaveRequestForm" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">To</label>
+                                <input type="text" class="form-control" value="{% if role == 'Professor' %}Incharge{% else %}Dean{% endif %}" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Leave Type</label>
+                                {{ form.leave_type }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Start Date</label>
+                                {{ form.start_date }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">End Date</label>
+                                {{ form.end_date }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Reason</label>
+                                {{ form.reason }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Attach File</label>
+                                {{ form.file_attachment }}
+                            </div>
+                            <button type="submit" class="btn btn-success">Send Request</button>
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <input type="checkbox" id="emergency" name="leave_type" value="Emergency">
-                    <label for="emergency">Emergency</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="time_off" name="leave_type" value="Time Off">
-                    <label for="time_off">Time Off</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="medical" name="leave_type" value="Medical">
-                    <label for="medical">Medical Leave</label>
-                </div>
             </div>
-            <button type="button">Submit Application</button>
-        </form>
+        </div>
     </div>
 </div>
+
+<!-- AJAX Script for Form Submission -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("leaveRequestForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+
+        fetch("{% url 'submit_leave_ajax' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert("✅ " + data.message);
+                document.getElementById("leaveRequestForm").reset();
+                var modal = new bootstrap.Modal(document.getElementById('leaveRequestModal'));
+                modal.hide();
+            } else {
+                alert("❌ " + data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+</script>
 {% endblock %}
