@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from django.utils.crypto import get_random_string
 from .models import User, OTPVerification
-from .gmail_oauth import send_email_oauth  
+from .gmail_oauth import send_email_oauth
+from .models import LeaveRequest
+from .forms import LeaveRequestForm
 
 
 # Generate OTP
@@ -119,6 +121,32 @@ def dashboard(request):
 def dashboard_incharge(request):
     users = User.objects.all()
     return render(request, 'dashboard_incharge.html', {'users': users})
+
+
+
+@login_required
+def submit_leave_request(request):
+    if request.method == 'POST':
+        form = LeaveRequestForm(request.POST, request.FILES)
+        if form.is_valid():
+            leave_request = form.save(commit=False)
+            leave_request.user = request.user
+            if leave_request.leave_type == "Emergency":
+                leave_request.status = "Forwarded"  # Auto-forward emergency requests to Dean
+            leave_request.save()
+            return redirect('dashboard_student')  # Redirect after submission
+    else:
+        form = LeaveRequestForm()
+    return render(request, 'submit_leave.html', {'form': form})
+
+
+@login_required
+def incharge_dashboard(request):
+    if request.user.groups.filter(name="Incharge").exists():  # keval incahrge dekh paye
+        pending_requests = LeaveRequest.objects.filter(status="Pending")
+        return render(request, 'dashboard_incharge.html', {'pending_requests': pending_requests})
+    return redirect('home')  # Redirect non regstrd users
+
 
 
 '''# Test Email Sending (For Debugging OAuth)
