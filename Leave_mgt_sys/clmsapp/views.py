@@ -178,10 +178,4 @@ def process_leave_dean(request, leave_id, action):
         leave_request.save()
     return redirect('dashboard_dean')
 
-'''# Test Email Sending (For Debugging OAuth)
-def test_email(request):
-    try:
-        send_email_oauth("testmail@gmail", "Test Email", "This is a test email sent using OAuth!")
-        return JsonResponse({'success': True, 'message': 'Test email sent successfully.'})
-    except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)})'''
+
