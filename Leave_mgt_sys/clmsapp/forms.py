@@ -12,4 +12,3 @@ class LeaveRequestForm(forms.ModelForm):
             'leave_type': forms.Select(attrs={'class': 'form-select'}),
             'file_attachment': forms.FileInput(attrs={'class': 'form-control'}),
         }
-    rejection_reason = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}), required=False)
