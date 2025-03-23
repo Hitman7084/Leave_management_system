@@ -1,39 +1,4 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Pending Leave Requests</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>Leave Type</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Reason</th>
-            <th>Attachment</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for leave in pending_requests %}
-        <tr>
-            <td>{{ leave.user.username }}</td>
-            <td>{{ leave.leave_type }}</td>
-            <td>{{ leave.start_date }}</td>
-            <td>{{ leave.end_date }}</td>
-            <td>{{ leave.reason }}</td>
-            <td>
-                {% if leave.file_attachment %}
-                <a href="{{ leave.file_attachment.url }}" target="_blank">View Attachment</a>
-                {% else %}
-                No Attachment
-                {% endif %}
-            </td>
-            <td>
-                <a href="{% url 'process_leave_incharge' leave.id 'approve' %}" class="btn btn-success">Approve</a>
-                <a href="{% url 'process_leave_incharge' leave.id 'forward' %}" class="btn btn-warning">Forward to Dean</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
 {% endblock %}
