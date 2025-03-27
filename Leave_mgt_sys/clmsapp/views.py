@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string
 from .models import User, OTPVerification
 from .gmail_oauth import send_email_oauth
 from .models import LeaveApplication
-from .forms import LeaveApplicationForm
+from .forms import LeaveApprovalForm
 
 # Generate OTP
 def generate_otp(user):
@@ -117,26 +117,50 @@ def dashboard(request):
 
 @login_required
 def student_dashboard(request):
-    incharges = User.objects.filter(role="Incharge")  # Get all incharges
-    
     if request.method == "POST":
-        form = LeaveApplicationForm(request.POST, request.FILES)
+        form = LeaveApprovalForm(request.POST, request.FILES)
         if form.is_valid():
-            leave = form.save(commit=False)
-            leave.student = request.user
-            leave.save()
+            leave_request = form.save(commit=False)
+            leave_request.student = request.user
+            leave_request.save()
             return redirect('dashboard_student')
     else:
-        form = LeaveApplicationForm()
-    
-    return render(request, 'dashboard_student.html', {'form': form, 'incharges': incharges})
+        form = LeaveApprovalForm()
+
+    # Fetch users with role 'Incharge'
+    incharges = User.objects.filter(role="Incharge")
+
+    return render(request, "dashboard_student.html", {"incharges": incharges, "form": form})
 
 
 @login_required
 def incharge_dashboard(request):
-    leave_requests = LeaveApplication.objects.all()
+    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)  # Show only pending requests
+
+    if request.method == "POST":
+        leave_id = request.POST.get("leave_id")
+        action = request.POST.get("action")
+        leave = LeaveApplication.objects.get(id=leave_id)
+
+        if action == "approve":
+            leave.incharge_approved = True
+            leave.forwarded_to_dean = True  # Forward to dean
+            leave.rejection_reason = None
+        elif action == "reject":
+            leave.incharge_approved = False
+            leave.forwarded_to_dean = False
+            leave.rejection_reason = request.POST.get("rejection_reason")
+
+        leave.save()
+        return redirect('dashboard_incharge')
+
     return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
 
+
+@login_required
+def dean_dashboard(request):
+    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=True)
+    return render(request, 'dashboard_dean.html', {'leave_requests': leave_requests})
 
 '''# Test Email Sending (For Debugging OAuth)
 def test_email(request):

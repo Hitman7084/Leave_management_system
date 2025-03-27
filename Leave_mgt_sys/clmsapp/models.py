@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.utils import timezone
 from django.conf import settings
 import random
+from django.utils import timezone
 
 # Custom User Model
 class User(AbstractUser):
@@ -33,10 +33,25 @@ class OTPVerification(models.Model):
 
 # Leave Request Model
 class LeaveApplication(models.Model):
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="leave_requests")
+    incharge = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name="assigned_leaves",
+        limit_choices_to={'role': 'Incharge'}  # Only allow Incharges to be assigned
+    )
     message = models.TextField()
     attachment = models.FileField(upload_to='leave_files/', blank=True, null=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
+    
+    # Incharge review fields
+    incharge_approved = models.BooleanField(default=False)
+    rejection_reason = models.TextField(blank=True, null=True)
+    
+    # Dean approval field
+    forwarded_to_dean = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Leave Request by {self.student.username}"

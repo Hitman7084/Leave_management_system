@@ -1,26 +1,62 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}Incharge Dashboard{% endblock %}
+
+{% block sidebar %}
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link" href="#" id="home-link">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" id="leave-history-link">Leave History</a>
+    </li>
+    <li class="nav-item">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link nav-link">Logout</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}
+
 {% block content %}
-<h2>Leave Requests</h2>
-<table>
-    <tr>
-        <th>Student</th>
-        <th>Message</th>
-        <th>Attachment</th>
-        <th>Submitted At</th>
-    </tr>
-    {% for leave in leave_requests %}
-    <tr>
-        <td>{{ leave.student.username }}</td>
-        <td>{{ leave.message }}</td>
-        <td>
-            {% if leave.attachment %}
-            <a href="{{ leave.attachment.url }}" target="_blank">View File</a>
-            {% else %}
-            No Attachment
-            {% endif %}
-        </td>
-        <td>{{ leave.submitted_at }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="main-content">
+    <h2 class="inchrg-header">Leave Requests</h2>
+    <table class="inchrg-table">
+        <tr>
+            <th>Student</th>
+            <th>Message</th>
+            <th>Attachment</th>
+            <th>Submitted At</th>
+        </tr>
+        {% for leave in leave_requests %}
+        <tr>
+            <td>{{ leave.student.username }}</td>
+            <td>{{ leave.message }}</td>
+            <td>
+                {% if leave.attachment %}
+                <a href="{{ leave.attachment.url }}" target="_blank">View File</a>
+                {% else %}
+                No Attachment
+                {% endif %}
+            </td>
+            <td>{{ leave.submitted_at }}</td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                    
+                    <button type="submit" name="action" value="approve" class="btn btn-success">Forward to Dean</button>
+                    
+                    <input type="text" name="rejection_reason" placeholder="Rejection Reason">
+                    <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
