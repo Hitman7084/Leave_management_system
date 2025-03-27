@@ -1,99 +1,76 @@
 /* base css needs to be added */
 body {
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
 }
 
 /* sidebar (most likely will use for all dashboards all n all)*/
 .sidebar {
     width: 250px;
-    background-color: #f8f9fa;
-    padding: 20px;
     height: 100vh;
+    background-color: #1b1b1b;
+    color: white;
     position: fixed;
-    top: 0;
-    left: 0;
-    border-right: 1px solid #ddd;
-    transition: width 0.3s;
-}
-
-.sidebar.collapsed {
-    width: 80px;
+    padding-top: 20px;
 }
 
 .sidebar .nav-link {
-    color: #333;
-    font-weight: bold;
-    margin-bottom: 10px;
-    transition: opacity 0.3s, background-color 0.3s;
-}
-
-.sidebar .nav-link.active {
-    color: #333; 
-}
-
-.sidebar .nav-link.hidden {
-    opacity: 0;
+    color: white;
+    transition: 0.3s ease-in-out;
 }
 
 .sidebar .nav-link:hover {
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-}
-
-#sidebar-toggle {
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-.sidebar-toggle-icon {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.sidebar-toggle-icon span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background-color: #333;
-    transition: transform 0.3s, opacity 0.3s;
-}
-
-.sidebar.collapsed .sidebar-toggle-icon {
-    transform: rotate(90deg);
-}
-
-.main-content {
-    margin-left: 250px; /* Adj for sidebar */
-    transition: margin-left 0.3s;
-}
-
-.main-content.collapsed {
-    margin-left: 80px;
-}
-
-.leave-history-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.leave-history-container .card {
-    width: 100%;
-    margin: auto;
+    background: rgba(255, 255, 255, 0.2);
+    padding-left: 15px;
 }
 
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
+.std-email-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
+.std-header { 
+    text-align: center; 
+}
+
+label { 
+    font-weight: bold; display: block; margin-top: 10px; 
+
+}
+.std-input, .std-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.std-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.std-btn:hover {
+    background: #357ae8;
+}
 
 /* Professor Dashboard */
 

@@ -1,4 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
-
+<h2>Leave Requests</h2>
+<table>
+    <tr>
+        <th>Student</th>
+        <th>Message</th>
+        <th>Attachment</th>
+        <th>Submitted At</th>
+    </tr>
+    {% for leave in leave_requests %}
+    <tr>
+        <td>{{ leave.student.username }}</td>
+        <td>{{ leave.message }}</td>
+        <td>
+            {% if leave.attachment %}
+            <a href="{{ leave.attachment.url }}" target="_blank">View File</a>
+            {% else %}
+            No Attachment
+            {% endif %}
+        </td>
+        <td>{{ leave.submitted_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

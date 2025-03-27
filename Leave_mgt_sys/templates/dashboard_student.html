@@ -23,5 +23,30 @@
 {% endblock %}
 
 {% block content %}
+<div class="std-email-container">
+    <h2 class="std-header">Send Leave Request</h2>
+    <form id="std-leave-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="std-recipient">To:</label>
+        <select id="std-recipient" name="recipient" class="std-input" required>
+            <option value="">Incharge</option>
+            {% for incharge in incharges %}
+                <option value="{{ incharge.id }}"> {{ incharge.full_name }}</option>
+            {% endfor %}
+        </select>
 
+        <label for="std-subject">Subject:</label>
+        <input type="text" id="std-subject" name="subject" class="std-input" placeholder="Enter subject" required>
+
+        <label for="std-message">Message:</label>
+        <textarea id="std-message" name="message" class="std-textarea" rows="6" placeholder="Write your leave request here..." required></textarea>
+
+        <label for="std-attachment">Attachment:</label>
+        <input type="file" id="std-attachment" name="attachment" class="std-input">
+
+        <button type="submit" id="std-send-btn" class="std-btn">Send</button>
+    </form>
+</div>
 {% endblock %}
+    

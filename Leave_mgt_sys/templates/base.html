@@ -12,18 +12,13 @@
 </head>
 <body class="admiral">
     <div class="d-flex">
-        <div class="sidebar" id="sidebar">
-            <button class="btn btn-link" id="sidebar-toggle">
-                <div class="sidebar-toggle-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            <!-- Sidebar content will be added here -->
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
             {% block sidebar %}
             {% endblock %}
-        </div>
+        </nav>
+
+        <!-- Main Content -->
         <div class="main-content flex-grow-1" id="main-content">
             {% block content %}
             {% endblock %}
@@ -35,6 +30,5 @@
         <p>&copy; 2024 Leave Management System. All rights reserved.</p>
     </footer>
     {% endblock %}
-
 </body>
 </html>

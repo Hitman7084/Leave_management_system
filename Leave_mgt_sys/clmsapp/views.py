@@ -1,4 +1,3 @@
-import os
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
@@ -9,9 +8,8 @@ from django.contrib.auth import authenticate
 from django.utils.crypto import get_random_string
 from .models import User, OTPVerification
 from .gmail_oauth import send_email_oauth
-from .models import LeaveRequest
-from .forms import LeaveRequestForm
-
+from .models import LeaveApplication
+from .forms import LeaveApplicationForm
 
 # Generate OTP
 def generate_otp(user):
@@ -40,7 +38,7 @@ def register(request):
             user.is_active = True  # No email verification required
             user.save()
 
-            # Generate and set a random password
+            # Generate & set a random password
             new_password = get_random_string(length=8)
             user.set_password(new_password)
             user.save()
@@ -114,69 +112,31 @@ def dashboard(request):
     elif user.role == 'Student':
         return render(request, 'dashboard_student.html')
     else:
-        return render(request, 'dashboard_default.html')  # Add a default dashboard
+        return render(request, 'dashboard_default.html')
 
 
 @login_required
-def dashboard_incharge(request):
-    users = User.objects.all()
-    return render(request, 'dashboard_incharge.html', {'users': users})
-
-
-
-@login_required
-def submit_leave_request_ajax(request):
-    if request.method == 'POST':
-        form = LeaveRequestForm(request.POST, request.FILES)
+def student_dashboard(request):
+    incharges = User.objects.filter(role="Incharge")  # Get all incharges
+    
+    if request.method == "POST":
+        form = LeaveApplicationForm(request.POST, request.FILES)
         if form.is_valid():
-            leave_request = form.save(commit=False)
-            leave_request.user = request.user
-            if leave_request.leave_type == "Emergency":
-                leave_request.status = "Forwarded"
-            leave_request.save()
-            return JsonResponse({'message': 'Leave request submitted successfully!', 'status': 'success'})
-        else:
-            return JsonResponse({'message': 'Error in form submission', 'status': 'error'}, status=400)
+            leave = form.save(commit=False)
+            leave.student = request.user
+            leave.save()
+            return redirect('dashboard_student')
+    else:
+        form = LeaveApplicationForm()
+    
+    return render(request, 'dashboard_student.html', {'form': form, 'incharges': incharges})
 
 
 @login_required
 def incharge_dashboard(request):
-    if request.user.groups.filter(name="Incharge").exists():  # keval incahrge dekh paye
-        pending_requests = LeaveRequest.objects.filter(status="Pending")
-        return render(request, 'dashboard_incharge.html', {'pending_requests': pending_requests})
-    return redirect('home')  # Redirect non regstrd users
+    leave_requests = LeaveApplication.objects.all()
+    return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
 
-
-@login_required
-def dean_dashboard(request):
-    if request.user.groups.filter(name="Dean").exists():
-        forwarded_requests = LeaveRequest.objects.filter(status="Forwarded")
-        return render(request, 'dashboard_dean.html', {'forwarded_requests': forwarded_requests})
-    return redirect('home')
-
-
-@login_required
-def process_leave_incharge(request, leave_id, action):
-    leave_request = LeaveRequest.objects.get(id=leave_id)
-    if request.user.groups.filter(name="Incharge").exists():
-        if action == "approve":
-            leave_request.status = "Approved"
-        elif action == "forward":
-            leave_request.status = "Forwarded"
-        leave_request.save()
-    return redirect('dashboard_incharge')
-
-@login_required
-def process_leave_dean(request, leave_id, action):
-    leave_request = LeaveRequest.objects.get(id=leave_id)
-    if request.user.groups.filter(name="Dean").exists():
-        if action == "approve":
-            leave_request.status = "Approved"
-        elif action == "reject":
-            leave_request.status = "Rejected"
-            leave_request.rejection_reason = request.POST.get('rejection_reason', '')
-        leave_request.save()
-    return redirect('dashboard_dean')
 
 '''# Test Email Sending (For Debugging OAuth)
 def test_email(request):

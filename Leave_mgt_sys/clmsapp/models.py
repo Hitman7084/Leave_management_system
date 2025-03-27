@@ -32,33 +32,11 @@ class OTPVerification(models.Model):
         self.save()
 
 # Leave Request Model
-class LeaveRequest(models.Model):
-    LEAVE_TYPES = [
-        ('Sick', 'Sick Leave'),
-        ('Casual', 'Casual Leave'),
-        ('Emergency', 'Emergency Leave'),
-        ('Annual', 'Annual Leave'),
-    ]
-    
-    STATUS_CHOICES = [
-        ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
-        ('Rejected', 'Rejected'),
-        ('Forwarded', 'Forwarded'),
-    ]
-    
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    leave_type = models.CharField(max_length=20, choices=LEAVE_TYPES)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    reason = models.TextField()
-    file_attachment = models.FileField(upload_to='leave_attachments/', blank=True, null=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
-    applied_at = models.DateTimeField(auto_now_add=True)
-    approved_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True, 
-        on_delete=models.SET_NULL, related_name='approved_leaves'
-    )
+class LeaveApplication(models.Model):
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()
+    attachment = models.FileField(upload_to='leave_files/', blank=True, null=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.leave_type} ({self.status})"
+        return f"Leave Request by {self.student.username}"
