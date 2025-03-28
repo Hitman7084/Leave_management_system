@@ -31,6 +31,7 @@
             
             <label for="std-recipient">To (Incharge):</label>
             <select id="std-recipient" name="recipient" class="std-input" required>
+                <option value="" disabled selected>Select an Incharge</option>
                 {% for incharge in incharges %}
                     <option value="{{ incharge.id }}">{{ incharge.full_name }}</option>
                 {% empty %}
@@ -47,21 +48,21 @@
             <button type="submit" id="std-send-btn" class="std-btn">Send</button>
         </form>
     </div>
-    <p>Number of Incharges: {{ incharges|length }}</p>
+    <p>Number of Incharges: {{ incharges|length }}</p> <!-- Debug code -->
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("std-leave-form").addEventListener("submit", function(event) {
-            //let recipient = document.getElementById("std-recipient").value;
+            let recipient = document.getElementById("std-recipient").value;
             let subject = document.getElementById("std-subject").value.trim();
             let message = document.getElementById("std-message").value.trim();
             let attachment = document.getElementById("std-attachment").files[0]; 
     
             let errors = [];
     
-            //if (recipient === "") {
-                //errors.push("Please select a recipient.");
-            //}
+            if (recipient === "") {
+                errors.push("Please select a recipient.");
+            }
     
             if (subject.length < 5) {
                 errors.push("Subject must be at least 5 characters long.");
