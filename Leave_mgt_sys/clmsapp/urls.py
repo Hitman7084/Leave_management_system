@@ -1,14 +1,14 @@
 from django.urls import path
 from . import views
-from .views import login, student_dashboard, professor_dashboard, dean_dashboard, incharge_dashboard
+from .views import student_dashboard, dean_dashboard, incharge_dashboard, professor_dashboard
 
 urlpatterns = [
     path('register/', views.register, name='register'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
     path('login/', views.login, name='login'),
-    path('student/', student_dashboard, name='student_dashboard'),
-    path('professor/', professor_dashboard, name='professor_dashboard'),
-    path('dean/', dean_dashboard, name='dean_dashboard'),
-    path('incharge/', incharge_dashboard, name='incharge_dashboard'),  # Ensure this line exists
+    path('student/', student_dashboard, name='dashboard_student'),
+    path('incharge/', incharge_dashboard, name='dashboard_incharge'),
+    path('dean/', dean_dashboard, name='dashboard_dean'),
+    path('professor/', views.professor_dashboard, name='dashboard_professor'),
     # more paths.....
 ]
