@@ -82,37 +82,40 @@ def forgot_password(request):
 # Login View (Handles Pass Login)
 def login(request):
     role = request.GET.get('role', 'default')
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         role = request.POST.get('role')
 
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             auth_login(request, user)
             messages.success(request, 'Login successful.')
-            return JsonResponse({'success': True, 'role': user.role})
+
+            # Determine role-based redirection
+            role_redirects = {
+                'student': 'student_dashboard',
+                'professor': 'professor_dashboard',
+                'dean': 'dean_dashboard',
+                'incharge': 'incharge_dashboard',
+            }
+
+            redirect_url = role_redirects.get(user.role, 'home')  # Default redirect if role is unknown
+
+            # Return JSON response for AJAX-based login or redirect if standard form
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':  # Checks if an AJAX request
+                return JsonResponse({'success': True, 'role': user.role, 'redirect_url': redirect_url})
+            else:
+                return redirect(redirect_url)
+
         else:
             messages.error(request, 'Incorrect username or password.')
             return JsonResponse({'success': False, 'error': 'Incorrect username or password.'})
 
     return render(request, 'login.html', {'role': role})
 
-
-# Dashboard Views for Different Roles
-@login_required
-def dashboard(request):
-    user = request.user
-    if user.role == 'Professor':
-        return render(request, 'dashboard_prof.html')
-    elif user.role == 'Dean':
-        return render(request, 'dashboard_dean.html')
-    elif user.role == 'Incharge':
-        return render(request, 'dashboard_incharge.html')
-    elif user.role == 'Student':
-        return render(request, 'dashboard_student.html')
-    else:
-        return render(request, 'dashboard_default.html')
 
 
 @login_required
@@ -127,7 +130,6 @@ def student_dashboard(request):
     else:
         form = LeaveApprovalForm()
 
-    # Fetch users with role 'Incharge'
     incharges = User.objects.filter(role="Incharge")
 
     return render(request, "dashboard_student.html", {"incharges": incharges, "form": form})
@@ -135,7 +137,7 @@ def student_dashboard(request):
 
 @login_required
 def incharge_dashboard(request):
-    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)  # Show only pending requests
+    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)  # Shows only pending requests
 
     if request.method == "POST":
         leave_id = request.POST.get("leave_id")
@@ -144,7 +146,7 @@ def incharge_dashboard(request):
 
         if action == "approve":
             leave.incharge_approved = True
-            leave.forwarded_to_dean = True  # Forward to dean
+            leave.forwarded_to_dean = True  # Forwarded to dean
             leave.rejection_reason = None
         elif action == "reject":
             leave.incharge_approved = False
@@ -161,6 +163,11 @@ def incharge_dashboard(request):
 def dean_dashboard(request):
     leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=True)
     return render(request, 'dashboard_dean.html', {'leave_requests': leave_requests})
+
+@login_required
+def professor_dashboard(request):
+    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)
+    return render(request, 'dashboard_professor.html', {'leave_requests': leave_requests})
 
 '''# Test Email Sending (For Debugging OAuth)
 def test_email(request):

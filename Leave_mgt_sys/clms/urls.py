@@ -22,7 +22,5 @@ urlpatterns = [
     path('', views.homepage, name='homepage'),
     # include clmsapp urls
     path('', include('clmsapp.urls')),
-    # login page
-    path('login/', views.login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='homepage'), name='logout'),
 ]

@@ -5,44 +5,55 @@
 {% block content %}
 <div class="login-container">
     <h2>Login</h2>
+    
     <form id="login-form" method="POST" action="{% url 'login' %}">
         {% csrf_token %}
+        
         <div class="form-group">
             <label for="id_username">Username:</label>
             <input type="text" name="username" class="form-login" required id="id_username">
         </div>
+
         <div class="form-group">
             <label for="id_password">Password:</label>
             <input type="password" name="password" class="form-login" required id="id_password">
         </div>
+
         <input type="hidden" name="role" value="{{ role }}">
+
         <button type="submit">Login</button>
     </form>
+    
+    <p id="error-message" style="color: red; display: none;"></p>
 </div>
 
 <script>
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
     var form = this;
+    var errorMessage = document.getElementById('error-message');
+
     fetch(form.action, {
         method: 'POST',
         body: new FormData(form),
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-Requested-With': 'XMLHttpRequest',  // Ensures Django recognizes the request as AJAX
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
         }
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            var role = data.role;
-            window.location.href = "{% url 'dashboard' %}?role=" + role;
+            window.location.href = "/" + data.role.toLowerCase() + "/"; // Redirects dynamically based on fkin small case role(case sensitive)
         } else {
-            alert(data.error);
+            errorMessage.textContent = data.error;
+            errorMessage.style.display = "block";
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred. Please try again.');
+        errorMessage.textContent = "An error occurred. Please try again.";
+        errorMessage.style.display = "block";
     });
 });
 </script>

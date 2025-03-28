@@ -31,7 +31,7 @@ class OTPVerification(models.Model):
         self.created_at = timezone.now()  # Update timestamp when OTP is generated
         self.save()
 
-# Leave Request Model
+# Leave Request Model(Half assed)
 class LeaveApplication(models.Model):
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="leave_requests")
     incharge = models.ForeignKey(
