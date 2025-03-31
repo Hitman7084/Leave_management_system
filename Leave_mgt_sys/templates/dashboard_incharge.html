@@ -50,13 +50,13 @@
                     {% csrf_token %}
                     <input type="hidden" name="leave_id" value="{{ leave.id }}">
                     
-                    <button type="submit" name="action" value="approve" class="inchrg-btn-success">Forward to Dean</button>
+                    <button type="submit" name="action" value="approve" class="btn-success">Forward to Dean</button>
                     
-                    <button type="button" onclick="showRejectInput({{ leave.id }})" class="inchrg-btn-danger">Reject</button>
+                    <button type="button" onclick="showRejectInput({{ leave.id }})" class="btn-danger">Reject</button>
                     
                     <div id="reject-form-{{ leave.id }}" style="display: none; margin-top: 5px;">
                         <input type="text" name="rejection_reason" placeholder="Rejection Reason" required>
-                        <button type="submit" name="action" value="reject" class="inchrg-btn-danger">Confirm Reject</button>
+                        <button type="submit" name="action" value="reject" class="btn-danger">Confirm Reject</button>
                     </div>
                 </form>
             </td>
