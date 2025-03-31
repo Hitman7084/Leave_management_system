@@ -1,6 +1,6 @@
 /* base css needs to be added */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f9;
@@ -8,12 +8,13 @@ body {
 
 /* sidebar (most likely will use for all dashboards all n all)*/
 .sidebar {
-    width: 250px;
-    height: 100vh;
+    width: 200px;
+    height: 100%;
     background-color: #1b1b1b;
     color: white;
     position: fixed;
     padding-top: 20px;
+    padding-left: 20px;
     left: 0;
     top: 0;
     overflow-y: auto; /* Scroll if needed */
@@ -28,7 +29,8 @@ body {
 
 .sidebar .nav-link:hover {
     background: rgba(255, 255, 255, 0.2);
-    padding-left: 25px;
+    border-radius: 5px;
+    padding: 10px 20px;
 }
 
 /* MAIN CONTENT SHIFT TO AVOID OVERLAPPING SIDEBAR */
@@ -40,7 +42,7 @@ body {
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
 .std-email-container {
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -153,8 +155,8 @@ label {
 
 
 .std-btn {
-    --bg: #222831;
-    --hover-bg: #393E46;
+    --bg: #8174A0;
+    --hover-bg: #441752;
     --hover-text: #fff;
     color: #fff;
     cursor: pointer;
