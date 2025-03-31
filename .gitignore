@@ -1,4 +1,4 @@
 *.pickle
 *.json
 leave_attachments
-*.sqlite3
+db.sqlite3
