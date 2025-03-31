@@ -37,21 +37,17 @@
         <tr>
             <td>{{ leave.student.username }}</td>
             <td>
-                <div class="message-container">
-                    <span id="msg-preview-{{ leave.id }}">
-                        {{ leave.message|slice:":50" }}{% if leave.message|length > 50 %}...{% endif %}
+                <div class="inchrg-msg-container" id="message-{{ leave.id }}">
+                    <span class="inchrg-msg-preview" id="preview-{{ leave.id }}">
+                        {{ leave.message|slice:":50" }}...
                     </span>
-                    
-                    <span id="msg-full-{{ leave.id }}" style="display: none;">
+                    <span class="inchrg-msg-full" id="full-{{ leave.id }}" style="display: none;">
                         {{ leave.message }}
                     </span>
-            
-                    {% if leave.message|length > 50 %}
-                    <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
-                        Show More
-                    </button>
-                    {% endif %}
                 </div>
+                <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
+                    Show More
+                </button>
             </td>
             <td>
                 {% if leave.attachment %}
@@ -87,18 +83,18 @@ function showRejectInput(leaveId) {
 }
 
 function toggleMessage(leaveId) {
-    let preview = document.getElementById("msg-preview-" + leaveId);
-    let fullMsg = document.getElementById("msg-full-" + leaveId);
-    let btn = document.querySelector(`button[onclick="toggleMessage(${leaveId})"]`);
+    let preview = document.getElementById("preview-" + leaveId);
+    let fullMessage = document.getElementById("full-" + leaveId);
+    let button = preview.parentElement.nextElementSibling;
 
-    if (fullMsg.style.display === "none") {
-        fullMsg.style.display = "inline";
-        preview.style.display = "none";
-        btn.textContent = "Show Less";
-    } else {
-        fullMsg.style.display = "none";
+    if (preview.style.display === "none") {
         preview.style.display = "inline";
-        btn.textContent = "Show More";
+        fullMessage.style.display = "none";
+        button.textContent = "Show More";
+    } else {
+        preview.style.display = "none";
+        fullMessage.style.display = "inline";
+        button.textContent = "Show Less";
     }
 }
 </script>

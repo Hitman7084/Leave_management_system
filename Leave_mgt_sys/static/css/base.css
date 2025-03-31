@@ -87,6 +87,11 @@ label {
     text-align: left;
 }
 
+.inchrg-msg-container {
+    transition: max-height 0.4s ease-in-out;
+    display: inline-block;
+}
+
 .inchrg-table td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
@@ -120,10 +125,37 @@ label {
 
 /* SUBMIT BUTTON */
 /* For general button cases (std-btn)*/
+.btn-toggle {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.btn-toggle::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #393E46;
+    transition: width 0.3s ease-in-out;
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+}
+
+.btn-toggle:hover::after {
+    width: 80%;
+}
+
+
 .std-btn {
-    --bg: #222831; /* Green */
-    --hover-bg: #393E46; /* Light Green */
-    --hover-text: #fff; /* Black text on hover */
+    --bg: #222831;
+    --hover-bg: #393E46;
+    --hover-text: #fff;
     color: #fff;
     cursor: pointer;
     border: 1px solid var(--bg);
@@ -147,8 +179,8 @@ label {
 
 /* For Pairs like succes and reject */
 .btn-success {
-    --bg: #7D6E83; /* Green */
-    --hover-bg: #9df5c2; /* Light Green */
+    --bg: #285430;
+    --hover-bg: #9df5c2;
     --hover-text: #000;
     color: #fff;
     cursor: pointer;
@@ -172,8 +204,8 @@ label {
 }
 
 .btn-danger {
-    --bg: #7D6E83; /* Red */
-    --hover-bg: #ff9494; /* Soft Pinkish Red */
+    --bg: #E23E57;
+    --hover-bg: #ff9494;
     --hover-text: #000;
     color: #fff;
     cursor: pointer;
