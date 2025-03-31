@@ -27,7 +27,7 @@ def register(request):
         role = request.POST['role']
 
         try:
-            # Check if the email already exists
+            # Check if email already exists
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'success': False, 'error': 'Email already exists.'})
 
@@ -45,7 +45,7 @@ def register(request):
 
             # Send email using Gmail OAuth
             subject = "Welcome to Leave Management System!"
-            message = f"Hello {full_name},\n\nYour account has been created successfully!\n\nYour login credentials:\nUsername: {username}\nPassword: {new_password}\n\nPlease log in and change your password after first login.\n\nBest regards,\nfrom Himanshu"
+            message = f"Hello {full_name},\n\nYour account has been created successfully!\n\nYour login credentials:\nUsername: {username}\nPassword: {new_password}\nRole: {role}\n\nPlease log in and change your password after first login.\n\nBest regards,\nfrom Himanshu"
             send_email_oauth(email, subject, message)
 
             return JsonResponse({'success': True, 'role': role})
@@ -104,7 +104,7 @@ def login(request):
 
             redirect_url = role_redirects.get(user.role, 'home')  # Default redirect if role is unknown
 
-            # Return JSON response for AJAX-based login or redirect if standard form
+            # Return JSON response for AJAX based login or redirects if std form
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':  # Checks if an AJAX request
                 return JsonResponse({'success': True, 'role': user.role, 'redirect_url': redirect_url})
             else:
@@ -120,44 +120,75 @@ def login(request):
 
 @login_required
 def student_dashboard(request):
-    if request.method == "POST":
-        form = LeaveApprovalForm(request.POST, request.FILES)
-        if form.is_valid():
-            leave_request = form.save(commit=False)
-            leave_request.student = request.user
-            leave_request.save()
-            return redirect('dashboard_student')
-    else:
-        form = LeaveApprovalForm()
-
     incharges = User.objects.filter(role="Incharge")
 
-    return render(request, "dashboard_student.html", {"incharges": incharges, "form": form})
+    if request.method == "POST":
+        print("Form submitted")  # Debugging shit
+        
+        student = request.user
+        recipient_id = request.POST.get("recipient")
+        message = request.POST.get("message")
+        attachment = request.FILES.get("attachment")
+
+        print(f"Recipient ID: {recipient_id}, Message: {message}, Attachment: {attachment}")
+
+        if not recipient_id or not message:
+            # print("Atleast type message")
+            messages.error(request, "Please select an incharge and enter a message.")
+            return redirect("student_dashboard")
+
+        try:
+            recipient = User.objects.get(id=recipient_id)
+        except User.DoesNotExist:
+            # print("TYPE CORRECT INCHARGE DUMASS")
+            messages.error(request, "Selected incharge does not exist.")
+            return redirect("student_dashboard")
+
+        # Create and save the leave request
+        leave_request = LeaveApplication.objects.create(
+            student=student,
+            incharge=recipient,
+            message=message,
+            attachment=attachment,
+            status="Pending"
+        )
+
+        # print("Leave request saved fk it")
+        messages.success(request, "Leave request submitted successfully.")
+        return redirect("dashboard_student")
+
+    return render(request, "dashboard_student.html", {"incharges": incharges})
 
 
 @login_required
 def incharge_dashboard(request):
-    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)  # Shows only pending requests
+    leave_requests = LeaveApplication.objects.filter(status="Pending")
 
     if request.method == "POST":
         leave_id = request.POST.get("leave_id")
         action = request.POST.get("action")
-        leave = LeaveApplication.objects.get(id=leave_id)
+
+        try:
+            leave = LeaveApplication.objects.get(id=leave_id)
+        except LeaveApplication.DoesNotExist:
+            messages.error(request, "Leave request not found!")
+            return redirect('dashboard_incharge')
 
         if action == "approve":
             leave.incharge_approved = True
-            leave.forwarded_to_dean = True  # Forwarded to dean
+            leave.forwarded_to_dean = True
+            leave.status = "Forwarded to Dean"
             leave.rejection_reason = None
         elif action == "reject":
             leave.incharge_approved = False
             leave.forwarded_to_dean = False
+            leave.status = "Rejected by Incharge"
             leave.rejection_reason = request.POST.get("rejection_reason")
 
         leave.save()
-        return redirect('dashboard_incharge')
+        return redirect('dashboard_incharge') 
 
     return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
-
 
 @login_required
 def dean_dashboard(request):

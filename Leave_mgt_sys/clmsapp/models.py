@@ -33,7 +33,11 @@ class OTPVerification(models.Model):
 
 # Leave Request Model(Half assed)
 class LeaveApplication(models.Model):
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="leave_requests")
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name="leave_requests"
+    )
     incharge = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         on_delete=models.SET_NULL, 
@@ -43,15 +47,25 @@ class LeaveApplication(models.Model):
         limit_choices_to={'role': 'Incharge'}  # Only allow Incharges to be assigned
     )
     message = models.TextField()
-    attachment = models.FileField(upload_to='leave_files/', blank=True, null=True)
+    attachment = models.FileField(upload_to='leave_attachments/', blank=True, null=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
-    
+
+    # Status choices
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Approved by Incharge', 'Approved by Incharge'),
+        ('Rejected by Incharge', 'Rejected by Incharge'),
+        ('Forwarded to Dean', 'Forwarded to Dean'),
+    ]
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Pending')
+
     # Incharge review fields
     incharge_approved = models.BooleanField(default=False)
     rejection_reason = models.TextField(blank=True, null=True)
-    
+
     # Dean approval field
     forwarded_to_dean = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Leave Request by {self.student.username}"
+        return f"Leave Request ({self.status}) - {self.student.username} to {self.incharge.username if self.incharge else 'Fuck off'}"
+

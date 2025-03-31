@@ -31,6 +31,7 @@
             <th>Message</th>
             <th>Attachment</th>
             <th>Submitted At</th>
+            <th>Action</th>  
         </tr>
         {% for leave in leave_requests %}
         <tr>
@@ -49,14 +50,25 @@
                     {% csrf_token %}
                     <input type="hidden" name="leave_id" value="{{ leave.id }}">
                     
-                    <button type="submit" name="action" value="approve" class="btn btn-success">Forward to Dean</button>
+                    <button type="submit" name="action" value="approve" class="inchrg-btn-success">Forward to Dean</button>
                     
-                    <input type="text" name="rejection_reason" placeholder="Rejection Reason">
-                    <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                    <button type="button" onclick="showRejectInput({{ leave.id }})" class="inchrg-btn-danger">Reject</button>
+                    
+                    <div id="reject-form-{{ leave.id }}" style="display: none; margin-top: 5px;">
+                        <input type="text" name="rejection_reason" placeholder="Rejection Reason" required>
+                        <button type="submit" name="action" value="reject" class="inchrg-btn-danger">Confirm Reject</button>
+                    </div>
                 </form>
             </td>
         </tr>
         {% endfor %}
     </table>
 </div>
+
+<script>
+function showRejectInput(leaveId) {
+    document.getElementById("reject-form-" + leaveId).style.display = "block";
+}
+</script>
+
 {% endblock %}

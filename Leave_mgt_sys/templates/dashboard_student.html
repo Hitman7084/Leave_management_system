@@ -38,51 +38,71 @@
                     <option value="">No incharges available</option>
                 {% endfor %}
             </select>        
-        
+            <span class="error" id="recipient-error"></span>
+
             <label for="std-message">Message:</label>
             <textarea id="std-message" name="message" class="std-textarea" rows="6" placeholder="Write your leave request here..." required></textarea>
-        
+            <span class="error" id="message-error"></span>
+
             <label for="std-attachment">Attachment:</label>
             <input type="file" id="std-attachment" name="attachment" class="std-input">
-        
+            <span class="error" id="attachment-error"></span>
+
             <button type="submit" id="std-send-btn" class="std-btn">Send</button>
         </form>
+
+        <div id="success-message" style="display: none; color: green; margin-top: 10px;">
+            Leave request submitted successfully!
+        </div>
     </div>
     <p>Number of Incharges: {{ incharges|length }}</p> <!-- Debug code -->
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("std-leave-form").addEventListener("submit", function(event) {
             let recipient = document.getElementById("std-recipient").value;
-            let subject = document.getElementById("std-subject").value.trim();
             let message = document.getElementById("std-message").value.trim();
-            let attachment = document.getElementById("std-attachment").files[0]; 
-    
-            let errors = [];
-    
+            let attachment = document.getElementById("std-attachment").files[0];
+
+            let isValid = true;
+
+            // Clear previous errors
+            document.getElementById("recipient-error").textContent = "";
+            document.getElementById("message-error").textContent = "";
+            document.getElementById("attachment-error").textContent = "";
+
             if (recipient === "") {
-                errors.push("Please select a recipient.");
+                document.getElementById("recipient-error").textContent = "Please select a recipient.";
+                isValid = false;
             }
-    
-            if (subject.length < 5) {
-                errors.push("Subject must be at least 5 characters long.");
-            }
-    
+
             if (message.length < 10) {
-                errors.push("Message must be at least 10 characters long.");
+                document.getElementById("message-error").textContent = "Message must be at least 10 characters long.";
+                isValid = false;
             }
-    
-            // 5mb max size
+
+            // Check attachment size (max 5MB)
             if (attachment && attachment.size > 5 * 1024 * 1024) {
-                errors.push("Attachment size should be less than 5MB.");
+                document.getElementById("attachment-error").textContent = "Attachment must be less than 5MB.";
+                isValid = false;
             }
-    
-            if (errors.length > 0) {
-                alert(errors.join("\n"));
+
+            if (!isValid) {
                 event.preventDefault();
+                return;
             }
+
+            // Success msg
+            event.preventDefault();
+            document.getElementById("success-message").style.display = "block";
+
+            // Submit the form after a delay
+            setTimeout(() => {
+                event.target.submit();
+            }, 1500);
         });
     });
 </script>
+
 {% endblock %}
-    
