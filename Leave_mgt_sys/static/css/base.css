@@ -1,9 +1,10 @@
 /* base css needs to be added */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    font-family: Arial, sans-serif;
+    background: url("../images/back2.jpg") no-repeat center center fixed;
+    background-size: cover;
 }
 
 /* sidebar (most likely will use for all dashboards all n all)*/
@@ -83,6 +84,7 @@ body {
 
 /* MAIN CONTENT SHIFT TO AVOID OVERLAPPING SIDEBAR */
 .main-content {
+    margin-left: 50px;
     padding: 20px;
 }
 
@@ -92,9 +94,9 @@ body {
     max-width: 800px;
     margin: auto;
     padding: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #000;
     border-radius: 8px;
-    background: #fff;
+    background: #7D7A76;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -110,7 +112,7 @@ label {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #000;
     border-radius: 5px;
 }
 
