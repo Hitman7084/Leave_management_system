@@ -91,13 +91,10 @@ body {
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 /* Student Dashboard */
 .std-email-container {
-    max-width: 800px;
+    max-width: 1900px;
+    font-family: cursive;
     margin: auto;
     padding: 20px;
-    border: 1px solid #000;
-    border-radius: 8px;
-    background: #7D7A76;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .std-header { 
@@ -105,14 +102,16 @@ body {
 }
 
 label { 
-    font-weight: bold; display: block; margin-top: 10px; 
-
+    font-weight: bold; 
+    display: block; 
+    margin-top: 10px; 
 }
+
 .std-input, .std-textarea {
+    background-color: #b3b3b3;
     width: 100%;
     padding: 10px;
     margin-top: 5px;
-    border: 1px solid #000;
     border-radius: 5px;
 }
 
@@ -204,8 +203,8 @@ label {
 
 
 .std-btn {
-    --bg: #8174A0;
-    --hover-bg: #441752;
+    --bg: #441752;
+    --hover-bg: #8174A0;
     --hover-text: #fff;
     color: #fff;
     cursor: pointer;

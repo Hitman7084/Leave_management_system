@@ -39,7 +39,7 @@
         </tr>
         {% for leave in leave_requests %}
         <tr>
-            <td>{{ leave.student.username }}</td>
+            <td>{{ leave.student.full_name }}</td>
             <td>
                 <div class="inchrg-msg-container" id="message-{{ leave.id }}">
                     <span class="inchrg-msg-preview" id="preview-{{ leave.id }}">
