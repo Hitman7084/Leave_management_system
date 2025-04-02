@@ -89,7 +89,71 @@ body {
 }
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
-/* Student Dashboard */
+
+/* Student Home */
+
+.std-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.std-home input {
+    padding: 10px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.apply-btn {
+    background: #2f80ed;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.leave-cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sick-leave { border-top: 5px solid #e74c3c; }
+.earned-leave { border-top: 5px solid #27ae60; }
+.casual-leave { border-top: 5px solid #f39c12; }
+.unpaid-leave { border-top: 5px solid #3498db; }
+.floater-leave { border-top: 5px solid #e67e22; }
+
+/* Student Form */
 .std-email-container {
     max-width: 1900px;
     font-family: cursive;

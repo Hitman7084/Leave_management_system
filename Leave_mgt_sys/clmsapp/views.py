@@ -200,6 +200,12 @@ def professor_dashboard(request):
     leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)
     return render(request, 'dashboard_professor.html', {'leave_requests': leave_requests})
 
+def student_form(request):
+    return render(request, 'student_form.html')
+
+def student_profile(request):
+    return render(request, 'student_profile.html')
+
 '''# Test Email Sending (For Debugging OAuth)
 def test_email(request):
     try:

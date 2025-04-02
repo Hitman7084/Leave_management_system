@@ -4,13 +4,17 @@
 
 {% block sidebar %}
 <div class="sidenav">
-    <a href="#">
+    <a href="{% url 'dashboard_student' %}">
         <span class="icon"><i class="fas fa-home"></i></span>
         <span class="text">Home</span>
     </a>
-    <a href="#">
+    <a href="{% url 'student_profile' %}">
         <span class="icon"><i class="fa-solid fa-user"></i></span>
         <span class="text">Profile</span>
+    </a>
+    <a href="{% url 'student_form' %}">
+        <span class="icon"><i class="fa-solid fa-file"></i></span>
+        <span class="text">Leave form</span>
     </a>
     <a href="#">
         <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
@@ -28,83 +32,75 @@
 
 {% block content %}
 <div class="main-content">
-    <div class="std-email-container">
-        <h2 class="std-header">Send Leave Request</h2>
-        <form id="std-leave-form" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            
-            <label for="std-recipient">To (Incharge):</label>
-            <select id="std-recipient" name="recipient" class="std-input" required>
-                <option value="" disabled selected>Select an Incharge</option>
-                {% for incharge in incharges %}
-                    <option value="{{ incharge.id }}">{{ incharge.full_name }}</option>
-                {% empty %}
-                    <option value="">No incharges available</option>
-                {% endfor %}
-            </select>        
-            <span class="error" id="recipient-error"></span>
-
-            <label for="std-message">Message:</label>
-            <textarea id="std-message" name="message" class="std-textarea" rows="6" placeholder="Write your leave request here..." required></textarea>
-            <span class="error" id="message-error"></span>
-
-            <label for="std-attachment">Attachment:</label>
-            <input type="file" id="std-attachment" name="attachment" class="std-input">
-            <span class="error" id="attachment-error"></span>
-
-            <button type="submit" id="std-send-btn" class="std-btn">Send</button>
-        </form>
-
-        <div id="success-message" style="display: none; color: green; margin-top: 10px;">
-            Leave request submitted successfully!
+    <h1>Welcome {{ user.full_name }} and fk you</h1>
+    <section class="stats">
+        <div class="chart-container">
+            <h3>Weekly Leave Pattern</h3>
+            <canvas id="weeklyChart"></canvas>
         </div>
-    </div>
+        <div class="chart-container">
+            <h3>Monthly Leave Pattern</h3>
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </section>
+    
+    <section class="leave-cards">
+        <div class="card sick-leave">
+            <h4>Sick Leave</h4>
+            <p>Available: 08</p>
+            <p>Consumed: 12</p>
+        </div>
+        <div class="card earned-leave">
+            <h4>Earned Leave</h4>
+            <p>Available: 03</p>
+            <p>Consumed: 03</p>
+        </div>
+        <div class="card casual-leave">
+            <h4>Casual Leave</h4>
+            <p>Available: 03</p>
+            <p>Consumed: 03</p>
+        </div>
+        <div class="card unpaid-leave">
+            <h4>Unpaid Leave</h4>
+            <p>Available: Unlimited</p>
+            <p>Consumed: Unlimited</p>
+        </div>
+        <div class="card floater-leave">
+            <h4>Floater Leave</h4>
+            <p>Available: 03</p>
+            <p>Consumed: 03</p>
+        </div>
+    </section>
     <p>Number of Incharges: {{ incharges|length }}</p> <!-- Debug code -->
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("std-leave-form").addEventListener("submit", function(event) {
-            let recipient = document.getElementById("std-recipient").value;
-            let message = document.getElementById("std-message").value.trim();
-            let attachment = document.getElementById("std-attachment").files[0];
-
-            let isValid = true;
-
-            // Clear previous errors
-            document.getElementById("recipient-error").textContent = "";
-            document.getElementById("message-error").textContent = "";
-            document.getElementById("attachment-error").textContent = "";
-
-            if (recipient === "") {
-                document.getElementById("recipient-error").textContent = "Please select a recipient.";
-                isValid = false;
+    document.addEventListener("DOMContentLoaded", function () {
+        const weeklyCtx = document.getElementById("weeklyChart").getContext("2d");
+        new Chart(weeklyCtx, {
+            type: "bar",
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                datasets: [{
+                    label: "Leaves",
+                    data: [2, 10, 4, 7, 2, 1, 1],
+                    backgroundColor: "#2f80ed"
+                }]
             }
-
-            if (message.length < 10) {
-                document.getElementById("message-error").textContent = "Message must be at least 10 characters long.";
-                isValid = false;
+        });
+    
+        const monthlyCtx = document.getElementById("monthlyChart").getContext("2d");
+        new Chart(monthlyCtx, {
+            type: "line",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Leave Count",
+                    data: [1, 3, 5, 6, 7, 9, 3, 6, 4, 7, 2, 8],
+                    borderColor: "#2f80ed",
+                    fill: false
+                }]
             }
-
-            // Check attachment size (max 5MB)
-            if (attachment && attachment.size > 5 * 1024 * 1024) {
-                document.getElementById("attachment-error").textContent = "Attachment must be less than 5MB.";
-                isValid = false;
-            }
-
-            if (!isValid) {
-                event.preventDefault();
-                return;
-            }
-
-            // Success msg
-            event.preventDefault();
-            document.getElementById("success-message").style.display = "block";
-
-            // Submit the form after a delay
-            setTimeout(() => {
-                event.target.submit();
-            }, 1500);
         });
     });
 </script>

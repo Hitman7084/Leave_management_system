@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block sidebar %}
+<div class="sidenav">
+    <a href="{% url 'dashboard_student' %}">
+        <span class="icon"><i class="fas fa-home"></i></span>
+        <span class="text">Home</span>
+    </a>
+    <a href="{% url 'student_profile' %}">
+        <span class="icon"><i class="fa-solid fa-user"></i></span>
+        <span class="text">Profile</span>
+    </a>
+    <a href="{% url 'student_form' %}">
+        <span class="icon"><i class="fa-solid fa-file"></i></span>
+        <span class="text">Leave form</span>
+    </a>
+    <a href="#">
+        <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+        <span class="text">Leave history</span>
+    </a>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="logout-btn">
+            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span class="text">Logout</span>
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="std-email-container">
+        <h2 class="std-header">Send Leave Request</h2>
+        <form id="std-leave-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="std-recipient">To (Incharge):</label>
+            <select id="std-recipient" name="recipient" class="std-input" required>
+                <option value="" disabled selected>Select an Incharge</option>
+                {% for incharge in incharges %}
+                    <option value="{{ incharge.id }}">{{ incharge.full_name }}</option>
+                {% empty %}
+                    <option value="">No incharges available</option>
+                {% endfor %}
+            </select>        
+            <span class="error" id="recipient-error"></span>
+
+            <label for="std-message">Message:</label>
+            <textarea id="std-message" name="message" class="std-textarea" rows="6" placeholder="Write your leave request here..." required></textarea>
+            <span class="error" id="message-error"></span>
+
+            <label for="std-attachment">Attachment:</label>
+            <input type="file" id="std-attachment" name="attachment" class="std-input">
+            <span class="error" id="attachment-error"></span>
+
+            <button type="submit" id="std-send-btn" class="std-btn">Send</button>
+        </form>
+
+        <div id="success-message" style="display: none; color: green; margin-top: 10px;">
+            Leave request submitted successfully!
+        </div>
+    </div>
+    <p>Number of Incharges: {{ incharges|length }}</p> <!-- Debug code -->
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("std-leave-form").addEventListener("submit", function(event) {
+            let recipient = document.getElementById("std-recipient").value;
+            let message = document.getElementById("std-message").value.trim();
+            let attachment = document.getElementById("std-attachment").files[0];
+
+            let isValid = true;
+
+            // Clear previous errors
+            document.getElementById("recipient-error").textContent = "";
+            document.getElementById("message-error").textContent = "";
+            document.getElementById("attachment-error").textContent = "";
+
+            if (recipient === "") {
+                document.getElementById("recipient-error").textContent = "Please select a recipient.";
+                isValid = false;
+            }
+
+            if (message.length < 10) {
+                document.getElementById("message-error").textContent = "Message must be at least 10 characters long.";
+                isValid = false;
+            }
+
+            // Check attachment size (max 5MB)
+            if (attachment && attachment.size > 5 * 1024 * 1024) {
+                document.getElementById("attachment-error").textContent = "Attachment must be less than 5MB.";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+                return;
+            }
+
+            // Success msg
+            event.preventDefault();
+            document.getElementById("success-message").style.display = "block";
+
+            // Submit the form after a delay
+            setTimeout(() => {
+                event.target.submit();
+            }, 1500);
+        });
+    });
+</script>
+
+{% endblock %}
