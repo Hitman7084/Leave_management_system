@@ -153,6 +153,8 @@ body {
 .unpaid-leave { border-top: 5px solid #3498db; }
 .floater-leave { border-top: 5px solid #e67e22; }
 
+/* Student profile */
+
 /* Student Form */
 .std-email-container {
     max-width: 1900px;
