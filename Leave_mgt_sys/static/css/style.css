@@ -50,6 +50,72 @@ h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
+.bton {
+    border: none;
+    position: relative;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #0F0F1B;
+    padding: 1em 2em;
+    font-family: sans-serif;
+}
+  
+.reg {
+    text-decoration: none;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    background: linear-gradient(-45deg, #2a9d8f, #ff6038);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+  
+.bton::after, .button::before {
+    content: "";
+    position: absolute;
+    background: linear-gradient(
+      var(--rotate),
+      #2bc5b3 0%,
+      #4bf1e6 30%,
+      #ff6038 70%,
+      #fd9065 100%
+    );
+    width: 105%;
+    height: 110%;
+    left: -2.5%;
+    top: -5%;
+    border-radius: 10px;
+    z-index: -1;
+    transition: --rotate 9999s linear;
+}
+  
+.bton:hover::after, .bton:hover::before {
+    --rotate: 3600deg;
+    transition: --rotate 20s linear;
+}
+  
+.bton:hover::before {
+    animation: fade 1.2s;
+}
+  
+@property --rotate {
+    syntax: "<angle>";
+    initial-value: 130deg;
+    inherits: false;
+}
+  
+@keyframes fade {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(10px);
+}
+  
+100% {
+      opacity: 0;
+      transform: scale(1.4);
+      filter: blur(10px);
+    }
+}
+
 /* Login page css from here */
 
 .login-container {

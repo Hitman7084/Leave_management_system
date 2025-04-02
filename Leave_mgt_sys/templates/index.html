@@ -13,11 +13,15 @@
 </head>
 <body class="martial">
     {% block content %}
-    <h1>Leave Management System</h1>
+    <div>
+        <h1>Leave Management System</h1>
+    </div>
     
     <div class="box">
         <div>
-            <a href ="{% url 'register' %}" class="btn">Register</a>
+            <button class = "bton">
+                <a href ="{% url 'register' %}" class="reg">Register</a>
+            </button>
         </div>
         <div class="button-container">
             <a href="{% url 'login' %}?role=Professor" class="btn">Professor</a>
