@@ -3,23 +3,27 @@
 {% block title %}Dean Dashboard{% endblock %}
 
 {% block sidebar %}
-<ul class="nav flex-column">
-    <li class="nav-item">
-        <a class="nav-link" href="#" id="home-link">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Profile</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#" id="leave-history-link">Leave History</a>
-    </li>
-    <li class="nav-item">
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link">Logout</button>
-        </form>
-    </li>
-</ul>
+<div class="sidenav">
+    <a href="#">
+        <span class="icon"><i class="fas fa-home"></i></span>
+        <span class="text">Home</span>
+    </a>
+    <a href="#">
+        <span class="icon"><i class="fa-solid fa-user"></i></span>
+        <span class="text">Profile</span>
+    </a>
+    <a href="#">
+        <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+        <span class="text">Leave history</span>
+    </a>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="logout-btn">
+            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span class="text">Logout</span>
+        </button>
+    </form>
+</div>
 {% endblock %}
 
 {% block content %}
