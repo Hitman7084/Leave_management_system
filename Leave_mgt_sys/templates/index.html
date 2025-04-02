@@ -12,9 +12,17 @@
     <script src="{% static 'js/script.js' %}" defer></script>
 </head>
 <body class="martial">
+    <div class="dig-clock">
+        <div class="clock">
+          <div id="time" class="time"></div>
+        </div>
+    </div>
+
     {% block content %}
-    <div>
-        <h1>Leave Management System</h1>
+    <div class="leave-head">
+        <div>
+            <h1>Leave Management System</h1>
+        </div>
     </div>
     
     <div class="box">
@@ -35,5 +43,19 @@
     <footer>
         <p>&copy; 2024 Leave Management System. All rights reserved.</p>
     </footer>
+    <script>
+        function updateClock() {
+            const date = new Date();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+          
+            const timeElement = document.getElementById("time");
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+          
+        setInterval(updateClock, 1000);
+    </script>
+    
 </body>
 </html>

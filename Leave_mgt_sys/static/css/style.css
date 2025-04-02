@@ -9,15 +9,49 @@ body {
     text-align: center;
 }
 
+/* Header styling here */
+.leave-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
 h1 {
-    font-size: 3rem;
     color: #BAC9F6;
+    background: -webkit-linear-gradient(25deg, #BAC9F6, #2b3f7a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 3rem;
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid;
+    animation: type 1.5s steps(90) 1.5s 1 normal both, cursor 1s step-end infinite;
+    position: relative;
+}
+  
+@keyframes type {
+    from {
+      width: 0;
+    }
+  
+    to {
+      width: 100%;
+    }
+}
+  
+@keyframes cursor {
+    50% {
+      border-color: transparent;
+    }
 }
 
 .martial {
     margin-top: 10%;
 }
 
+/* Button animation for (Dean, professor, incharge, student) */
 .button-container {
     display: flex;
     justify-content: center;
@@ -50,6 +84,7 @@ h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* Register button animation */
 .bton {
     border: none;
     position: relative;
@@ -63,7 +98,7 @@ h1 {
 .reg {
     text-decoration: none;
     font-size: clamp(1.5rem, 2.5vw, 2.5rem);
-    background: linear-gradient(-45deg, #2a9d8f, #ff6038);
+    background: linear-gradient(-45deg, #2F3C7E, #FBEAEB);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -73,10 +108,10 @@ h1 {
     position: absolute;
     background: linear-gradient(
       var(--rotate),
-      #2bc5b3 0%,
-      #4bf1e6 30%,
-      #ff6038 70%,
-      #fd9065 100%
+      #432E54 0%,
+      #4B4376 30%,
+      #AE445A 70%,
+      #E8BCB9 100%
     );
     width: 105%;
     height: 110%;
@@ -114,6 +149,36 @@ h1 {
       transform: scale(1.4);
       filter: blur(10px);
     }
+}
+
+.dig-clock {
+    width: 200px;
+    height: 80px;
+    background-color: #191d24;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 20px;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+  
+.clock {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.time {
+    font-size: 36px;
+    color: #00ddff;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+    transition: all 0.5s cubic-bezier(0.6, 0.2, 0.1, 2);
 }
 
 /* Login page css from here */
