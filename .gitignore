@@ -2,3 +2,4 @@
 *.json
 leave_attachments
 db.sqlite3
+migrations

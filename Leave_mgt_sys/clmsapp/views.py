@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string
 from .models import User, OTPVerification
 from .gmail_oauth import send_email_oauth
 from .models import LeaveApplication
-from .forms import LeaveApprovalForm
+from datetime import datetime, timedelta
 
 # Generate OTP
 def generate_otp(user):
@@ -120,44 +120,7 @@ def login(request):
 
 @login_required
 def student_dashboard(request):
-    incharges = User.objects.filter(role="Incharge")
-
-    if request.method == "POST":
-        print("Form submitted")  # Debugging shit
-        
-        student = request.user
-        recipient_id = request.POST.get("recipient")
-        message = request.POST.get("message")
-        attachment = request.FILES.get("attachment")
-
-        print(f"Recipient ID: {recipient_id}, Message: {message}, Attachment: {attachment}")
-
-        if not recipient_id or not message:
-            # print("Atleast type message")
-            messages.error(request, "Please select an incharge and enter a message.")
-            return redirect("student_dashboard")
-
-        try:
-            recipient = User.objects.get(id=recipient_id)
-        except User.DoesNotExist:
-            # print("TYPE CORRECT INCHARGE DUMASS")
-            messages.error(request, "Selected incharge does not exist.")
-            return redirect("student_dashboard")
-
-        # Create and save the leave request
-        leave_request = LeaveApplication.objects.create(
-            student=student,
-            incharge=recipient,
-            message=message,
-            attachment=attachment,
-            status="Pending"
-        )
-
-        # print("Leave request saved fk it")
-        messages.success(request, "Leave request submitted successfully.")
-        return redirect("dashboard_student")
-
-    return render(request, "dashboard_student.html", {"incharges": incharges})
+    return render(request, 'dashboard_student.html')
 
 
 @login_required
@@ -201,10 +164,83 @@ def professor_dashboard(request):
     return render(request, 'dashboard_professor.html', {'leave_requests': leave_requests})
 
 def student_form(request):
-    return render(request, 'student_form.html')
+    incharges = User.objects.filter(role="Incharge")
+
+    if request.method == "POST":
+        student = request.user
+        recipient_id = request.POST.get("recipient")
+        leave_type = request.POST.get("leave_type")  # Get leave type from form
+        message = request.POST.get("message")
+        attachment = request.FILES.get("attachment")
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+
+        if not recipient_id or not message or not start_date or not end_date or not leave_type:
+            messages.error(request, "Please fill in all required fields.")
+            return redirect("student_form")
+
+        try:
+            recipient = User.objects.get(id=recipient_id)
+        except User.DoesNotExist:
+            messages.error(request, "Selected incharge does not exist.")
+            return redirect("student_form")
+
+        try:
+            start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+            end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+        except ValueError:
+            messages.error(request, "Invalid date format.")
+            return redirect("student_form")
+
+        if start_date > end_date:
+            messages.error(request, "Start date cannot be after end date.")
+            return redirect("student_form")
+
+        leave_request = LeaveApplication.objects.create(
+            student=student,
+            incharge=recipient,
+            leave_type=leave_type,  # Include leave type
+            message=message,
+            attachment=attachment,
+            start_date=start_date,
+            end_date=end_date,
+            status="Pending"
+        )
+
+        messages.success(request, "Leave request submitted successfully.")
+        return redirect("student_form")
+
+    return render(request, "student_form.html", {"incharges": incharges})
 
 def student_profile(request):
     return render(request, 'student_profile.html')
+
+def student_history(request):
+    leave_requests = LeaveApplication.objects.filter(student=request.user).order_by("-submitted_at")
+    return render(request, 'student_history.html', {'leave_requests': leave_requests})
+
+def leave_calendar_api(request):
+    leaves = LeaveApplication.objects.all()
+    events = []
+
+    leave_colors = {
+        "casual": "#3498db",     # Blue
+        "duty": "#2ecc71",       # Green
+        "medical": "#e74c3c",    # Red
+        "emergency": "#f1c40f"   # Yellow
+    }
+
+    for leave in leaves:
+        if leave.start_date and leave.end_date:
+            events.append({
+                "title": f"{leave.student.full_name} ({leave.get_leave_type_display()})",
+                "start": leave.start_date.strftime("%Y-%m-%d"),
+                "end": leave.end_date.strftime("%Y-%m-%d"),
+                "color": leave_colors.get(leave.leave_type, "#3788d8"),
+            })
+
+    return JsonResponse(events, safe=False)
+
 
 '''# Test Email Sending (For Debugging OAuth)
 def test_email(request):

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block sidebar %}
+<div class="sidenav">
+    <a href="{% url 'dashboard_student' %}">
+        <span class="icon"><i class="fas fa-home"></i></span>
+        <span class="text">Home</span>
+    </a>
+    <a href="{% url 'student_profile' %}">
+        <span class="icon"><i class="fa-solid fa-user"></i></span>
+        <span class="text">Profile</span>
+    </a>
+    <a href="{% url 'student_form' %}">
+        <span class="icon"><i class="fa-solid fa-file"></i></span>
+        <span class="text">Leave form</span>
+    </a>
+    <a href="{% url 'student_history' %}">
+        <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+        <span class="text">Leave history</span>
+    </a>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="logout-btn">
+            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span class="text">Logout</span>
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h2 class="stdhist-header">Your Leave History</h2>
+    
+    {% if leave_requests %}
+        <table class="stdhist-table">
+            <thead>
+                <tr>
+                    <th>Leave Type</th>
+                    <th>Incharge</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                    <th>Status</th>
+                    <th>Rejection Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leave_requests %}
+                <tr>
+                    <td>{{ leave.leave_type }}</td>
+                    <td>{{ leave.incharge.full_name }}</td>
+                    <td>
+                        <div>
+                            <span class="stdhist-msg-preview" id="stdpreview-{{ leave.id }}">
+                                {{ leave.message|slice:":50" }}...
+                            </span>
+                            <span class="stdhist-msg-full" id="stdfull-{{ leave.id }}" style="display: none;">
+                                {{ leave.message }}
+                            </span>
+                        </div>
+                        <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
+                            Show More
+                        </button>
+                    </td>
+                    <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
+                        Show More
+                    </button>
+                    <td>{{ leave.submitted_at }}</td>
+                    <td class="{% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Incharge' %}approved{% elif leave.status == 'Rejected by Incharge' %}rejected{% elif leave.status == 'Forwarded to Dean' %}forwarded{% endif %}">
+                        {{ leave.status }}
+                    </td>
+                    <td>
+                        {% if leave.status == "Rejected by Incharge" %}
+                            <span class="rejection-reason">{{ leave.rejection_reason }}</span>
+                        {% else %}
+                            <span class="no-reason">-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="no-history">No leave applications found.</p>
+    {% endif %}
+</div>
+<script>
+    function toggleMessage(leaveId) {
+        let preview = document.getElementById("stdpreview-" + leaveId);
+        let fullMessage = document.getElementById("stdfull-" + leaveId);
+        let button = preview.parentElement.nextElementSibling;
+    
+        if (preview.style.display === "none") {
+            preview.style.display = "inline";
+            fullMessage.style.display = "none";
+            button.textContent = "Show More";
+        } else {
+            preview.style.display = "none";
+            fullMessage.style.display = "inline";
+            button.textContent = "Show Less";
+        }
+    }
+</script>
+
+{% endblock %}

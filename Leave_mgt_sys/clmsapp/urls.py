@@ -11,5 +11,7 @@ urlpatterns = [
     path('professor/', views.professor_dashboard, name='dashboard_professor'),
     path('form/', views.student_form, name='student_form'),
     path('profile/', views.student_profile, name='student_profile'),
+    path('history', views.student_history, name='student_history'),
+    path("leave_calendar_api/", views.leave_calendar_api, name="leave_calendar_api"),
     # more paths.....
 ]

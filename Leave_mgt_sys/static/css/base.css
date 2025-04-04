@@ -181,6 +181,81 @@ label {
     border-radius: 5px;
 }
 
+/* Student History */
+.stdhist-header {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.stdhist-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stdhist-table th, .stdhist-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.stdhist-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.stdhist-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.stdhist-msg-container {
+    transition: max-height 0.4s ease-in-out;
+    display: inline-block;
+}
+
+.rejection-reason {
+    color: red;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.no-reason {
+    color: gray;
+    font-size: 14px;
+}
+
+.pending {
+    color: orange;
+    font-weight: bold;
+}
+
+.approved {
+    color: green;
+    font-weight: bold;
+}
+
+.rejected {
+    color: red;
+    font-weight: bold;
+}
+
+.forwarded {
+    color: blue;
+    font-weight: bold;
+}
+
+.no-history {
+    text-align: center;
+    font-size: 18px;
+    color: gray;
+    margin-top: 20px;
+}
+
 
 /* Professor Dashboard */
 

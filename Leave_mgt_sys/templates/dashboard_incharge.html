@@ -31,6 +31,7 @@
     <h2 class="inchrg-header">Leave Requests</h2>
     <table class="inchrg-table">
         <tr>
+            <th>S.No.</th>
             <th>Student</th>
             <th>Message</th>
             <th>Attachment</th>
@@ -39,6 +40,7 @@
         </tr>
         {% for leave in leave_requests %}
         <tr>
+            <td>{{ forloop.counter }}</td>
             <td>{{ leave.student.full_name }}</td>
             <td>
                 <div class="inchrg-msg-container" id="message-{{ leave.id }}">

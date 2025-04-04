@@ -16,7 +16,7 @@
         <span class="icon"><i class="fa-solid fa-file"></i></span>
         <span class="text">Leave form</span>
     </a>
-    <a href="#">
+    <a href="{% url 'student_history' %}">
         <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
         <span class="text">Leave history</span>
     </a>
@@ -36,8 +36,8 @@
         <h2 class="std-header">Send Leave Request</h2>
         <form id="std-leave-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            
-            <label for="std-recipient">To (Incharge):</label>
+        
+            <label for="id_incharge">To (Incharge):</label>
             <select id="std-recipient" name="recipient" class="std-input" required>
                 <option value="" disabled selected>Select an Incharge</option>
                 {% for incharge in incharges %}
@@ -45,17 +45,33 @@
                 {% empty %}
                     <option value="">No incharges available</option>
                 {% endfor %}
-            </select>        
+            </select>       
             <span class="error" id="recipient-error"></span>
+        
+            <label for="std-leave-type">Leave Type:</label>
+            <select id="std-leave-type" name="leave_type" class="std-input" required>
+                <option value="casual">Casual Leave</option>
+                <option value="duty">Duty Leave</option>
+                <option value="medical">Medical Leave</option>
+                <option value="emergency">Emergency Leave</option>
+            </select>
+                    
+            <label for="std-start-date">Start Date:</label>
+            <input type="date" id="std-start-date" name="start_date" class="std-input" required>
+            
+            <label for="std-end-date">End Date:</label>
+            <input type="date" id="std-end-date" name="end_date" class="std-input" required>
+
+            <p><strong>Leave Duration:</strong> <span id="leave-duration">0</span> days</p>
 
             <label for="std-message">Message:</label>
             <textarea id="std-message" name="message" class="std-textarea" rows="6" placeholder="Write your leave request here..." required></textarea>
             <span class="error" id="message-error"></span>
-
+        
             <label for="std-attachment">Attachment:</label>
             <input type="file" id="std-attachment" name="attachment" class="std-input">
             <span class="error" id="attachment-error"></span>
-
+        
             <button type="submit" id="std-send-btn" class="std-btn">Send</button>
         </form>
 
@@ -110,6 +126,25 @@
                 event.target.submit();
             }, 1500);
         });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        function calculateDays() {
+            let startDate = document.getElementById("std-start-date").value;
+            let endDate = document.getElementById("std-end-date").value;
+            if (startDate && endDate) {
+                let start = new Date(startDate);
+                let end = new Date(endDate);
+                let days = (end - start) / (1000 * 60 * 60 * 24) + 1;  // +1 to include the last day
+                document.getElementById("leave-duration").textContent = days > 0 ? days : 0;
+            } else {
+                document.getElementById("leave-duration").textContent = "0";
+            }
+        }
+
+        document.getElementById("std-start-date").addEventListener("change", calculateDays);
+        document.getElementById("std-end-date").addEventListener("change", calculateDays);
     });
 </script>
 
