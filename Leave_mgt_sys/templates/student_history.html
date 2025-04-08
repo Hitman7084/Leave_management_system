@@ -64,9 +64,6 @@
                             Show More
                         </button>
                     </td>
-                    <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
-                        Show More
-                    </button>
                     <td>{{ leave.submitted_at }}</td>
                     <td class="{% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Incharge' %}approved{% elif leave.status == 'Rejected by Incharge' %}rejected{% elif leave.status == 'Forwarded to Dean' %}forwarded{% endif %}">
                         {{ leave.status }}
