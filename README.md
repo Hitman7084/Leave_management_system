@@ -17,19 +17,19 @@ Follow these steps to set up the project locally:
 1. 🔁 Clone the repository:
    ```bash
    git clone https://github.com/Hitman7084/Leave_management_system.git
-📁 Navigate into the project folder:
+2. 📁 Navigate into the project folder:
 
     cd Leave_management_system
-📦 Install dependencies:
+3. 📦 Install dependencies:
 
     pip install -r requirements.txt
-🗃️ Configure your database settings (e.g., PostgreSQL/MySQL)
+4. 🗃️ Configure your database settings (e.g., PostgreSQL/MySQL)
 
 
-⚙️ Apply database migrations:
+5. ⚙️ Apply database migrations:
 
     python manage.py migrate
-🚀 Run the development server:
+6. 🚀 Run the development server:
 
     python manage.py runserver
 
