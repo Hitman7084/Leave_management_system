@@ -11,7 +11,7 @@ body {
 .sidenav {
     position: fixed;
     left: 0;
-    top: 25%;
+    top: 30%;
     transform: translateY(-50%);
     background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
     width: 60px;
