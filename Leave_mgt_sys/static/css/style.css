@@ -4,37 +4,23 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background: url("../images/background.jpg") no-repeat center center fixed;
-    background-size: cover;
+    /*background: url("../images/background.jpg") no-repeat center center fixed;
+    background-size: cover;*/
     text-align: center;
 }
 
 /* Header styling here */
 h1 {
-    position: relative;
     font-family: cursive;
-    font-size: 3em;
-    letter-spacing: 4px;
-    overflow: hidden;
-    background: linear-gradient(90deg, #1b2264, #26b5e1, #1b2264);
-    background-repeat: no-repeat;
-    background-size: 80%;
-    animation: animate 4s linear infinite;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: rgba(255, 255, 255, 0);
-}
-  
-@keyframes animate {
-    0% {
-      background-position: -500%;
-    }
-    100% {
-      background-position: 500%;
-    }
+    font-size: 3rem;
+    color: #AE445A;
 }
 
-.martial {
-    margin-top: 10%;
+.finisher-header {
+    position: relative;
+    height: 100vh; /* or your desired height */
+    width: 100%;
+    overflow: hidden;
 }
 
 /* Button animation for (Dean, professor, incharge, student) */
