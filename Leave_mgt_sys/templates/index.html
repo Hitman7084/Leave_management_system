@@ -20,9 +20,9 @@
     
     <div class="box">
         <div>
-            <button class = "bton">
-                <a href ="{% url 'register' %}" class="reg">Register</a>
-            </button>
+            <form action="{% url 'register' %}" method="get">
+                <button type="submit" class="bton">Register</button>
+            </form>
         </div>
         <div class="button-container">
             <a href="{% url 'login' %}?role=Professor" class="btn">Professor</a>

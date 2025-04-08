@@ -14,7 +14,7 @@ h1 {
     margin-top: 10%;
     font-family: cursive;
     font-size: 3rem;
-    color: #AE445A;
+    color: #fff;
 }
 
 .Hitman-header {
@@ -58,71 +58,28 @@ h1 {
 }
 
 /* Register button animation */
+
 .bton {
-    border: none;
-    position: relative;
+    transition: all .5s ease;
+    color: #fff;
+    border: 3px solid white;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    line-height: 1;
+    font-size: 30px;
+    background-color : transparent;
+    padding: 10px;
+    outline: none;
     border-radius: 10px;
     cursor: pointer;
-    background: #0F0F1B;
-    padding: 1em 2em;
-    font-family: sans-serif;
 }
   
-.reg {
-    text-decoration: none;
-    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
-    background: linear-gradient(-45deg, #2F3C7E, #FBEAEB);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.bton:hover {
+    color: #001F3F;
+    background-color: #fff;
+    translate: 0 5px;
 }
-  
-.bton::after, .button::before {
-    content: "";
-    position: absolute;
-    background: linear-gradient(
-      var(--rotate),
-      #432E54 0%,
-      #4B4376 30%,
-      #AE445A 70%,
-      #E8BCB9 100%
-    );
-    width: 105%;
-    height: 110%;
-    left: -2.5%;
-    top: -5%;
-    border-radius: 10px;
-    z-index: -1;
-    transition: --rotate 9999s linear;
-}
-  
-.bton:hover::after, .bton:hover::before {
-    --rotate: 3600deg;
-    transition: --rotate 20s linear;
-}
-  
-.bton:hover::before {
-    animation: fade 1.2s;
-}
-  
-@property --rotate {
-    syntax: "<angle>";
-    initial-value: 130deg;
-    inherits: false;
-}
-  
-@keyframes fade {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-      filter: blur(10px);
-}
-  
-100% {
-      opacity: 0;
-      transform: scale(1.4);
-      filter: blur(10px);
-    }
-}
+
 
 /* Login page css from here */
 
