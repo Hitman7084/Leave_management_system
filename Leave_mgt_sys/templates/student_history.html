@@ -38,33 +38,28 @@
         <table class="stdhist-table">
             <thead>
                 <tr>
+                    <th>S.No.</th>
                     <th>Leave Type</th>
                     <th>Incharge</th>
-                    <th>Message</th>
-                    <th>Submitted At</th> <!--How about adding "Days requested" instead of submitted at?-->
+                    <th>Dates Requested</th>
                     <th>Status</th>
                     <th>Rejection Reason</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for leave in leave_requests %}
-                <tr>
+                <tr class="leave-row">
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ leave.leave_type }}</td>
                     <td>{{ leave.incharge.full_name }}</td>
                     <td>
-                        <div>
-                            <span class="stdhist-msg-preview" id="stdpreview-{{ leave.id }}">
-                                {{ leave.message|slice:":50" }}...
-                            </span>
-                            <span class="stdhist-msg-full" id="stdfull-{{ leave.id }}" style="display: none;">
-                                {{ leave.message }}
-                            </span>
-                        </div>
-                        <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
-                            Show More
-                        </button>
+                        {% if leave.start_date.year == leave.end_date.year %}
+                            {{ leave.start_date|date:"M j" }} - {{ leave.end_date|date:"M j, Y" }}
+                        {% else %}
+                            {{ leave.start_date|date:"M j, Y" }} - {{ leave.end_date|date:"M j, Y" }}
+                        {% endif %}
                     </td>
-                    <td>{{ leave.submitted_at }}</td>
                     <td class="{% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Incharge' %}approved{% elif leave.status == 'Rejected by Incharge' %}rejected{% elif leave.status == 'Forwarded to Dean' %}forwarded{% endif %}">
                         {{ leave.status }}
                     </td>
@@ -75,7 +70,17 @@
                             <span class="no-reason">-</span>
                         {% endif %}
                     </td>
+                    <td class="dropdown-toggle" onclick="toggleRow({{ leave.id }})">
+                        <i class="fa fa-chevron-down" id="icon-{{ leave.id }}"></i>
+                    </td>
                 </tr>
+                
+                <tr id="message-row-{{ leave.id }}" class="message-row" style="display: none;">
+                    <td colspan="7" class="message-cell">
+                        <strong>Message:</strong> {{ leave.message }}
+                    </td>
+                </tr>
+                
                 {% endfor %}
             </tbody>
         </table>
@@ -84,19 +89,18 @@
     {% endif %}
 </div>
 <script>
-    function toggleMessage(leaveId) {
-        let preview = document.getElementById("stdpreview-" + leaveId);
-        let fullMessage = document.getElementById("stdfull-" + leaveId);
-        let button = preview.parentElement.nextElementSibling;
-    
-        if (preview.style.display === "none") {
-            preview.style.display = "inline";
-            fullMessage.style.display = "none";
-            button.textContent = "Show More";
+    function toggleRow(leaveId) {
+        const row = document.getElementById("message-row-" + leaveId);
+        const icon = document.getElementById("icon-" + leaveId);
+
+        if (row.style.display === "none") {
+            row.style.display = "table-row";
+            icon.classList.remove("fa-chevron-down");
+            icon.classList.add("fa-chevron-up");
         } else {
-            preview.style.display = "none";
-            fullMessage.style.display = "inline";
-            button.textContent = "Show Less";
+            row.style.display = "none";
+            icon.classList.remove("fa-chevron-up");
+            icon.classList.add("fa-chevron-down");
         }
     }
 </script>
