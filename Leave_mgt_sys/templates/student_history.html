@@ -71,7 +71,7 @@
                         {% endif %}
                     </td>
                     <td class="dropdown-toggle" onclick="toggleRow({{ leave.id }})">
-                        <i class="fa fa-chevron-down" id="icon-{{ leave.id }}"></i>
+                        <i class="fa-solid fa-circle-chevron-down" id="icon-{{ leave.id }}"></i>
                     </td>
                 </tr>
                 
@@ -92,16 +92,11 @@
     function toggleRow(leaveId) {
         const row = document.getElementById("message-row-" + leaveId);
         const icon = document.getElementById("icon-" + leaveId);
-
-        if (row.style.display === "none") {
-            row.style.display = "table-row";
-            icon.classList.remove("fa-chevron-down");
-            icon.classList.add("fa-chevron-up");
-        } else {
-            row.style.display = "none";
-            icon.classList.remove("fa-chevron-up");
-            icon.classList.add("fa-chevron-down");
-        }
+    
+        const isHidden = row.style.display === "none" || row.style.display === "";
+    
+        row.style.display = isHidden ? "table-row" : "none";
+        icon.classList.toggle("rotate", isHidden); // Add rotation only when expanding
     }
 </script>
 

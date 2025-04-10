@@ -254,6 +254,8 @@ body {
 .stdhist-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+
     background-color: #EBE5C2;
     color: #333;
     border-radius: 8px;
@@ -289,6 +291,11 @@ body {
     background-color: #FDAB9E;
     padding: 10px;
     font-style: italic;
+}
+
+.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
 }
 
 .rejection-reason {
