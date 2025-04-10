@@ -59,6 +59,7 @@ class LeaveApplication(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+    rejection_reason = models.TextField(blank=True, null=True)
 
     STATUS_CHOICES = [
         ('Pending', 'Pending'),

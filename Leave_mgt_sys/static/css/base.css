@@ -349,6 +349,7 @@ body {
 .inchrg-table td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    color: black;
 }
 
 .inchrg-table tr:nth-child(even) {
