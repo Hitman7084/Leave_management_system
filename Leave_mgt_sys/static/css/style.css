@@ -37,20 +37,22 @@ h1 {
     padding: 15px 30px;
     font-size: 1rem;
     text-decoration: none;
-    color: black;
-    background-color: #cab287;
-    border-radius: 5px;
+    color: white;
+    background-color: transparent;
+    border-radius: 15px;
+    border: 1px solid white;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #9d8854;
+    background-color: white;
+    color: #0F0F1B;
     transform: translateY(-3px);
 }
 
 .box .button-container {
-    background-color: #0F0F1B;
+    background-color: transparent;
     padding: 30px;
     display: inline-block;
     border-radius: 10px;
