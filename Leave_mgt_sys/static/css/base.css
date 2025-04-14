@@ -295,9 +295,6 @@ body {
 
 .msg-content.expanded {
     opacity: 1;
-}
-
-.msg-content.expanded {
     max-height: 1000px;
 }
 

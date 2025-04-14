@@ -92,6 +92,10 @@
 </div>
 
 <script>
+    function showRejectInput(leaveId) {
+        document.getElementById("reject-form-" + leaveId).style.display = "block";
+    }
+
     function toggleRow(leaveId) {
         const row = document.getElementById("msg-row-" + leaveId);
         const content = document.getElementById("msg-content-" + leaveId);
