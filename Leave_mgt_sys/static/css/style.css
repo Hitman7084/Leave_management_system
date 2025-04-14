@@ -133,7 +133,7 @@ h1 {
 
 /* CSS for register.html */
 .register-container {
-    background-color: #0F0F1B;
+    background-color: transparent;
     padding: 20px;
     border-radius: 8px;
     width: 300px;
@@ -144,12 +144,12 @@ h1 {
 
 .register-container h2 {
     margin-bottom: 20px;
-    color: #BAC9F6;
+    color: white;
 }
 
 .register-container label {
     display: block;
-    color: #BAC9F6;
+    color: white;
     margin-bottom: 5px;
     font-weight: bold;
 }
@@ -158,7 +158,7 @@ h1 {
     width: 90%;
     padding: 8px;
     margin-bottom: 15px;
-    color: #BAC9F6;
+    color: white;
     background-color: rgba(95, 82, 116, 0.2);
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -170,16 +170,17 @@ h1 {
 }
 
 .register-container button {
-    background-color: #cab287;
-    color: black;
+    background-color: transparent;
+    color: white;
     padding: 10px 15px;
-    border: none;
+    border: 2px solid white;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .register-container button:hover {
-    background-color: #9d8854;
+    background-color: white;
+    color: #0F0F1B;
 }
 
 /* footer css */
