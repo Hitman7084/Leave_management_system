@@ -9,9 +9,10 @@ urlpatterns = [
     path('incharge/', views.incharge_dashboard, name='dashboard_incharge'),
     path('dean/', views.dean_dashboard, name='dashboard_dean'),
     path('professor/', views.professor_dashboard, name='dashboard_professor'),
-    path('form/', views.student_form, name='student_form'),
-    path('profile/', views.student_profile, name='student_profile'),
-    path('history', views.student_history, name='student_history'),
+    path('student_form/', views.student_form, name='student_form'),
+    path('student_profile/', views.student_profile, name='student_profile'),
+    path('student_history/', views.student_history, name='student_history'),
+    path('incharge_history/', views.incharge_history, name='incharge_history'),
     path("leave_calendar_api/", views.leave_calendar_api, name="leave_calendar_api"),
     # more paths.....
 ]

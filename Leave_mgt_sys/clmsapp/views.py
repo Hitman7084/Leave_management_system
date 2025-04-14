@@ -153,6 +153,10 @@ def incharge_dashboard(request):
 
     return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
 
+def incharge_history(request):
+    leave_requests = LeaveApplication.objects.filter(incharge=request.user).order_by("-submitted_at")
+    return render(request, 'incharge_history.html', {'leave_requests': leave_requests})
+
 @login_required
 def dean_dashboard(request):
     leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=True)

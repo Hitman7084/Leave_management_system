@@ -4,7 +4,7 @@
 
 {% block sidebar %}
 <div class="sidenav">
-    <a href="#">
+    <a href="{% url 'dashboard_incharge' %}">
         <span class="icon"><i class="fas fa-home"></i></span>
         <span class="text">Home</span>
     </a>
@@ -12,7 +12,7 @@
         <span class="icon"><i class="fa-solid fa-user"></i></span>
         <span class="text">Profile</span>
     </a>
-    <a href="#">
+    <a href="{% url 'incharge_history' %}">
         <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
         <span class="text">History</span>
     </a>
