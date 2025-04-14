@@ -77,9 +77,11 @@
                 </form>
             </td>
         </tr>
-        <tr id="message-row-{{ leave.id }}" class="message-row" style="display: none;">
-            <td colspan="7" class="message-cell">
-                <strong>Message:</strong> {{ leave.message }}
+        <tr id="msg-row-{{ leave.id }}" class="msg-row">
+            <td colspan="7" class="msg-cell">
+                <div id="msg-content-{{ leave.id }}" class="msg-content">
+                    <strong>Message:</strong> {{ leave.message }}
+                </div>
             </td>
         </tr>
         {% endfor %}
@@ -91,13 +93,24 @@
 
 <script>
     function toggleRow(leaveId) {
-        const row = document.getElementById("message-row-" + leaveId);
+        const row = document.getElementById("msg-row-" + leaveId);
+        const content = document.getElementById("msg-content-" + leaveId);
         const icon = document.getElementById("icon-" + leaveId);
-    
-        const isHidden = row.style.display === "none" || row.style.display === "";
-    
-        row.style.display = isHidden ? "table-row" : "none";
-        icon.classList.toggle("rotate", isHidden);
+
+        const isExpanded = content.classList.contains("expanded");
+
+        if (isExpanded) {
+            content.style.maxHeight = content.scrollHeight + "px";
+            requestAnimationFrame(() => {
+                content.style.maxHeight = "0";
+                content.classList.remove("expanded");
+            });
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.classList.add("expanded");
+        }
+
+        icon.classList.toggle("rotate", !isExpanded);
     }
 </script>
 

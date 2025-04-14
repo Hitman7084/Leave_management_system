@@ -286,7 +286,22 @@ body {
     text-align: center;
 }
 
-.message-row .message-cell {
+.msg-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.msg-content.expanded {
+    opacity: 1;
+}
+
+.msg-content.expanded {
+    max-height: 1000px;
+}
+
+.msg-row .msg-cell {
     background-color: #FDAB9E;
     padding: 10px;
     font-style: italic;
@@ -360,6 +375,10 @@ body {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #443627;
+}
+
+.inchrg-table tr:hover {
+    background-color: #B9B28A;
 }
 
 .inchrg-attachment a {
