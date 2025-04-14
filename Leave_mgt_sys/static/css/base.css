@@ -342,8 +342,6 @@ body {
 /* incharge css */
 .inchrg-table {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
     background-color: #EBE5C2;
     color: #333;
     border-radius: 8px;
@@ -351,29 +349,17 @@ body {
 }
 
 .inchrg-table th {
-    background-color: #007bff;
-    color: white;
     padding: 12px;
     text-align: left;
+    border-bottom: 1px solid #443627;
+    background-color: #41644A;
+    color: white;
 }
 
-.inchrg-msg-container {
-    transition: max-height 0.4s ease-in-out;
-    display: inline-block;
-}
-
-.inchrg-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    color: black;
-}
-
-.inchrg-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.inchrg-table tr:hover {
-    background-color: #f1f1f1;
+.inchrg-table td{
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #443627;
 }
 
 .inchrg-attachment a {
@@ -385,14 +371,6 @@ body {
 .inchrg-attachment a:hover {
     text-decoration: underline;
 }
-
-.inchrg-header {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-}
-
 
 /* SUBMIT BUTTON */
 /* For general button cases (std-btn)*/
