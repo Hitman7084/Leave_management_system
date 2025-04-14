@@ -29,32 +29,25 @@
 {% block content %}
 <div class="main-content">
     <h2 class="inchrg-header">Leave Requests</h2>
+    {% if leave_requests %}
     <table class="inchrg-table">
         <tr>
             <th>S.No.</th>
             <th>Student</th>
-            <th>Message</th>
+            <th></th>
+            <th>Leave type</th>
             <th>Attachment</th>
-            <th>Submitted At</th>
+            <th>Dates requested</th>
             <th>Action</th>  
         </tr>
         {% for leave in leave_requests %}
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ leave.student.full_name }}</td>
-            <td>
-                <div class="inchrg-msg-container" id="message-{{ leave.id }}">
-                    <span class="inchrg-msg-preview" id="preview-{{ leave.id }}">
-                        {{ leave.message|slice:":50" }}...
-                    </span>
-                    <span class="inchrg-msg-full" id="full-{{ leave.id }}" style="display: none;">
-                        {{ leave.message }}
-                    </span>
-                </div>
-                <button type="button" class="btn-toggle" onclick="toggleMessage({{ leave.id }})">
-                    Show More
-                </button>
+            <td class="dropdown-toggle" onclick="toggleRow({{ leave.id }})">
+                <i class="fa-solid fa-circle-chevron-down" id="icon-{{ leave.id }}"></i>
             </td>
+            <td>{{ leave.leave_type }}</td>
             <td>
                 {% if leave.attachment %}
                 <a href="{{ leave.attachment.url }}" target="_blank">View File</a>
@@ -62,7 +55,13 @@
                 No Attachment
                 {% endif %}
             </td>
-            <td>{{ leave.submitted_at }}</td>
+            <td>
+                {% if leave.start_date.year == leave.end_date.year %}
+                    {{ leave.start_date|date:"M j" }} - {{ leave.end_date|date:"M j, Y" }}
+                {% else %}
+                    {{ leave.start_date|date:"M j, Y" }} - {{ leave.end_date|date:"M j, Y" }}
+                {% endif %}
+            </td>
             <td>
                 <form method="post">
                     {% csrf_token %}
@@ -78,30 +77,28 @@
                 </form>
             </td>
         </tr>
+        <tr id="message-row-{{ leave.id }}" class="message-row" style="display: none;">
+            <td colspan="7" class="message-cell">
+                <strong>Message:</strong> {{ leave.message }}
+            </td>
+        </tr>
         {% endfor %}
     </table>
+    {% else %}
+        <p class="no-history">No leave applications found.</p>
+    {% endif %}
 </div>
 
 <script>
-function showRejectInput(leaveId) {
-    document.getElementById("reject-form-" + leaveId).style.display = "block";
-}
-
-function toggleMessage(leaveId) {
-    let preview = document.getElementById("preview-" + leaveId);
-    let fullMessage = document.getElementById("full-" + leaveId);
-    let button = preview.parentElement.nextElementSibling;
-
-    if (preview.style.display === "none") {
-        preview.style.display = "inline";
-        fullMessage.style.display = "none";
-        button.textContent = "Show More";
-    } else {
-        preview.style.display = "none";
-        fullMessage.style.display = "inline";
-        button.textContent = "Show Less";
+    function toggleRow(leaveId) {
+        const row = document.getElementById("message-row-" + leaveId);
+        const icon = document.getElementById("icon-" + leaveId);
+    
+        const isHidden = row.style.display === "none" || row.style.display === "";
+    
+        row.style.display = isHidden ? "table-row" : "none";
+        icon.classList.toggle("rotate", isHidden);
     }
-}
 </script>
 
 {% endblock %}

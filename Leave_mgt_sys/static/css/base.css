@@ -255,7 +255,6 @@ body {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-
     background-color: #EBE5C2;
     color: #333;
     border-radius: 8px;
@@ -344,9 +343,9 @@ body {
 .inchrg-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    table-layout: fixed;
+    background-color: #EBE5C2;
+    color: #333;
     border-radius: 8px;
     overflow: hidden;
 }
