@@ -43,7 +43,7 @@
                 <th>Dates Requested</th>
                 <th>Status</th>
                 <th>Rejection Reason</th>
-                <th></th>
+                <th>Message</th>
             </tr>
         
             {% for leave in leave_requests %}
@@ -93,21 +93,21 @@
         const row = document.getElementById("msg-row-" + leaveId);
         const content = document.getElementById("msg-content-" + leaveId);
         const icon = document.getElementById("icon-" + leaveId);
-
         const isExpanded = content.classList.contains("expanded");
-
+    
         if (isExpanded) {
             content.style.maxHeight = content.scrollHeight + "px";
             requestAnimationFrame(() => {
                 content.style.maxHeight = "0";
                 content.classList.remove("expanded");
             });
+    
+            icon.style.transform = "rotate(0deg)";
         } else {
-            content.style.maxHeight = content.scrollHeight + "px";
             content.classList.add("expanded");
+            content.style.maxHeight = content.scrollHeight + "px";
+            icon.style.transform = "rotate(180deg)";
         }
-
-        icon.classList.toggle("rotate", !isExpanded);
     }
 </script>
 {% endblock %}
