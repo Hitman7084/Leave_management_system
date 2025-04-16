@@ -138,18 +138,17 @@ def incharge_dashboard(request):
             return redirect('dashboard_incharge')
 
         if action == "approve":
-            leave.incharge_approved = True
-            leave.forwarded_to_dean = True
-            leave.status = "Forwarded to Dean"
+            leave.status = "Approved by Incharge"
             leave.rejection_reason = None
         elif action == "reject":
-            leave.incharge_approved = False
-            leave.forwarded_to_dean = False
             leave.status = "Rejected by Incharge"
             leave.rejection_reason = request.POST.get("rejection_reason")
 
+        if action == "forward":
+            leave.status = "Forwarded to Dean"
+
         leave.save()
-        return redirect('dashboard_incharge') 
+        return redirect('dashboard_incharge')
 
     return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
 
@@ -159,7 +158,7 @@ def incharge_history(request):
 
 @login_required
 def dean_dashboard(request):
-    leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=True)
+    leave_requests = LeaveApplication.objects.filter(status="Forwarded to Dean")
     return render(request, 'dashboard_dean.html', {'leave_requests': leave_requests})
 
 @login_required
