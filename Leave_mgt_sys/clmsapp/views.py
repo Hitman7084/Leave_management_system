@@ -131,26 +131,28 @@ def incharge_dashboard(request):
         leave_id = request.POST.get("leave_id")
         action = request.POST.get("action")
 
+        print(f"POST received: leave_id={leave_id}, action={action}")  # Debug print
+
         try:
             leave = LeaveApplication.objects.get(id=leave_id)
         except LeaveApplication.DoesNotExist:
             messages.error(request, "Leave request not found!")
             return redirect('dashboard_incharge')
 
-        if action == "approve":
-            leave.status = "Approved by Incharge"
+        if action == "forward":
+            leave.status = "Forwarded to Dean"
             leave.rejection_reason = None
+            messages.success(request, "Leave forwarded to Dean.")
         elif action == "reject":
             leave.status = "Rejected by Incharge"
             leave.rejection_reason = request.POST.get("rejection_reason")
+            messages.success(request, "Leave rejected.")
 
-        if action == "forward":
-            leave.status = "Forwarded to Dean"
-
-        leave.save()
+        leave.save()  
         return redirect('dashboard_incharge')
 
     return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
+
 
 def incharge_history(request):
     leave_requests = LeaveApplication.objects.filter(incharge=request.user).order_by("-submitted_at")

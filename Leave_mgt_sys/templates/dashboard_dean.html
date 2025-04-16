@@ -29,5 +29,92 @@
 {% block content %}
 <div class="main-content">
     <h1>Welcome {{ user.full_name }}</h1>
+    {% if leave_requests %}
+    <table class="dean-table">
+        <tr>
+            <th>S.No.</th>
+            <th>Student</th>
+            <th>Message</th>
+            <th>Leave type</th>
+            <th>Attachment</th>
+            <th>Dates requested</th>
+            <th>Action</th>  
+        </tr>
+        {% for leave in leave_requests %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ leave.student.full_name }}</td>
+            <td class="dropdown-toggle" onclick="toggleRow({{ leave.id }})">
+                <i class="fa-solid fa-circle-chevron-down" id="icon-{{ leave.id }}"></i>
+            </td>
+            <td>{{ leave.leave_type }}</td>
+            <td>
+                {% if leave.attachment %}
+                <a href="{{ leave.attachment.url }}" target="_blank">View File</a>
+                {% else %}
+                No Attachment
+                {% endif %}
+            </td>
+            <td>
+                {% if leave.start_date.year == leave.end_date.year %}
+                    {{ leave.start_date|date:"M j" }} - {{ leave.end_date|date:"M j, Y" }}
+                {% else %}
+                    {{ leave.start_date|date:"M j, Y" }} - {{ leave.end_date|date:"M j, Y" }}
+                {% endif %}
+            </td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                    
+                    <div id="reject-form-{{ leave.id }}" style="display: none; margin-bottom: 5px;">
+                        <input type="text" name="rejection_reason" placeholder="Rejection Reason" required>
+                        <button type="submit" name="action" value="reject" class="btn-danger">Confirm Reject</button>
+                    </div>
+                    
+                    <button type="submit" name="action" value="approve" class="btn-success">Approve</button>
+                    <button type="button" onclick="showRejectInput({{ leave.id }})" class="btn-danger">Reject</button>
+                </form>
+            </td>
+        </tr>
+        <tr id="msg-row-{{ leave.id }}" class="msg-row">
+            <td colspan="7" class="msg-cell">
+                <div id="msg-content-{{ leave.id }}" class="msg-content">
+                    <strong>Message:</strong> {{ leave.message }}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="no-history">No leave applications found.</p>
+    {% endif %}
 </div>
+
+<script>
+    function showRejectInput(leaveId) {
+        document.getElementById("reject-form-" + leaveId).style.display = "block";
+    }
+
+    function toggleRow(leaveId) {
+        const row = document.getElementById("msg-row-" + leaveId);
+        const content = document.getElementById("msg-content-" + leaveId);
+        const icon = document.getElementById("icon-" + leaveId);
+        const isExpanded = content.classList.contains("expanded");
+    
+        if (isExpanded) {
+            content.style.maxHeight = content.scrollHeight + "px";
+            requestAnimationFrame(() => {
+                content.style.maxHeight = "0";
+                content.classList.remove("expanded");
+            });
+    
+            icon.style.transform = "rotate(0deg)";
+        } else {
+            content.classList.add("expanded");
+            content.style.maxHeight = content.scrollHeight + "px";
+            icon.style.transform = "rotate(180deg)";
+        }
+    }
+</script>
 {% endblock %}
