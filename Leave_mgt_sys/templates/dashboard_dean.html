@@ -81,6 +81,10 @@
             <td colspan="7" class="msg-cell">
                 <div id="msg-content-{{ leave.id }}" class="msg-content">
                     <strong>Message:</strong> {{ leave.message }}
+                    <br>
+                    {% if leave.approval_note %}
+                        <strong>Approval Note:</strong> {{ leave.approval_note }}
+                    {% endif %}
                 </div>
             </td>
         </tr>

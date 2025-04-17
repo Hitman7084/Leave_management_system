@@ -141,7 +141,9 @@ def incharge_dashboard(request):
 
         if action == "forward":
             leave.status = "Forwarded to Dean"
-            leave.rejection_reason = None
+            leave.rejection_reason = None  # reset original rejection reason diya gaya by incharge
+            leave.approval_note = f"Approved by {request.user.full_name or request.user.username}"
+            leave.save()
             messages.success(request, "Leave forwarded to Dean.")
         elif action == "reject":
             leave.status = "Rejected by Incharge"
