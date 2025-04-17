@@ -29,13 +29,6 @@
 {% block content %}
 <div class="main-content">
     <h2 class="inchrg-header">Leave Requests</h2>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li style="color: green;">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     {% if leave_requests %}
     <table class="inchrg-table">
         <tr>
