@@ -391,6 +391,46 @@ body {
     text-decoration: underline;
 }
 
+/* Dean dashboard */
+
+.dean-table {
+    width: 100%;
+    background-color: #EBE5C2;
+    color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dean-table th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #443627;
+    background-color: #41644A;
+    color: white;
+}
+
+.dean-table td{
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #443627;
+}
+
+.dean-table tr:hover {
+    background-color: #B9B28A;
+}
+
+.dean-attachment a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dean-attachment a:hover {
+    text-decoration: underline;
+}
+
+
+
 /* SUBMIT BUTTON */
 /* For general button cases (std-btn)*/
 .btn-toggle {
