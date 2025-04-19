@@ -37,10 +37,6 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="std-profile-group">
-                <label for="name">Full Name</label>
-                <input type="text" name="name" id="name" class="std-profile-input" value="{{ student.name }}" required>
-            </div>
-            <div class="std-profile-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" class="std-profile-input" value="{{ student.email }}" required>
             </div>
