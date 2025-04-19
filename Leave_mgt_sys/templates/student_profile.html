@@ -36,28 +36,7 @@
         <h2 class="std-profile-title">Update Profile</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="std-profile-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" class="std-profile-input" value="{{ student.email }}" required>
-            </div>
-            <div class="std-profile-group">
-                <label for="roll_number">Roll Number</label>
-                <input type="text" name="roll_number" id="roll_number" class="std-profile-input" value="{{ student.roll_number }}" required>
-            </div>
-            <div class="std-profile-group">
-                <label for="department">Department</label>
-                <input type="text" name="department" id="department" class="std-profile-input" value="{{ student.department }}" required>
-            </div>
-            <div class="std-profile-group">
-                <label for="profile_pic">Profile Picture</label><br>
-                {% if student.profile_pic %}
-                    <img src="{{ student.profile_pic.url }}" alt="Profile Picture" class="std-profile-img">
-                {% endif %}
-                <input type="file" name="profile_pic" id="profile_pic" class="std-profile-file">
-            </div>
-            <div class="std-profile-submit">
-                <button type="submit" class="std-profile-btn">Update</button>
-            </div>
+            
         </form>
     </div>
 </div>
