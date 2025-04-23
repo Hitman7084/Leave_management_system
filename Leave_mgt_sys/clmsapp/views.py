@@ -163,6 +163,31 @@ def incharge_history(request):
 @login_required
 def dean_dashboard(request):
     leave_requests = LeaveApplication.objects.filter(status="Forwarded to Dean")
+
+    if request.method == "POST":
+        leave_id = request.POST.get("leave_id")
+        action = request.POST.get("action")
+
+        try:
+            leave = LeaveApplication.objects.get(id=leave_id)
+        except LeaveApplication.DoesNotExist:
+            messages.error(request, "Leave request not found!")
+            return redirect('dean_dashboard')
+
+        if action == "approve":
+            leave.status = "Approved"
+            leave.rejection_reason = None
+            leave.approval_note = f"Approved by Dean {request.user.full_name or request.user.username}"
+            messages.success(request, "Leave approved.")
+        elif action == "reject":
+            leave.status = "Rejected by Dean"
+            leave.rejection_reason = request.POST.get("rejection_reason")
+            leave.approval_note = None
+            messages.success(request, "Leave rejected.")
+
+        leave.save()
+        return redirect('dean_dashboard')
+
     return render(request, 'dashboard_dean.html', {'leave_requests': leave_requests})
 
 @login_required
