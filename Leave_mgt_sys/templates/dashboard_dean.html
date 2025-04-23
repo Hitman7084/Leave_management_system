@@ -63,18 +63,25 @@
                 {% endif %}
             </td>
             <td>
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="leave_id" value="{{ leave.id }}">
-                    
-                    <div id="reject-form-{{ leave.id }}" style="display: none; margin-bottom: 5px;">
-                        <input type="text" name="rejection_reason" placeholder="Rejection Reason" required>
-                        <button type="submit" name="action" value="reject" class="btn-danger">Confirm Reject</button>
+                <td>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                            <button type="submit" name="action" value="approve" class="btn-success">Approve</button>
+                        </form>
+                
+                        <button type="button" onclick="showRejectInput({{ leave.id }})" class="btn-danger">Reject</button>
+                        
+                        <form method="post" id="reject-form-{{ leave.id }}" style="display: none; margin-top: 5px;">
+                            {% csrf_token %}
+                            <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                            <input type="text" name="rejection_reason" placeholder="Rejection Reason" required>
+                            <button type="submit" name="action" value="reject" class="btn-danger">Confirm Reject</button>
+                        </form>
                     </div>
-                    
-                    <button type="submit" name="action" value="approve" class="btn-success">Approve</button>
-                    <button type="button" onclick="showRejectInput({{ leave.id }})" class="btn-danger">Reject</button>
-                </form>
+                </td>
+                
             </td>
         </tr>
         <tr id="msg-row-{{ leave.id }}" class="msg-row">
@@ -98,6 +105,10 @@
 <script>
     function showRejectInput(leaveId) {
         document.getElementById("reject-form-" + leaveId).style.display = "block";
+    }
+    
+    function hideRejectInput(leaveId) {
+        document.getElementById("reject-form-" + leaveId).style.display = "none";
     }
 
     function toggleRow(leaveId) {

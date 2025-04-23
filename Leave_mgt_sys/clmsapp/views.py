@@ -172,21 +172,21 @@ def dean_dashboard(request):
             leave = LeaveApplication.objects.get(id=leave_id)
         except LeaveApplication.DoesNotExist:
             messages.error(request, "Leave request not found!")
-            return redirect('dean_dashboard')
+            return redirect('dashboard_dean')
 
         if action == "approve":
             leave.status = "Approved"
             leave.rejection_reason = None
             leave.approval_note = f"Approved by Dean {request.user.full_name or request.user.username}"
+            leave.save()
             messages.success(request, "Leave approved.")
         elif action == "reject":
             leave.status = "Rejected by Dean"
             leave.rejection_reason = request.POST.get("rejection_reason")
-            leave.approval_note = None
             messages.success(request, "Leave rejected.")
 
         leave.save()
-        return redirect('dean_dashboard')
+        return redirect('dashboard_dean')
 
     return render(request, 'dashboard_dean.html', {'leave_requests': leave_requests})
 
