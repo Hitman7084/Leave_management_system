@@ -28,11 +28,86 @@
 
 {% block content %}
 <div class="main-content">
+    <h2 class="stdhist-header">History</h2>
+    {% if leave_requests %}
+        <table class="stdhist-table">
+            <tr>
+                <th>S.No.</th>
+                <th>Leave Type</th>
+                <th>Student Name</th>
+                <th>Dates Requested</th>
+                <th>Status</th>
+                <th>Rejection Reason</th>
+                <th>Message</th>
+            </tr>
+        
+            {% for leave in leave_requests %}
+            <tr class="leave-row">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ leave.leave_type }}</td>
+                <td>{{ leave.student.full_name }}</td>
+                <td>
+                    {% if leave.start_date.year == leave.end_date.year %}
+                        {{ leave.start_date|date:"M j" }} - {{ leave.end_date|date:"M j, Y" }}
+                    {% else %}
+                        {{ leave.start_date|date:"M j, Y" }} - {{ leave.end_date|date:"M j, Y" }}
+                    {% endif %}
+                </td>
+                <td class="{% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Incharge' %}approved{% elif leave.status == 'Rejected by Incharge' %}rejected{% elif leave.status == 'Forwarded to Dean' %}forwarded{% endif %}">
+                    {{ leave.status }}
+                </td>
+                <td>
+                    {% if leave.status == "Rejected by Incharge" %}
+                        <span class="rejection-reason">{{ leave.rejection_reason }}</span>
+                    {% else %}
+                        <span class="no-reason">-</span>
+                    {% endif %}
+                </td>
+                <td class="dropdown-toggle" onclick="toggleRow({{ leave.id }})">
+                    <i class="fa-solid fa-circle-chevron-down" id="icon-{{ leave.id }}"></i>
+                </td>
+            </tr>
+                
+            <tr id="msg-row-{{ leave.id }}" class="msg-row">
+                <td colspan="7" class="msg-cell">
+                    <div id="msg-content-{{ leave.id }}" class="msg-content">
+                        <strong>Message:</strong>
+                        <pre class="styled-message">
+                            {{ leave.message }}
+                        </pre>
+                    </div>
+                </td>
+            </tr>
     
+            {% endfor %}
+
+    </table>
+    {% else %}
+        <p class="no-history">No leave applications found.</p>
+    {% endif %}
 </div>
 
 <script>
-
+    function toggleRow(leaveId) {
+        const row = document.getElementById("msg-row-" + leaveId);
+        const content = document.getElementById("msg-content-" + leaveId);
+        const icon = document.getElementById("icon-" + leaveId);
+        const isExpanded = content.classList.contains("expanded");
+    
+        if (isExpanded) {
+            content.style.maxHeight = content.scrollHeight + "px";
+            requestAnimationFrame(() => {
+                content.style.maxHeight = "0";
+                content.classList.remove("expanded");
+            });
+    
+            icon.style.transform = "rotate(0deg)";
+        } else {
+            content.classList.add("expanded");
+            content.style.maxHeight = content.scrollHeight + "px";
+            icon.style.transform = "rotate(180deg)";
+        }
+    }
 </script>
 
 {% endblock %}

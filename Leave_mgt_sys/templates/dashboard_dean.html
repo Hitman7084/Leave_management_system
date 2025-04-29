@@ -65,7 +65,6 @@
             <td>
                 <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             
-                    <!-- Approve Form -->
                     <form method="post" action="" style="display: inline;">
                         {% csrf_token %}
                         <input type="hidden" name="leave_id" value="{{ leave.id }}">
@@ -73,7 +72,6 @@
                         <button type="submit" class="btn-success">Approve</button>
                     </form>
             
-                    <!-- Reject Form -->
                     <form method="post" action="" style="display: inline;">
                         {% csrf_token %}
                         <input type="hidden" name="leave_id" value="{{ leave.id }}">
