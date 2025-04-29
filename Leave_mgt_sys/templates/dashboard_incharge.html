@@ -50,7 +50,7 @@
             <td>{{ leave.leave_type }}</td>
             <td>
                 {% if leave.attachment %}
-                <a href="{{ leave.attachment.url }}" target="_blank">View File</a>
+                <a href="{{ leave.attachment.url }}" target="_blank" rel="noopener noreferrer">Open PDF</a>
                 {% else %}
                 No Attachment
                 {% endif %}
