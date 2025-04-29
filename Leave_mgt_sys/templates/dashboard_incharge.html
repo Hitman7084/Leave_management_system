@@ -92,7 +92,10 @@
         <tr id="msg-row-{{ leave.id }}" class="msg-row">
             <td colspan="7" class="msg-cell">
                 <div id="msg-content-{{ leave.id }}" class="msg-content">
-                    <strong>Message:</strong> {{ leave.message }}
+                    <strong>Message:</strong>
+                    <pre class="styled-message">
+                        {{ leave.message }}
+                    </pre>
                 </div>
             </td>
         </tr>

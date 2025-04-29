@@ -97,7 +97,13 @@ body {
 }
 
 /* CSS for general cases (like form tables) */
-
+.styled-message {
+    background-color: #EBE5C2;
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+}
 
 /* CSS FOR DASHBOARD ONWARDS HERE DON'T F THIS UP IT TOOK TIME TO ORGANIZE */
 
