@@ -9,7 +9,9 @@
         <span class="text">Home</span>
     </a>
     <a href="{% url 'student_profile' %}">
-        <span class="icon"><i class="fa-solid fa-user"></i></span>
+        <span class="icon">
+            <img src="{% static 'svg/house-solid.svg' %}" style="width: 1em; height: 1em;">
+        </span>
         <span class="text">Profile</span>
     </a>
     <a href="{% url 'student_form' %}">
