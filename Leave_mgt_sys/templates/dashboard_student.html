@@ -5,12 +5,14 @@
 {% block sidebar %}
 <div class="sidenav">
     <a href="{% url 'dashboard_student' %}">
-        <span class="icon"><i class="fas fa-home"></i></span>
+        <span class="icon">
+            <img src="{% static 'svg/house-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+        </span>
         <span class="text">Home</span>
     </a>
     <a href="{% url 'student_profile' %}">
         <span class="icon">
-            <img src="{% static 'svg/house-solid.svg' %}" style="width: 1em; height: 1em;">
+            <img src="{% static 'svg/user-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
         </span>
         <span class="text">Profile</span>
     </a>
