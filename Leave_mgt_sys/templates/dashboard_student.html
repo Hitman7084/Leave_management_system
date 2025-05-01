@@ -17,17 +17,23 @@
         <span class="text">Profile</span>
     </a>
     <a href="{% url 'student_form' %}">
-        <span class="icon"><i class="fa-solid fa-file"></i></span>
+        <span class="icon">
+            <img src="{% static 'svg/file-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+        </span>
         <span class="text">Form</span>
     </a>
     <a href="{% url 'student_history' %}">
-        <span class="icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+        <span class="icon">
+            <img src="{% static 'svg/clock-rotate-left-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+        </span>
         <span class="text">History</span>
     </a>
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button class="logout-btn">
-            <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+            <span class="icon">
+                <img src="{% static 'svg/right-from-bracket-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+            </span>
             <span class="text">Logout</span>
         </button>
     </form>
