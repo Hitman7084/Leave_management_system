@@ -6,25 +6,25 @@
 <div class="sidenav">
     <a href="{% url 'dashboard_student' %}">
         <span class="icon">
-            <img src="{% static 'svg/house-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+            <img src="{% static 'svg/house-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
         <span class="text">Home</span>
     </a>
     <a href="{% url 'student_profile' %}">
         <span class="icon">
-            <img src="{% static 'svg/user-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+            <img src="{% static 'svg/user-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
         <span class="text">Profile</span>
     </a>
     <a href="{% url 'student_form' %}">
         <span class="icon">
-            <img src="{% static 'svg/file-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+            <img src="{% static 'svg/file-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
         <span class="text">Form</span>
     </a>
     <a href="{% url 'student_history' %}">
         <span class="icon">
-            <img src="{% static 'svg/clock-rotate-left-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+            <img src="{% static 'svg/clock-rotate-left-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
         <span class="text">History</span>
     </a>
@@ -32,7 +32,7 @@
         {% csrf_token %}
         <button class="logout-btn">
             <span class="icon">
-                <img src="{% static 'svg/right-from-bracket-solid.svg' %}" style="width: 1.5em; height: 1.5em;">
+                <img src="{% static 'svg/right-from-bracket-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
             </span>
             <span class="text">Logout</span>
         </button>
@@ -42,7 +42,7 @@
 
 {% block content %}
 <div class="main-content">
-    <h1>Welcome {{ user.full_name }} and fk you</h1>
+    <h1>Welcome {{ user.full_name }} </h1>
     <div id="calendar"></div>
 </div>
 
