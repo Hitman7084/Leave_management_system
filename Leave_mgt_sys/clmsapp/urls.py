@@ -13,6 +13,5 @@ urlpatterns = [
     path('student_profile/', views.student_profile, name='student_profile'),
     path('student_history/', views.student_history, name='student_history'),
     path('incharge_history/', views.incharge_history, name='incharge_history'),
-    path("leave_calendar_api/", views.leave_calendar_api, name="leave_calendar_api"),
     # more paths.....
 ]

@@ -43,20 +43,42 @@
 {% block content %}
 <div class="main-content">
     <h1>Welcome {{ user.full_name }} </h1>
-    <div id="calendar"></div>
+    <div class="graph">
+        <h2>Available Leaves</h2>
+        <canvas id="leaveChart" width="400" height="200"></canvas>
+    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let calendarEl = document.getElementById("calendar");
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: "dayGridMonth",
-            events: "{% url 'leave_calendar_api' %}", // Fetch leave data from Django API
-            eventColor: "#3788d8",
-            eventDisplay: "block"
-        });
-        calendar.render();
-    });
+    const leaveData = {
+        labels: ['Casual', 'Duty', 'Medical', 'Emergency'],
+        datasets: [{
+            label: 'Remaining Leaves',
+            data: [
+                {{ leave_data.casual }},
+                {{ leave_data.duty }},
+                {{ leave_data.medical }},
+                {{ leave_data.emergency }}
+            ],
+            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f'],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: leaveData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Your Leave Balance' }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('leaveChart'), config);
 </script>
 
 {% endblock %}

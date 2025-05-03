@@ -31,6 +31,20 @@ class OTPVerification(models.Model):
         self.created_at = timezone.now()  # Update timestamp when OTP is generated
         self.save()
 
+# dashboard model
+class LeaveBalance(models.Model):
+    student = models.OneToOneField(User, on_delete=models.CASCADE)
+    casual = models.IntegerField(default=10)
+    duty = models.IntegerField(default=5)
+    medical = models.IntegerField(default=7)
+    emergency = models.IntegerField(default=3)
+
+    def deduct(self, leave_type, days):
+        if hasattr(self, leave_type):
+            setattr(self, leave_type, getattr(self, leave_type) - days)
+            self.save()
+
+
 # Leave Request Model(Half assed)
 class LeaveApplication(models.Model):
     LEAVE_CHOICES = [

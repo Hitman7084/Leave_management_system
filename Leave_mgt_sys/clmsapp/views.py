@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 from django.utils.crypto import get_random_string
 from .models import User, OTPVerification
 from .gmail_oauth import send_email_oauth
-from .models import LeaveApplication
+from .models import LeaveApplication, LeaveBalance
 from datetime import datetime, timedelta
 
 # Generate OTP
@@ -120,7 +120,18 @@ def login(request):
 
 @login_required
 def student_dashboard(request):
-    return render(request, 'dashboard_student.html')
+    balance, created = LeaveBalance.objects.get_or_create(student=request.user)
+
+    leave_data = {
+        'casual': balance.casual,
+        'duty': balance.duty,
+        'medical': balance.medical,
+        'emergency': balance.emergency
+    }
+
+    return render(request, 'dashboard_student.html', {
+        'leave_data': leave_data
+    })
 
 
 @login_required
@@ -155,7 +166,7 @@ def incharge_dashboard(request):
 
     return render(request, 'dashboard_incharge.html', {'leave_requests': leave_requests})
 
-
+@login_required
 def incharge_history(request):
     leave_requests = LeaveApplication.objects.filter(incharge=request.user).order_by("-submitted_at")
     return render(request, 'incharge_history.html', {'leave_requests': leave_requests})
@@ -179,7 +190,10 @@ def dean_dashboard(request):
             leave.rejection_reason = None
             leave.approval_note = f"Approved by Dean {request.user.full_name or request.user.username}"
             leave.save()
-            messages.success(request, "Leave approved.")
+
+            days = (leave.end_date - leave.start_date).days + 1
+            balance, created = LeaveBalance.objects.get_or_create(student=leave.student)
+            balance.deduct(leave.leave_type, days)
         elif action == "reject":
             leave.status = "Rejected by Dean"
             leave.rejection_reason = request.POST.get("rejection_reason")
@@ -195,13 +209,14 @@ def professor_dashboard(request):
     leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)
     return render(request, 'dashboard_professor.html', {'leave_requests': leave_requests})
 
+@login_required
 def student_form(request):
     incharges = User.objects.filter(role="Incharge")
 
     if request.method == "POST":
         student = request.user
         recipient_id = request.POST.get("recipient")
-        leave_type = request.POST.get("leave_type")  # Get leave type from form
+        leave_type = request.POST.get("leave_type")
         message = request.POST.get("message")
         attachment = request.FILES.get("attachment")
         start_date = request.POST.get("start_date")
@@ -228,10 +243,25 @@ def student_form(request):
             messages.error(request, "Start date cannot be after end date.")
             return redirect("student_form")
 
-        leave_request = LeaveApplication.objects.create(
+        # Leave balance validation
+        try:
+            balance = LeaveBalance.objects.get(student=student)
+        except LeaveBalance.DoesNotExist:
+            messages.error(request, "Leave balance not found.")
+            return redirect("student_form")
+
+        total_days = (end_date - start_date).days + 1
+        available_days = getattr(balance, leave_type, 0)
+
+        if total_days > available_days:
+            messages.error(request, f"Insufficient {leave_type} leave balance. You have {available_days} day(s) left.")
+            return redirect("student_form")
+
+        # All good, save application
+        LeaveApplication.objects.create(
             student=student,
             incharge=recipient,
-            leave_type=leave_type,  # Include leave type
+            leave_type=leave_type,
             message=message,
             attachment=attachment,
             start_date=start_date,
@@ -244,34 +274,15 @@ def student_form(request):
 
     return render(request, "student_form.html", {"incharges": incharges})
 
+@login_required
 def student_profile(request):
     return render(request, 'student_profile.html')
 
+@login_required
 def student_history(request):
     leave_requests = LeaveApplication.objects.filter(student=request.user).order_by("-submitted_at")
     return render(request, 'student_history.html', {'leave_requests': leave_requests})
 
-def leave_calendar_api(request):
-    leaves = LeaveApplication.objects.all()
-    events = []
-
-    leave_colors = {
-        "casual": "#3498db",     # Blue
-        "duty": "#2ecc71",       # Green
-        "medical": "#e74c3c",    # Red
-        "emergency": "#f1c40f"   # Yellow
-    }
-
-    for leave in leaves:
-        if leave.start_date and leave.end_date:
-            events.append({
-                "title": f"{leave.student.full_name} ({leave.get_leave_type_display()})",
-                "start": leave.start_date.strftime("%Y-%m-%d"),
-                "end": leave.end_date.strftime("%Y-%m-%d"),
-                "color": leave_colors.get(leave.leave_type, "#3788d8"),
-            })
-
-    return JsonResponse(events, safe=False)
 
 
 '''# Test Email Sending (For Debugging OAuth)
