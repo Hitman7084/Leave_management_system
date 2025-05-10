@@ -43,9 +43,9 @@
 {% block content %}
 <div class="main-content">
     <h1>Welcome {{ user.full_name }} </h1>
-    <div class="graph">
+    <div class="graph" style="width: 100%; max-width: 600px;">
         <h2>Available Leaves</h2>
-        <canvas id="leaveChart" width="400" height="200"></canvas>
+        <canvas id="leaveChart" width="600px" height="400px"></canvas>
     </div>
 </div>
 
@@ -72,9 +72,10 @@
         options: {
             responsive: true,
             plugins: {
-                legend: { display: false },
+                legend: { display: true },
                 title: { display: true, text: 'Your Leave Balance' }
-            }
+            },
+            
         }
     };
 
