@@ -85,6 +85,6 @@ class LeaveApplication(models.Model):
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Pending')
 
     def __str__(self):
-        return f"Leave Request ({self.status}) - {self.student.username} to {self.incharge.username if self.incharge else 'Fuck off'}"
+        return f"Leave Request ({self.status}) - {self.student.username} to {self.incharge.username if self.incharge else 'Fk off'}"
 
 
