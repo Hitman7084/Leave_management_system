@@ -42,7 +42,7 @@
 
 {% block content %}
 <div class="main-content">
-    <h1>Welcome {{ user.full_name }} </h1>
+    <h1 class="title">Welcome {{ user.full_name }} </h1>
     <div class="graph" style="width: 100%; max-width: 600px;">
         <h2>Available Leaves</h2>
         <canvas id="leaveChart" width="600px" height="400px"></canvas>
@@ -52,16 +52,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const leaveData = {
-        labels: ['Casual', 'Duty', 'Medical', 'Emergency'],
+        labels: ['Casual', 'Duty', 'Medical'],
         datasets: [{
             label: 'Remaining Leaves',
             data: [
                 {{ leave_data.casual }},
                 {{ leave_data.duty }},
                 {{ leave_data.medical }},
-                {{ leave_data.emergency }}
             ],
-            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f1c40f'],
+            backgroundColor: ['#3498db', '#2ecc71', '#f1c40f'],
             borderWidth: 1
         }]
     };

@@ -37,7 +37,7 @@ class LeaveBalance(models.Model):
     casual = models.IntegerField(default=10)
     duty = models.IntegerField(default=5)
     medical = models.IntegerField(default=7)
-    emergency = models.IntegerField(default=3)
+    emergency = models.IntegerField(default=100)
 
     def deduct(self, leave_type, days):
         if hasattr(self, leave_type):
