@@ -205,6 +205,12 @@ def dean_dashboard(request):
     return render(request, 'dashboard_dean.html', {'leave_requests': leave_requests})
 
 @login_required
+def dean_history(request):
+    # Get all leave requests that have been processed by the dean (either approved or rejected)
+    leave_requests = LeaveApplication.objects.filter(status__in=["Approved", "Rejected by Dean"]).order_by("-submitted_at")
+    return render(request, 'dean_history.html', {'leave_requests': leave_requests})
+
+@login_required
 def professor_dashboard(request):
     leave_requests = LeaveApplication.objects.filter(forwarded_to_dean=False)
     return render(request, 'dashboard_professor.html', {'leave_requests': leave_requests})
