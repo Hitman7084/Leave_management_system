@@ -94,6 +94,7 @@ body {
     box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     transition: width 0.3s ease-in-out;
+    z-index: 1000;
 }
 
 .sidenav:hover {
@@ -158,10 +159,12 @@ body {
 
 /* MAIN CONTENT SHIFT TO AVOID OVERLAPPING SIDEBAR */
 .main-content {
-    margin-left: 50px;
+    margin-left: 80px;
     padding: 20px;
     color: var(--text);
     background-color: var(--background);
+    position: relative;
+    z-index: 1;
 }
 
 /* CSS for general cases (like form tables) */
@@ -638,51 +641,53 @@ footer {
 
 /* Status badges */
 .status-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    display: inline-block;
+    padding: 0.5rem 1rem !important;
+    border-radius: 20px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    display: inline-block !important;
+}
+
+.status-badge.pending {
+    background-color: #fff3e0 !important;
+    color: #f57c00 !important;
+}
+
+.status-badge.Approved, 
+.status-badge.approved {
+    background-color: #e8f5e9 !important;
+    color: #2e7d32 !important;
+}
+
+.status-badge.rejected {
+    background-color: #ffebee !important;
+    color: #c62828 !important;
+}
+
+.status-badge.forwarded {
+    background-color: #e3f2fd !important;
+    color: #1565c0 !important;
 }
 
 [data-theme="dark"] .status-badge.pending {
-    background-color: rgba(255, 193, 7, 0.2);
-    color: #ffd54f;
+    background-color: rgba(255, 193, 7, 0.2) !important;
+    color: #ffd54f !important;
 }
 
+[data-theme="dark"] .status-badge.Approved,
 [data-theme="dark"] .status-badge.approved {
-    background-color: rgba(76, 175, 80, 0.2);
-    color: #81c784;
+    background-color: rgba(76, 175, 80, 0.2) !important;
+    color: #81c784 !important;
 }
 
 [data-theme="dark"] .status-badge.rejected {
-    background-color: rgba(244, 67, 54, 0.2);
-    color: #e57373;
+    background-color: rgba(244, 67, 54, 0.2) !important;
+    color: #e57373 !important;
 }
 
 [data-theme="dark"] .status-badge.forwarded {
-    background-color: rgba(33, 150, 243, 0.2);
-    color: #64b5f6;
-}
-
-[data-theme="light"] .status-badge.pending {
-    background-color: #fff3e0;
-    color: #f57c00;
-}
-
-[data-theme="light"] .status-badge.approved {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-}
-
-[data-theme="light"] .status-badge.rejected {
-    background-color: #ffebee;
-    color: #c62828;
-}
-
-[data-theme="light"] .status-badge.forwarded {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background-color: rgba(33, 150, 243, 0.2) !important;
+    color: #64b5f6 !important;
 }
 
 /* Message section styling */

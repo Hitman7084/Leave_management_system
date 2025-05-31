@@ -69,7 +69,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <span class="status-badge {% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Dean' %}approved{% elif leave.status == 'Rejected by Dean' %}rejected{% endif %}">
+                            <span class="status-badge {% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Dean' %}Approved{% elif leave.status == 'Rejected by Dean' %}rejected{% endif %}">
                                 {{ leave.status }}
                             </span>
                         </td>
