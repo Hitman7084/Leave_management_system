@@ -470,3 +470,27 @@ footer {
 [data-theme="light"] footer {
     color: var(--text-muted-light);
 }
+
+/* Theme toggle button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: transparent;
+    border: 2px solid currentColor;
+    color: var(--text);
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+}
+
+.theme-toggle i {
+    margin-right: 5px;
+}

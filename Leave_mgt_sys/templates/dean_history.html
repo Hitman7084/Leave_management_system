@@ -1,28 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Student Dashboard{% endblock %}
+{% block title %}Dean Dashboard{% endblock %}
 
 {% block sidebar %}
 <div class="sidenav">
-    <a href="{% url 'dashboard_student' %}">
+    <a href="{% url 'dashboard_dean' %}">
         <span class="icon">
             <img src="{% static 'svg/house-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
         <span class="text">Home</span>
     </a>
-    <a href="{% url 'student_profile' %}">
+    <a href="#">
         <span class="icon">
             <img src="{% static 'svg/user-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
         <span class="text">Profile</span>
     </a>
-    <a href="{% url 'student_form' %}">
-        <span class="icon">
-            <img src="{% static 'svg/file-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
-        </span>
-        <span class="text">Form</span>
-    </a>
-    <a href="{% url 'student_history' %}">
+    <a href="{% url 'dean_history' %}">
         <span class="icon">
             <img src="{% static 'svg/clock-rotate-left-solid.svg' %}" style="width: 1.2em; height: 1.2em;">
         </span>
@@ -43,7 +37,7 @@
 {% block content %}
 <div class="main-content">
     <div class="history-container">
-        <h2 class="history-header">Your Leave History</h2>
+        <h2 class="history-header">Leave Request History</h2>
         
         {% if leave_requests %}
         <div class="table-container">
@@ -52,6 +46,7 @@
                     <tr>
                         <th>S.No.</th>
                         <th>Leave Type</th>
+                        <th>Student</th>
                         <th>Incharge</th>
                         <th>Dates Requested</th>
                         <th>Status</th>
@@ -64,6 +59,7 @@
                     <tr class="leave-row">
                         <td>{{ forloop.counter }}</td>
                         <td>{{ leave.leave_type }}</td>
+                        <td>{{ leave.student.full_name }}</td>
                         <td>{{ leave.incharge.full_name }}</td>
                         <td>
                             {% if leave.start_date.year == leave.end_date.year %}
@@ -73,12 +69,12 @@
                             {% endif %}
                         </td>
                         <td>
-                            <span class="status-badge {% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Incharge' %}approved{% elif leave.status == 'Rejected by Incharge' %}rejected{% elif leave.status == 'Forwarded to Dean' %}forwarded{% endif %}">
+                            <span class="status-badge {% if leave.status == 'Pending' %}pending{% elif leave.status == 'Approved by Dean' %}approved{% elif leave.status == 'Rejected by Dean' %}rejected{% endif %}">
                                 {{ leave.status }}
                             </span>
                         </td>
                         <td>
-                            {% if leave.status == "Rejected by Incharge" %}
+                            {% if leave.status == "Rejected by Dean" %}
                                 <span class="rejection-reason">{{ leave.rejection_reason }}</span>
                             {% else %}
                                 <span class="no-reason">-</span>
@@ -90,13 +86,19 @@
                     </tr>
                     
                     <tr id="msg-row-{{ leave.id }}" class="msg-row">
-                        <td colspan="7" class="msg-cell">
+                        <td colspan="8" class="msg-cell">
                             <div id="msg-content-{{ leave.id }}" class="msg-content">
                                 <div class="message-details">
                                     <div class="message-section">
-                                        <h4>Your Message:</h4>
+                                        <h4>Student's Message:</h4>
                                         <pre class="styled-message">{{ leave.message }}</pre>
                                     </div>
+                                    {% if leave.incharge_comment %}
+                                    <div class="message-section">
+                                        <h4>Incharge's Comment:</h4>
+                                        <pre class="styled-message">{{ leave.incharge_comment }}</pre>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>
@@ -134,4 +136,4 @@
         }
     }
 </script>
-{% endblock %}
+{% endblock %} 

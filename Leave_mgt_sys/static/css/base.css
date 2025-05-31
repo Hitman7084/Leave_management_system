@@ -145,12 +145,12 @@ body {
     margin-left: 50px;
     padding: 20px;
     color: var(--text);
-    background-color: var(--content-bg);
+    background-color: var(--background);
 }
 
 /* CSS for general cases (like form tables) */
 .styled-message {
-    background-color: var(--content-bg);
+    background-color: var(--background);
     color: var(--text);
     padding: 1rem;
     border-radius: 8px;
@@ -199,7 +199,7 @@ body {
 .std-profile-container {
     max-width: 700px;
     margin: 2rem auto;
-    background-color: var(--content-bg);
+    background-color: var(--background);
     color: var(--text);
     padding: 2rem;
     border-radius: 10px;
@@ -235,7 +235,7 @@ body {
 }
 
 .std-input, .std-textarea {
-    background-color: var(--content-bg);
+    background-color: var(--background);
     color: var(--text);
     width: 100%;
     padding: 10px;
@@ -254,9 +254,7 @@ body {
 
 .stdhist-table {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    background-color: var(--content-bg);
+    background-color: var(--background);
     color: var(--text);
     border-radius: 8px;
     overflow: hidden;
@@ -358,7 +356,7 @@ body {
 /* incharge css */
 .inchrg-table {
     width: 100%;
-    background-color: var(--content-bg);
+    background-color: var(--background);
     color: var(--text);
     border-radius: 8px;
     overflow: hidden;
@@ -396,7 +394,7 @@ body {
 
 .dean-table {
     width: 100%;
-    background-color: var(--content-bg);
+    background-color: var(--background);
     color: var(--text);
     border-radius: 8px;
     overflow: hidden;
@@ -543,4 +541,183 @@ footer {
     color: var(--text);
     text-align: center;
     padding: 10px;
+}
+
+/* History pages styling */
+.history-container {
+    padding: 2rem;
+    border-radius: 15px;
+    background-color: var(--background);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.history-header {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.history-header:after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--text);
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--background);
+    color: var(--text);
+    margin-bottom: 2rem;
+}
+
+.history-table thead th {
+    background-color: rgba(var(--text-rgb), 0.1);
+    padding: 1rem;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid rgba(var(--text-rgb), 0.2);
+}
+
+.history-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.history-table tbody tr:hover {
+    background-color: rgba(var(--text-rgb), 0.05);
+}
+
+.history-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+}
+
+/* Status badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.pending {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.approved {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+}
+
+.rejected {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+.forwarded {
+    background-color: rgba(23, 162, 184, 0.2);
+    color: #17a2b8;
+}
+
+/* Message section styling */
+.message-details {
+    padding: 1.5rem;
+    background-color: rgba(var(--text-rgb), 0.05);
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.message-section {
+    margin-bottom: 1.5rem;
+}
+
+.message-section h4 {
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.styled-message {
+    background-color: var(--background);
+    color: var(--text);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--text-rgb), 0.2);
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+}
+
+/* Dropdown toggle and animation */
+.dropdown-toggle {
+    cursor: pointer;
+    text-align: center;
+}
+
+.dropdown-toggle i {
+    transition: transform 0.3s ease;
+    color: var(--text);
+    font-size: 1.2rem;
+}
+
+.dropdown-toggle i.rotate {
+    transform: rotate(180deg);
+}
+
+.msg-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: var(--background);
+}
+
+.msg-content.expanded {
+    max-height: 1000px;
+    transition: max-height 0.5s ease-in;
+}
+
+/* Empty state styling */
+.no-history-container {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text);
+}
+
+.no-history-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.no-history {
+    font-size: 1.2rem;
+    color: var(--text);
+    opacity: 0.7;
+}
+
+/* Light mode specific styles */
+[data-theme="light"] {
+    --text-rgb: 44, 62, 80;
+}
+
+/* Dark mode specific styles */
+[data-theme="dark"] {
+    --text-rgb: 255, 255, 255;
 }

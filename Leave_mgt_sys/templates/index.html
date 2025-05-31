@@ -67,10 +67,15 @@
                     particles: ["#fbfcca", "#d7f3fe", "#ffd0a7"]
                 } : {
                     background: "#ffffff",
-                    particles: ["#4a90e2", "#50c878", "#ff7f50"]
+                    particles: ["#333333", "#555555", "#777777"]
                 };
                 
                 window.hitmanHeader.updateColors(colors);
+                window.hitmanHeader.o.blending = newTheme === 'dark' ? "multiply" : "normal";
+                window.hitmanHeader.o.opacity = {
+                    center: newTheme === 'dark' ? 0.6 : 0.4,
+                    edge: newTheme === 'dark' ? 0.2 : 0.1
+                };
             }
         });
 
