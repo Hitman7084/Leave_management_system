@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
 </head>
 <body class="admiral">
+    <button id="theme-toggle" class="theme-toggle">
+        <i class="fas fa-moon"></i> Dark Mode
+    </button>
     <div class="header Hitman-header">
         <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
@@ -34,6 +37,48 @@
     {% endblock %}
 </div>
     <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+            
+            // Update particle colors
+            if (window.hitmanHeader) {
+                const colors = newTheme === 'dark' ? {
+                    background: "#201e30",
+                    particles: ["#fbfcca", "#d7f3fe", "#ffd0a7"]
+                } : {
+                    background: "#ffffff",
+                    particles: ["#333333", "#555555", "#777777"]
+                };
+                
+                window.hitmanHeader.updateColors(colors);
+                window.hitmanHeader.o.blending = newTheme === 'dark' ? "multiply" : "normal";
+                window.hitmanHeader.o.opacity = {
+                    center: newTheme === 'dark' ? 0.6 : 0.4,
+                    edge: newTheme === 'dark' ? 0.2 : 0.1
+                };
+            }
+        });
+
+        function updateThemeButton(theme) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            themeToggle.innerHTML = `${themeIcon.outerHTML} ${theme === 'dark' ? 'Dark' : 'Light'} Mode`;
+        }
+
         "use strict";
 
 var _cc = function () {
@@ -266,7 +311,7 @@ function _ccc(t, i) {
             key: "init",
             value: function (t) {
                 this.o = t;
-                this.bc = s(this.o.colors.background);
+                this.bc = s(t.colors.background);
                 this.ps = [];
                 this.resize();
                 this.cp();
@@ -288,6 +333,12 @@ function _ccc(t, i) {
                 }
             }
         }, {
+            key: "updateColors",
+            value: function(colors) {
+                this.o.colors = colors;
+                this.init(this.o);
+            }
+        }, {
             key: "an",
             value: function () {
                 t.requestAnimationFrame(this.an.bind(this));
@@ -302,7 +353,17 @@ function _ccc(t, i) {
     t.HitmanHeader = h;
 }(window);
 
-    new HitmanHeader({
+    // Initialize with theme-based colors
+    const theme = document.documentElement.getAttribute('data-theme');
+    const colors = theme === 'dark' ? {
+        background: "#201e30",
+        particles: ["#fbfcca", "#d7f3fe", "#ffd0a7"]
+    } : {
+        background: "#ffffff",
+        particles: ["#333333", "#555555", "#777777"]
+    };
+
+    window.hitmanHeader = new HitmanHeader({
       "count": 13,
       "size": {
         "min": 2,
@@ -319,20 +380,11 @@ function _ccc(t, i) {
           "max": 0.2
         }
       },
-      "colors": {
-        "background": "#15182e",
-        "particles": [
-          "#ff926b",
-          "#87ddfe",
-          "#acaaff",
-          "#1bffc2",
-          "#f9a5fe"
-        ]
-      },
-      "blending": "screen",
+      "colors": colors,
+      "blending": theme === 'dark' ? "multiply" : "normal",
       "opacity": {
-        "center": 1,
-        "edge": 1
+        "center": theme === 'dark' ? 0.6 : 0.4,
+        "edge": theme === 'dark' ? 0.2 : 0.1
       },
       "skew": 0,
       "shapes": [

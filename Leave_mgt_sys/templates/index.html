@@ -1,17 +1,21 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}College Leave Management System{% endblock %}</title>
     <!-- Link to CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- Link to JavaScript -->
 
 </head>
 <body>
+    <button id="theme-toggle" class="theme-toggle">
+        <i class="fas fa-moon"></i> Dark Mode
+    </button>
     <div class="header Hitman-header">
     
     {% block content %}
@@ -37,7 +41,44 @@
         <p>&copy; 2024 Leave Management System. All rights reserved.</p>
     </footer>
 
-    <script type="text/javascript">
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+            
+            // Update particle colors
+            if (window.hitmanHeader) {
+                const colors = newTheme === 'dark' ? {
+                    background: "#201e30",
+                    particles: ["#fbfcca", "#d7f3fe", "#ffd0a7"]
+                } : {
+                    background: "#ffffff",
+                    particles: ["#4a90e2", "#50c878", "#ff7f50"]
+                };
+                
+                window.hitmanHeader.updateColors(colors);
+            }
+        });
+
+        function updateThemeButton(theme) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            themeToggle.innerHTML = `${themeIcon.outerHTML} ${theme === 'dark' ? 'Dark' : 'Light'} Mode`;
+        }
+
         "use strict";
 
 var _cc = function () {
@@ -292,6 +333,12 @@ function _ccc(instance, Constructor) {
                 }
             }
         }, {
+            key: "updateColors",
+            value: function(colors) {
+                this.o.colors = colors;
+                this.init(this.o);
+            }
+        }, {
             key: "an",
             value: function () {
                 t.requestAnimationFrame(this.an.bind(this));
@@ -309,9 +356,17 @@ function _ccc(instance, Constructor) {
 
 }(window);
 
+        // Initialize with theme-based colors
+        const theme = document.documentElement.getAttribute('data-theme');
+        const colors = theme === 'dark' ? {
+            background: "#201e30",
+            particles: ["#fbfcca", "#d7f3fe", "#ffd0a7"]
+        } : {
+            background: "#ffffff",
+            particles: ["#4a90e2", "#50c878", "#ff7f50"]
+        };
 
-
-        new HitmanHeader({
+        window.hitmanHeader = new HitmanHeader({
             "count": 50,
             "size": {
                 "min": 2,
@@ -328,23 +383,16 @@ function _ccc(instance, Constructor) {
                     "max": 0.6
                 }
             },
-            "colors": {
-                "background": "#201e30",
-                "particles": [
-                "#fbfcca",
-                "#d7f3fe",
-                "#ffd0a7"
-                ]
-            },
-            "blending": "overlay",
+            "colors": colors,
+            "blending": "multiply",
             "opacity": {
-                "center": 1,
-                "edge": 0
+                "center": 0.6,
+                "edge": 0.2
             },
             "skew": 0,
             "shapes": [
-            "s",
-            "t"
+                "s",
+                "t"
             ]
         });
     </script>
